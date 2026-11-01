@@ -328,6 +328,10 @@
     .night, .night-2 { display: contents; }
     .night-set button { flex: none; width: calc((100% - 8px) / 2); aspect-ratio: var(--r); }
     .night-set button[data-i="4"] { width: calc((100% - 8px) * .3815); }
+    /* Middle pair swapped so front and side angles alternate down the columns */
+    .night-set button[data-i="0"] { order: 1; } .night-set button[data-i="1"] { order: 2; }
+    .night-set button[data-i="3"] { order: 3; } .night-set button[data-i="2"] { order: 4; }
+    .night-set button[data-i="4"] { order: 5; } .night-set button[data-i="5"] { order: 6; }
     .night-set button[data-i="5"] { width: calc((100% - 8px) * .6185); }
     .nav ul { gap: 14px; }
     .lb-prev, .lb-next { top: auto; bottom: 0; transform: none; }
