@@ -212,7 +212,8 @@
   .sound-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 32px; }
   .sound-cta .covered { font-size: clamp(24px, 2.4vw, 30px); color: var(--white); }
 
-  .clients { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: center; gap: 52px 36px; padding-block: 16px; }
+  .clients { --per: 5; --gx: 40px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 52px var(--gx); padding-block: 16px; }
+  .clients .client { flex: 0 0 calc((100% - (var(--per) - 1) * var(--gx)) / var(--per)); }
   .client { display: flex; align-items: center; justify-content: center; height: 72px; }
   .client { min-width: 0; }
   .client img { width: auto; height: auto; max-height: var(--h, 36px); max-width: 100%; opacity: .9; transition: opacity .2s; }
@@ -242,7 +243,8 @@
   .bts .photo:hover .cap, .bts .photo:focus-visible .cap { opacity: 1; transform: none; }
   .bts .photo:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
   @media (hover: none) { .bts .cap { opacity: 1; transform: none; padding-top: 36px; } }
-  .posters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 36px 16px; }
+  .posters { --per: 5; --gx: 16px; display: flex; flex-wrap: wrap; justify-content: center; gap: 36px var(--gx); }
+  .posters .poster { flex: 0 0 calc((100% - (var(--per) - 1) * var(--gx)) / var(--per)); }
   .poster { margin: 0; min-width: 0; }
   .poster .art { aspect-ratio: 2 / 3; max-width: 100%; background: var(--soot); display: grid; place-items: center; overflow: hidden; }
   .poster img { width: 100%; height: 100%; object-fit: contain; transition: transform .4s cubic-bezier(.2,.7,.2,1); }
@@ -300,11 +302,11 @@
   }
   @media (max-width: 860px) {
     .about, .sound-head { grid-template-columns: 1fr; }
-    .clients { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .clients { --per: 3; }
     .gear { grid-template-columns: 1fr 1fr; }
     .gear > div:nth-child(3) { padding-left: 0; border-left: 0; border-image: none; }
-    .posters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .clients { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 32px; }
+    .posters { --per: 3; }
+    .clients { --per: 2; --gx: 32px; row-gap: 36px; }
     .client { height: 54px; }
     .client img { max-height: calc(var(--h, 36px) * .75); }
     .contact { grid-template-columns: 1fr; }
@@ -315,13 +317,13 @@
     .svc, .svc + .svc { padding: 20px 0; border-left: 0; border-image: none; }
     .svc + .svc { border-left: 0; border-top: 3px solid transparent; border-image: url(assets/rule-h-dim.png) 100% 0 0 0 / 3px 0 0 0 stretch; }
     .brand img { height: 22px; }
+    .bio .sign img { width: 40px; transform: none; }
     .films { grid-template-columns: 1fr; }
     .bts .photo { grid-column: span 6; }
     .bts .photo:first-child { grid-column: 1 / -1; aspect-ratio: 4 / 5; }
     .bts .photo.wide { grid-column: 1 / -1; aspect-ratio: 3 / 2; }
     .bts .photo.fill { grid-column: 1 / -1; aspect-ratio: 1; }
-    .posters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .poster:last-child { grid-column: 1 / -1; justify-self: center; width: calc(50% - 8px); }
+    .posters { --per: 2; }
     .poster .t { font-size: 18px; }
     .gear { grid-template-columns: 1fr; }
     .gear > div, .gear > div + div { padding: 18px 0 4px; border-left: 0; border-image: none; }
@@ -461,7 +463,6 @@
         <a class="btn btn-solid" href="mailto:hunter@accipiterpictures.com?subject=Sound%20booking"><span class="dot" aria-hidden="true"></span>Book Hunter Hawke Sound</a>
         <span class="hand covered">Leave it to me — I’ve got you covered.</span>
       </div>
-      <p class="note">Work samples and resume available on request.</p>
 
       <div class="sub">
         <span class="label">Past Clients</span>
@@ -476,12 +477,8 @@
           <div class="client"><img src="assets/clients/baton.png" alt="Baton" width="805" height="240" style="--h:44px" loading="lazy"></div>
           <div class="client"><img src="assets/clients/milkxp.png" alt="milkXP" width="607" height="240" style="--h:52px" loading="lazy"></div>
           <div class="client"><img src="assets/clients/easy-mondays.png" alt="Easy Mondays" width="541" height="240" style="--h:50px" loading="lazy"></div>
-          <div class="client"><img src="assets/clients/crafthouse.png" alt="Crafthouse Pictures" width="1039" height="240" style="--h:42px" loading="lazy"></div>
-          <div class="client"><img src="assets/clients/discordia.png" alt="Discordia" width="141" height="240" style="--h:66px" loading="lazy"></div>
-          <div class="client"><img src="assets/clients/simone-films.png" alt="Simone Films" width="2140" height="240" style="--h:22px" loading="lazy"></div>
           <div class="client"><img src="assets/clients/cody-lassen.png" alt="Cody Lassen &amp; Associates" width="461" height="240" style="--h:62px" loading="lazy"></div>
           <div class="client"><img src="assets/clients/sure-win.png" alt="Sure Win Productions" width="956" height="240" style="--h:42px" loading="lazy"></div>
-          <div class="client"><img src="assets/clients/natures-line-of-drift.png" alt="Nature's Line of Drift Productions" width="644" height="240" style="--h:72px" loading="lazy"></div>
           <div class="client"><img src="assets/clients/doing-things.png" alt="Doing Things" width="559" height="240" style="--h:50px" loading="lazy"></div>
           <div class="client"><img src="assets/clients/lame.png" alt="LAME." width="1289" height="240" style="--h:28px" loading="lazy"></div>
         </div>
@@ -516,7 +513,6 @@
           <figure class="poster"><div class="art"><img src="assets/posters/lost-dog.jpg" alt="Poster for Lost Dog" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Lost Dog</span><span class="meta"><span class="r">Production Sound</span></span></figcaption></figure>
           <figure class="poster"><div class="art"><img src="assets/posters/cerulea.jpg" alt="Poster for Cerulea" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Cerulea</span><span class="meta"><span class="r">Production Sound</span><span class="y">2026</span></span></figcaption></figure>
           <figure class="poster"><div class="art"><img src="assets/posters/lucy-schulman.jpg" alt="Poster for Lucy Schulman" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Lucy Schulman</span><span class="meta"><span class="r">Additional Boom Operator</span><span class="y">2026</span></span></figcaption></figure>
-          <figure class="poster"><div class="art"><img src="assets/posters/grind.jpg" alt="Poster for Grind" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Grind</span><span class="meta"><span class="r">Additional Boom Operator</span></span></figcaption></figure>
         </div>
       </div>
 
@@ -566,7 +562,7 @@
         <figure class="photo framed"><img src="assets/photos/headshot.jpg" alt="Hunter Hawke on a rooftop at dusk, holding a boom pole with headphones around his neck" width="1000" height="1250" loading="lazy"></figure>
         <div class="bio">
           <p class="first">I listen for the story.</p>
-          <p>I’ve been creating and experimenting within film and music, my two favorite media, for over ten years. Since moving to NYC, working as a sound professional has deepened my understanding of both crafts.</p>
+          <p>I’ve been creating and experimenting within film and music, my two favorite media, for over ten years. Since moving to NYC, staying active as a sound professional has deepened my understanding of both crafts.</p>
           <p>Working up close with other creatives and technicians day in and day out has taught me to adapt to all kinds of working styles, so I can show up on any set and meet every production’s sound needs.</p>
           <p>I also love writing, directing and producing when the right project comes along. In the hustle of it all, it’s important to keep our own creative worlds alive!</p>
           <div class="sign"><img src="assets/icon-feather.png" alt=""><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
