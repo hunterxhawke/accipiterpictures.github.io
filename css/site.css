@@ -114,17 +114,15 @@ img { max-width: 100%; height: auto; display: block; }
 /* ---------- Intro: first visit only (html.splash-on is set in the page head, the motion lives in js/site.js) ---------- */
 .splash { display: none; }
 /* The hero logo waits for the bird to land in it. Safety net: if the script never runs, all is revealed at 7s. */
-.splash-on .splash { display: grid; place-items: center; position: fixed; inset: 0; z-index: 100; background: var(--black); cursor: pointer; animation: splash-lift .4s 7s forwards; }
+.splash-on .splash { display: grid; place-items: center; position: fixed; inset: 0; z-index: 100; background: var(--black); animation: splash-lift .4s 7s forwards; }
 .splash-on .hero-mark { opacity: 0; animation: splash-reveal .4s 7s forwards; }
 @keyframes splash-lift { to { opacity: 0; visibility: hidden; } }
 @keyframes splash-reveal { to { opacity: 1; } }
 .splash-bird { width: clamp(190px, 46vw, 360px); aspect-ratio: 423 / 243; transform-origin: 0 0; opacity: 0; }
 .splash-rig { position: relative; width: 100%; height: 100%; }
-.splash-rig img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.splash-rig img, .splash-head { position: absolute; inset: 0; width: 100%; height: 100%; }
+.splash-head { transform-origin: 42.2% 80%; }   /* the base of the neck: the head tilts inside the still hood */
 .splash-eye { transform-origin: 49.3% 52.9%; }    /* center of the eye */
-.splash-skip { position: absolute; right: var(--gut); bottom: max(var(--gut), env(safe-area-inset-bottom)); padding: 8px 2px; border: 0; background: none; color: var(--ash); cursor: pointer; opacity: 0; transition: opacity .3s ease, color .2s; }
-.splash.playing .splash-skip { opacity: 1; transition-delay: .8s, 0s; }
-.splash-skip:hover { color: var(--white); }
 
 /* ---------- Sections ---------- */
 .block { padding-block: clamp(64px, 9vw, 120px); }

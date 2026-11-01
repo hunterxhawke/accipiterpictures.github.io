@@ -10,7 +10,7 @@
   if (intro && document.documentElement.classList.contains('splash-on') && intro.animate) {
     var root = document.documentElement,
         bird = intro.querySelector('.splash-bird'), rig = intro.querySelector('.splash-rig'),
-        eye = intro.querySelector('.splash-eye'),
+        head = intro.querySelector('.splash-head'), eye = intro.querySelector('.splash-eye'),
         logo = document.querySelector('.hero-mark'),
         smooth = 'cubic-bezier(.2, .7, .2, 1)', glide = 'cubic-bezier(.65, 0, .25, 1)',
         running = [], ended = false;
@@ -25,7 +25,7 @@
     };
     var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
 
-    // Fast (skipped): fade the curtain. Otherwise the bird is already sitting on the logo,
+    // Fast (something went wrong): fade the curtain. Otherwise the bird is already sitting on the logo,
     // so the rest of the logo fades up around it, then the curtain is simply removed.
     var finish = function (fast) {
       if (ended) return;
@@ -48,7 +48,6 @@
         return play(bird, [{ transform: 'none', opacity: 1 }, { transform: 'translateY(-10px) scale(.92)', opacity: 0 }], { duration: 450, easing: glide })
           .then(function () { finish(true); });
       }
-      intro.classList.remove('playing');   // the Skip link bows out
       var b = bird.getBoundingClientRect(), k = r.width / 1276;   // the layers sit at (445, -20) in the 1276-wide logo
       var tx = r.left + 445 * k - b.left, ty = r.top - 20 * k - b.top, s = (423 * k) / b.width;
       intro.animate([{ backgroundColor: '#000' }, { backgroundColor: 'rgba(0,0,0,0)' }], { duration: 600, delay: 80, easing: 'ease', fill: 'forwards' });
@@ -56,18 +55,12 @@
         .then(function () { finish(); });
     };
 
-    var skip = function () { if (!ended) { running.forEach(function (a) { a.pause(); }); finish(true); } };
-    intro.addEventListener('click', skip);
-    addEventListener('keydown', function (e) { if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') skip(); });
-    addEventListener('wheel', skip, { passive: true, once: true });
-
     var imgs = [].slice.call(intro.querySelectorAll('img'));
     Promise.race([
       Promise.all(imgs.map(function (i) { return i.decode ? i.decode() : Promise.resolve(); })),
       wait(2500).then(function () { throw new Error('slow'); })
     ]).then(function () {
       if (ended) return;
-      intro.classList.add('playing');
       // 1. Arrive: rise out of the dark, eye already open
       play(bird, [{ opacity: 0 }, { opacity: 1 }], { duration: 350, easing: 'ease' });
       return play(rig, [
@@ -76,8 +69,8 @@
       ], { duration: 600, easing: smooth });
     }).then(function () {
       if (ended) return;
-      // 2. Wink, with a small cock of the head
-      play(rig, [
+      // 2. Wink, with a small cock of the head (the hood stays still)
+      play(head, [
         { transform: 'none' }, { transform: 'rotate(-4deg)', offset: .35 }, { transform: 'rotate(-4deg)', offset: .65 }, { transform: 'none' }
       ], { duration: 480, delay: 60, easing: 'ease-in-out' });
       return play(eye, [
