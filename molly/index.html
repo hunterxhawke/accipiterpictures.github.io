@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Looking for Molly · Accipiter Pictures</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Hidden page: reachable only by link. Not in the main nav, not indexed. -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="description" content="Looking for Molly, a feature screenplay by Hunter Hawke. Hear the full live reading recorded at Rutgers Presbyterian Church, New York, September 28, 2026.">
+<meta property="og:title" content="Looking for Molly · Written by Hunter Hawke">
+<meta property="og:description" content="The full live reading of the feature script, recorded in New York on 09.28.26.">
+<meta property="og:image" content="https://accipiterpictures.com/assets/molly/og-molly.jpg">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="1000">
+<meta property="og:image:alt" content="Looking for Molly key art: Molly on the phone, neon title">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.ico?v=4" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg?v=4">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,600;1,400;1,600&family=Nanum+Brush+Script&display=swap">
+<!-- Molly title and date: closest free matches to the poster lettering -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600&family=Share+Tech+Mono&display=swap">
+<link rel="preconnect" href="https://use.typekit.net" crossorigin>
+<link rel="stylesheet" href="https://use.typekit.net/nvv1dxb.css">
+<link rel="stylesheet" href="../css/site.css?v=77831a5e">
+<style>
+  /* Page-only additions. Everything else comes from the main site's stylesheet.
+     One centered column like a poster: neon title lit by screen glow, logline, player, key art.
+     The record light appears once, on the player. */
+  :root { --neon: #e8345a; --lav: #b4b0e4; --molly: "Teko", var(--display); --mono: "Share Tech Mono", ui-monospace, monospace; }
+  .nav .brand { opacity: 1; transform: none; pointer-events: auto; }
+  /* Vertical scrolling only: the title glow and the edge-to-edge strips may reach past the screen edge, so clip sideways overflow.
+     clip (unlike hidden) keeps the sticky nav working; older browsers fall back to hidden. */
+  html { overflow-x: hidden; }
+  @supports (overflow: clip) { html, body { overflow-x: clip; } }
+
+  /* ---------- Opening screen ---------- */
+  .m-hero { padding-block: clamp(44px, 6.5vw, 84px) 0; }
+  .m-head { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; isolation: isolate; }
+  /* The sign. Before it lights, the tubes read as unlit glass. LOOKING, FOR and MOLLY strike one after another,
+     each with a stutter; the wall glow behind rises with them; the date tube comes on last. Afterwards the O in MOLLY
+     buzzes now and then, the way a real sign with one tired tube does. Glow stays tight to the glass. */
+  /* Banner of the mirrored key art behind the sign and logline: full width, repeating, feathered top and bottom,
+     and cleared in the middle so the lettering sits on black between the two sides */
+  .m-banner {
+    position: absolute; z-index: -2; left: 50%; top: -60px; bottom: var(--banner-bottom, -60px); width: 100vw; transform: translateX(-50%); pointer-events: none;
+    background: url(../assets/molly/banner-mirror.webp) center / auto 100% repeat-x; opacity: .8; filter: brightness(1.12);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 24%, #000 76%, transparent 100%), linear-gradient(to right, #000 0, #000 12%, transparent 31%, transparent 69%, #000 88%, #000 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to bottom, transparent 0, #000 24%, #000 76%, transparent 100%), linear-gradient(to right, #000 0, #000 12%, transparent 31%, transparent 69%, #000 88%, #000 100%);
+    mask-composite: intersect;
+    animation: banner-in 1.8s ease-out .2s both;
+  }
+  @keyframes banner-in { from { opacity: 0; } to { opacity: .8; } }
+  .m-head::before {
+    content: ""; position: absolute; z-index: -1; left: 50%; top: 52%; width: min(100vw, 1100px); aspect-ratio: 2.4; transform: translate(-50%, -50%);
+    background: radial-gradient(closest-side, rgba(232, 52, 90, .11), rgba(180, 176, 228, .04) 55%, transparent 75%); filter: blur(20px); pointer-events: none;
+    animation: wall 2.2s ease-out .3s both, breathe 7s ease-in-out 2.5s infinite alternate;
+  }
+  @keyframes wall { from { opacity: 0; } 30% { opacity: .35; } 55% { opacity: .5; } to { opacity: .85; } }
+  @keyframes breathe { from { opacity: .85; } to { opacity: 1; } }
+
+  .m-title { margin-top: 8px; font: 600 clamp(60px, 12vw, 164px)/.82 var(--molly); letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; }
+  /* Each tube carries its own slice of the poster's red-to-pink gradient */
+  .tube { display: inline-block; -webkit-background-clip: text; background-clip: text; color: transparent;
+          filter: drop-shadow(0 0 5px rgba(240, 50, 85, .6)) drop-shadow(0 0 16px rgba(232, 52, 90, .28));
+          animation: strike .9s steps(1) both; }
+  .t1 { background-image: linear-gradient(90deg, #ff2b2b, #f02f47); animation-delay: .35s; }
+  .t2 { background-image: linear-gradient(90deg, #ee3050, #e8345a); animation-delay: .95s; }
+  .t3 { background-image: linear-gradient(90deg, #e5365e, #df3a66); animation-delay: 1.45s; }
+  .t4 { background-image: linear-gradient(90deg, #da3e6e, #d4437a); animation: strike .9s steps(1) 1.45s both, buzz 9s steps(1) 4.5s infinite; }
+  .t5 { background-image: linear-gradient(90deg, #cf467f, #c4508c); animation-delay: 1.45s; }
+  /* Unlit: dim glass, no glow. Then two false starts and on. */
+  @keyframes strike {
+    0%       { opacity: .13; filter: none; }
+    14%      { opacity: .9; filter: drop-shadow(0 0 5px rgba(240, 50, 85, .55)); }
+    22%      { opacity: .13; filter: none; }
+    40%      { opacity: .75; filter: drop-shadow(0 0 4px rgba(240, 50, 85, .45)); }
+    46%      { opacity: .2; filter: none; }
+    58%, 100% { opacity: 1; filter: drop-shadow(0 0 5px rgba(240, 50, 85, .6)) drop-shadow(0 0 16px rgba(232, 52, 90, .28)); }
+  }
+  /* The tired tube: a quick double flicker every nine seconds */
+  @keyframes buzz { 0%, 3.4%, 100% { opacity: 1; } 1% { opacity: .3; } 1.8% { opacity: .9; } 2.4% { opacity: .22; } }
+
+  .m-date { display: block; font: 400 clamp(25px, 3vw, 40px)/1 var(--mono); letter-spacing: .04em; color: var(--lav);
+            text-shadow: 0 0 6px rgba(180, 176, 228, .55), 0 0 16px rgba(180, 176, 228, .22); animation: tube-lav .7s steps(1) 2.1s both; }
+  @keyframes tube-lav { 0% { opacity: .14; text-shadow: none; } 25% { opacity: .8; } 40% { opacity: .2; text-shadow: none; } 60%, 100% { opacity: 1; } }
+  /* The script's alternate title: a thinner lavender tube under the sign, lit last */
+  .m-alt { display: block; max-width: 34ch; margin-top: clamp(14px, 2vw, 22px); font: 400 clamp(14px, 1.65vw, 21px)/1.35 var(--mono); letter-spacing: .14em; text-transform: uppercase; text-wrap: balance; color: var(--lav);
+           text-shadow: 0 0 6px rgba(180, 176, 228, .5), 0 0 14px rgba(180, 176, 228, .2); animation: tube-lav .7s steps(1) 2.5s both; }
+  .m-alt i { font-style: normal; margin-right: .5em; }
+  .m-by { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 14px; margin-top: clamp(16px, 2.3vw, 26px); }
+  .m-by .label { font-size: 13px; }
+  .m-by .hand { font-size: clamp(32px, 3.7vw, 44px); }
+
+  .m-body { display: flex; flex-direction: column; align-items: center; max-width: 720px; margin: clamp(30px, 4vw, 44px) auto 0; text-align: center; }
+  .logline { max-width: 52ch; font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; text-wrap: pretty; }
+  .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 0; margin-top: 20px; }
+  .meta span + span::before { content: "·"; margin-inline: 10px; color: var(--ash); }
+
+  /* Player */
+  .m-play { width: 100%; margin-top: clamp(30px, 4vw, 42px); }
+  .m-play .sound-rec { justify-content: center; }
+  /* The reading player, in the sign's lettering: neon for what you've heard, lavender for the chapters */
+  .player { margin-top: 10px; padding: clamp(14px, 2vw, 20px); text-align: left; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
+  .p-top { display: flex; align-items: center; gap: 14px 18px; flex-wrap: wrap; }
+  .p-play { flex: none; display: grid; place-items: center; width: 64px; height: 64px; border: 0; border-radius: 50%; background: none; cursor: pointer;
+            color: var(--neon); box-shadow: inset 0 0 0 2px var(--neon), 0 0 14px rgba(232, 52, 90, .35); transition: box-shadow .2s, color .2s; }
+  .p-play:hover, .p-play:focus-visible { outline: none; color: #ff5a78; box-shadow: inset 0 0 0 2px #ff5a78, 0 0 22px rgba(232, 52, 90, .6); }
+  .p-play svg { width: 24px; height: 24px; fill: currentColor; filter: drop-shadow(0 0 4px rgba(232, 52, 90, .6)); }
+  .p-play .i-pause { display: none; }
+  .player.playing .p-play .i-play { display: none; }
+  .player.playing .p-play .i-pause { display: block; }
+  .p-info { flex: 1 1 180px; min-width: 0; }
+  .p-time { font: 400 clamp(18px, 2vw, 22px)/1 var(--mono); color: var(--lav); letter-spacing: .04em; font-variant-numeric: tabular-nums; text-shadow: 0 0 6px rgba(180, 176, 228, .45); }
+  .p-time span { color: var(--ash); text-shadow: none; }
+  .p-now { margin-top: 6px; font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
+  .p-now b { font-weight: 600; color: var(--white); }
+  .p-ctrls { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+  .p-btn { min-width: 44px; height: 36px; padding: 0 8px; border: 0; background: none; color: var(--ash); font: 400 15px/1 var(--mono); letter-spacing: .04em; cursor: pointer; transition: color .2s, text-shadow .2s; }
+  .p-btn:hover, .p-btn:focus-visible { outline: none; color: var(--white); text-shadow: 0 0 8px rgba(232, 52, 90, .7); }
+  .p-jump { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 0; border: 0; background: none; cursor: pointer;
+            font: 400 15px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--neon); text-shadow: 0 0 8px rgba(232, 52, 90, .55); transition: color .2s; }
+  .p-jump:hover, .p-jump:focus-visible { outline: none; color: #ff5a78; }
+  .p-wave { position: relative; height: 78px; margin-top: 16px; cursor: pointer; touch-action: none; outline: none; }
+  .p-wave canvas { display: block; width: 100%; height: 100%; }
+  .p-wave:focus-visible { box-shadow: 0 0 0 2px var(--lav); }
+  .p-tip { position: absolute; bottom: calc(100% + 6px); transform: translateX(-50%); padding: 4px 8px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .15s;
+           background: var(--soot); font: 400 12px/1 var(--mono); color: var(--lav); }
+  .p-wave:hover .p-tip { opacity: 1; }
+  .p-chapters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 12px; list-style: none; }
+  .p-chapters button { width: 100%; padding: 10px 4px 8px; border: 0; background: none; text-align: left; cursor: pointer; color: var(--ash); border-top: 2px solid rgba(180, 176, 228, .18); transition: color .2s, border-color .2s; }
+  .p-chapters button:hover, .p-chapters button:focus-visible { outline: none; color: var(--white); border-color: rgba(180, 176, 228, .5); }
+  .p-chapters button[aria-current="true"] { color: var(--white); border-color: var(--neon); }
+  .p-chapters .ct { display: block; font: 400 13px/1 var(--mono); color: var(--lav); font-variant-numeric: tabular-nums; }
+  .p-chapters .cn { display: block; margin-top: 5px; font-size: 14px; line-height: 1.3; }
+  .p-resume { margin-top: 10px; font-size: 13px; color: var(--ash); }
+  .p-resume button { padding: 0; border: 0; background: none; color: var(--lav); font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+  /* End card: takes the waveform's place once the credits finish */
+  .p-end { margin-top: 16px; padding: clamp(18px, 3vw, 28px) 12px; text-align: center; }
+  .p-end-title { font: 600 clamp(28px, 4vw, 44px)/.9 var(--molly); text-transform: uppercase; letter-spacing: .01em;
+                 background: linear-gradient(90deg, #ff2b2b, var(--neon) 45%, #c4508c); -webkit-background-clip: text; background-clip: text; color: transparent;
+                 filter: drop-shadow(0 0 5px rgba(240, 50, 85, .6)) drop-shadow(0 0 16px rgba(232, 52, 90, .28)); }
+  .p-end p { max-width: 40ch; margin: 12px auto 0; font-size: 15px; color: var(--ash); }
+  .p-end .cta { margin-top: 20px; }
+  .p-end .again { display: inline-block; margin-top: 16px; padding: 0; border: 0; background: none; cursor: pointer; font: 400 14px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--lav); }
+  .p-end .again:hover, .p-end .again:focus-visible { outline: none; color: var(--white); }
+  .player.ended .p-wave, .player.ended .p-chapters, .player.ended .p-jump { display: none; }
+
+  /* Mini player: once the reading has started and the full player scrolls out of view */
+  .mini { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: rgba(0, 0, 0, .94); transform: translateY(110%); transition: transform .35s var(--ease);
+          padding: 16px max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+  .mini.on { transform: none; }
+  body.lb-open .mini { transform: translateY(110%); }
+  .mini-bar { position: absolute; left: 0; right: 0; top: 0; height: 3px; background: rgba(143, 138, 132, .25); cursor: pointer; }
+  .mini-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: linear-gradient(90deg, #ff2b2b, var(--neon) 45%, #c4508c); box-shadow: 0 0 8px rgba(232, 52, 90, .6); }
+  .mini-in { display: flex; align-items: center; gap: 14px; max-width: var(--max); margin: 0 auto; }
+  .mini .p-play { width: 42px; height: 42px; }
+  .mini .p-play svg { width: 16px; height: 16px; }
+  .mini.playing .i-play { display: none; }
+  .mini.playing .i-pause { display: block; }
+  .mini-txt { flex: 1; min-width: 0; }
+  .mini-title { font: 600 18px/1 var(--molly); text-transform: uppercase; letter-spacing: .02em; color: var(--white); }
+  .mini-sub { margin-top: 4px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font: 400 13px/1.2 var(--mono); color: var(--lav); font-variant-numeric: tabular-nums; }
+  .mini-up { flex: none; padding: 8px; border: 0; background: none; cursor: pointer; color: var(--ash); font: 400 13px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+  .mini-up:hover, .mini-up:focus-visible { outline: none; color: var(--white); }
+  /* keep the footer clear of the bar while it's showing */
+  body.mini-showing footer { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
+  .play-notes { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; margin-top: 12px; }
+  .play-notes a { color: var(--ash); text-decoration: none; transition: color .2s; }
+  .play-notes a:hover { color: var(--white); }
+
+  /* Key art marquee: every frame whole, side by side, drifting. Sideways scroll, drag or swipe moves it; vertical scrolling stays with the page.
+     Hover lights a frame; click opens the gallery. */
+  .marquee { --fh: clamp(300px, 34vw, 440px); position: relative; margin-top: clamp(40px, 5vw, 64px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; touch-action: pan-y; cursor: grab; }
+  /* Edge fades as overlays: cheaper on phones than masking a moving layer */
+  .marquee::before, .marquee::after { content: ""; position: absolute; top: 0; bottom: 0; z-index: 2; width: 6%; pointer-events: none; }
+  .marquee::before { left: 0; background: linear-gradient(90deg, var(--black), transparent); }
+  .marquee::after { right: 0; background: linear-gradient(-90deg, var(--black), transparent); }
+  .track { display: flex; gap: clamp(10px, 1.2vw, 16px); width: max-content; will-change: transform; backface-visibility: hidden; }
+  .marquee.dragging { cursor: grabbing; }
+  .marquee.dragging .track button { pointer-events: none; }
+  .track button { position: relative; flex: none; height: var(--fh); width: calc(var(--fh) * 2 / 3); padding: 0; overflow: hidden; border: 0; background: var(--soot); cursor: zoom-in; }
+  .track img { display: block; width: 100%; height: 100%; object-fit: contain; transition: transform .6s var(--ease); -webkit-user-drag: none; user-select: none; }
+  @media (hover: hover) { .track button:hover img { transform: scale(1.04); } }
+  .track button:focus-visible img { transform: scale(1.04); }
+  .track button::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--neon), 0 0 0 0 rgba(232, 52, 90, 0); transition: box-shadow .25s var(--ease); pointer-events: none; }
+  .track button:focus-visible::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
+  @media (hover: hover) { .track button:hover::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); } }
+  .track button:focus-visible { outline: none; }
+
+  /* Gallery: big frames, arrows, keyboard and swipe */
+  .lb { position: fixed; inset: 0; z-index: 50; display: grid; grid-template-rows: auto minmax(0, 1fr); background: rgba(0, 0, 0, .94);
+        padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+  .lb[hidden] { display: none; }  /* .lb sets display: grid, which would otherwise override the hidden attribute */
+  .lb-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .lb-count { font: 400 18px/1 var(--mono); letter-spacing: .08em; color: var(--lav); text-shadow: 0 0 8px rgba(180, 176, 228, .5); }
+  .lb-stage { position: relative; display: flex; align-items: center; justify-content: center; min-height: 0; padding-block: 12px; }
+  .lb-stage img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+  .lb-btn { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border: 0; background: none; color: var(--neon); font: 400 40px/1 var(--mono); cursor: pointer;
+            text-shadow: 0 0 10px rgba(232, 52, 90, .6); opacity: .75; transition: opacity .2s, text-shadow .2s, color .2s; }
+  .lb-btn:hover, .lb-btn:focus-visible { opacity: 1; color: #ff5a78; text-shadow: 0 0 6px rgba(255, 90, 120, .9), 0 0 22px rgba(232, 52, 90, .8); outline: none; }
+  #lb-close { font-size: 32px; }
+  .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); }
+  .lb-prev { left: 0; } .lb-next { right: 0; }
+  body.lb-open { overflow: hidden; }
+
+  /* ---------- The night: photos from the reading, one justified row; each opens in the gallery ---------- */
+  .night-label { display: block; margin-bottom: 20px; }
+  .night { display: flex; gap: clamp(8px, 1vw, 14px); margin-bottom: clamp(8px, 1vw, 14px); }
+  .night-2 { margin-bottom: clamp(48px, 6vw, 72px); }
+  .night button { position: relative; flex: var(--r) 1 0; aspect-ratio: var(--r); min-width: 0; padding: 0; border: 0; overflow: hidden; background: var(--soot); cursor: zoom-in; }
+  .night img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+  .night button::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--neon); transition: box-shadow .25s var(--ease); pointer-events: none; }
+  @media (hover: hover) { .night button:hover img { transform: scale(1.04); } .night button:hover::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); } }
+  .night button:focus-visible img { transform: scale(1.04); }
+  .night button:focus-visible::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
+  .night button:focus-visible { outline: none; }
+
+  /* ---------- End credits ---------- */
+  .credits-roll { padding-block: clamp(36px, 4.5vw, 60px) clamp(56px, 7vw, 96px); text-align: center; }
+  .roll-label { display: block; margin-bottom: 26px; }
+  .cast { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px clamp(32px, 6vw, 96px); max-width: 860px; margin: 0 auto; list-style: none; }
+  .cast li { min-width: 0; }
+  .cast .n { display: inline-block; font: 600 clamp(17px, 1.6vw, 19px)/1.3 var(--body); }
+  .cast .r { display: block; margin-top: 3px; font-size: 14px; line-height: 1.45; color: var(--ash); text-wrap: balance; }
+  /* Only names that link somewhere react; the arrow says it opens their page */
+  /* Credit links: a hand-cut woodcut rule under the name instead of a plain underline.
+     The rule is the site's woodcut texture, leveled so it runs flat, used as a mask so it can take the neon on hover.
+     Names never break across lines, so every rule stays whole. */
+  a.n, .crew dd a { position: relative; display: inline-block; white-space: nowrap; color: var(--white); text-decoration: none; padding-bottom: 2px; transition: color .2s, text-shadow .2s; }
+  a.n::after, .crew dd a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 4px; background: var(--ash); opacity: .7;
+    -webkit-mask: url(../assets/rule-level.png) center / 100% 100% no-repeat; mask: url(../assets/rule-level.png) center / 100% 100% no-repeat;
+    transition: background .2s, opacity .2s, filter .2s;
+  }
+  a.n:hover, a.n:focus-visible, .crew dd a:hover, .crew dd a:focus-visible { color: var(--neon-hi, #ff5a78); text-shadow: 0 0 8px rgba(232, 52, 90, .45); outline: none; }
+  a.n:hover::after, a.n:focus-visible::after, .crew dd a:hover::after, .crew dd a:focus-visible::after { background: var(--neon); opacity: 1; filter: drop-shadow(0 0 4px rgba(232, 52, 90, .7)); }
+  .crew { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px clamp(24px, 4vw, 56px); max-width: 860px; margin: clamp(40px, 5vw, 60px) auto 0; padding-top: clamp(32px, 4vw, 44px); }
+  .crew > div { flex: 0 1 240px; }
+  .crew dt { font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
+  .crew dd { margin-top: 5px; font-size: 16px; line-height: 1.4; }
+
+
+  /* Content note: one quiet line under the player links, red label inline */
+  .note { margin-top: 14px; padding-top: 12px; text-align: left; font-size: 13px; line-height: 1.5; color: var(--ash); border-top: 3px solid transparent; border-image: var(--rule-dim) 100% 0 0 0 / 3px 0 0 0 stretch; }
+  .note .label { margin-right: 10px; font-size: 10px; color: var(--rec); }
+
+  /* ---------- Closing ---------- */
+  .closing { padding-block: clamp(48px, 6vw, 80px); text-align: center; }
+  .closing p { max-width: 50ch; margin: 0 auto; font-size: clamp(18px, 1.8vw, 22px); line-height: 1.5; text-wrap: balance; }
+  .closing p + p { margin-top: 14px; color: var(--ash); font-size: clamp(16px, 1.4vw, 18px); }
+  .closing .sign { display: inline-flex; align-items: center; gap: .3em; margin-top: 26px; font-size: 42px; }
+  .closing .sign img { width: 1em; transform: translateY(.11em); }
+  .closing .sign .hand { transform: translateY(.2em); }
+  .closing .cta { margin-top: 30px; }
+  .mail { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 16px; margin-top: 18px; }
+  .mail .addr { font: 600 clamp(17px, 1.6vw, 19px)/1.3 var(--body); user-select: all; overflow-wrap: anywhere; }
+  .mail button { padding: 0; border: 0; background: none; color: var(--ash); cursor: pointer; transition: color .2s; }
+  .mail button:hover, .mail button:focus-visible { color: var(--white); }
+
+  @media (max-width: 860px) {
+  }
+  @media (max-width: 600px) {
+    .m-head { padding-top: 150px; }
+    .m-banner { top: -24px; bottom: auto !important; height: 190px; background-size: auto 100%;
+                -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 30%, #000 62%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 30%, #000 62%, transparent 100%); }
+    .marquee { --fh: 300px; }
+    .night { overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--gut)); padding-inline: var(--gut); scrollbar-width: none; }
+    .night::-webkit-scrollbar { display: none; }
+    .night button { flex: none; height: 220px; scroll-snap-align: center; }
+    .nav ul { gap: 14px; }
+    .lb-prev, .lb-next { top: auto; bottom: 0; transform: none; }
+    .cast { grid-template-columns: 1fr; }
+    .p-ctrls { width: 100%; justify-content: space-between; margin-left: 0; }
+    .p-chapters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .mini-up span { display: none; }
+  }
+  /* Reduced motion: the sign is simply on, and the marquee only moves when the visitor moves it */
+  @media (prefers-reduced-motion: reduce) { .tube, .m-date, .m-alt, .m-head::before, .m-banner { animation: none !important; } .mini { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="nav rule-bottom">
+  <div class="wrap">
+    <a href="../" class="brand" aria-label="Accipiter Pictures home"><img src="../assets/ap-mark.png" alt="Accipiter Pictures" width="816" height="440"></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="../#films">Films</a></li>
+        <li><a href="../#sound">Sound</a></li>
+        <li><a href="../#about">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== OPENING: title, logline, key art, player ===== -->
+  <section class="m-hero">
+    <div class="wrap">
+      <div class="m-head">
+        <div class="m-banner" aria-hidden="true"></div>
+        <span class="m-date">09.28.26</span>
+        <h1 class="m-title" aria-label="Looking for Molly"><span class="tube t1" aria-hidden="true">Looking</span> <span class="tube t2" aria-hidden="true">for</span> <span aria-hidden="true" style="white-space:nowrap"><span class="tube t3">M</span><span class="tube t4">O</span><span class="tube t5">lly</span></span></h1>
+        <span class="m-alt"><i>or</i>I’m Not Exactly Proud of What My Life Has Become</span>
+        <div class="m-by"><span class="label">A screenplay by</span><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
+      </div>
+
+      <div class="m-body">
+        <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a NEET pornsick twenty-something’s world unravels the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</p>
+        <div class="meta caps"><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>45 in the audience</span></div>
+
+        <div class="m-play">
+          <span class="sound-rec"><i class="dot"></i>Full-length reading</span>
+          <div class="player" id="player">
+            <audio id="audio" preload="metadata" src="../assets/molly/lfm-reading.m4a"></audio>
+            <div class="p-top">
+              <button type="button" class="p-play" id="p-play" aria-label="Play the reading">
+                <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+                <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
+              </button>
+              <div class="p-info">
+                <div class="p-time"><span id="p-cur">0:00:00</span> <span>/</span> <span id="p-dur">1:31:11</span></div>
+                <div class="p-now">Now · <b id="p-ch">Introduction</b></div>
+              </div>
+              <div class="p-ctrls">
+                <button type="button" class="p-btn" id="p-back" aria-label="Back 15 seconds">−15</button>
+                <button type="button" class="p-btn" id="p-fwd" aria-label="Forward 30 seconds">+30</button>
+                <button type="button" class="p-btn" id="p-rate" aria-label="Playback speed">1×</button>
+              </div>
+            </div>
+            <button type="button" class="p-jump" id="p-jump">Jump to start of reading →</button>
+            <div class="p-wave" id="p-wave" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="5471" aria-valuenow="0" aria-valuetext="0:00:00">
+              <canvas id="p-canvas"></canvas>
+              <span class="p-tip" id="p-tip"></span>
+            </div>
+            <ul class="p-chapters" id="p-chapters"></ul>
+            <p class="p-resume" id="p-resume" hidden>You left off at <span id="p-resume-t"></span>. <button type="button" id="p-resume-go">Pick up there</button></p>
+            <div class="p-end" id="p-end" hidden>
+              <div class="p-end-title">Thank you for listening</div>
+              <p>If <em>Molly</em> stayed with you, the script is yours to read, and I’d love to hear what you think.</p>
+              <div class="cta">
+                <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script-3">Download the script</a>
+                <a class="btn btn-line" href="#next">Get in touch</a>
+              </div>
+              <button type="button" class="again" id="p-again">↺ Listen again</button>
+            </div>
+          </div>
+          <div class="play-notes caps">
+            <a href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script">Read the script · PDF ↓</a>
+          </div>
+          <p class="note"><span class="label">Content note</span><span>The material is intentionally challenging and provocative. Audience discretion is advised.</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee" role="region" aria-label="Key art. Select a frame to open the gallery.">
+      <div class="track" id="track">
+        <button type="button" data-i="0" data-full="../assets/molly/poster-molly.webp"><img src="../assets/molly/thumb-poster-molly.webp" alt="Poster: Molly on the phone, neon title" width="600" height="900" draggable="false"></button>
+        <button type="button" data-i="1" data-full="../assets/molly/poster-paul.webp"><img src="../assets/molly/thumb-poster-paul.webp" alt="Poster: Paul at his desk, neon title" width="600" height="900" draggable="false"></button>
+        <button type="button" data-i="2" data-full="../assets/molly/still-profile.webp"><img src="../assets/molly/thumb-still-profile.webp" alt="Molly in profile, lit by a screen" width="600" height="900" draggable="false"></button>
+        <button type="button" data-i="3" data-full="../assets/molly/poster-mirror.webp"><img src="../assets/molly/thumb-poster-mirror.webp" alt="Poster: mirrored collage of Molly around Paul" width="600" height="900" draggable="false"></button>
+        <button type="button" data-i="4" data-full="../assets/molly/still-gym.webp"><img src="../assets/molly/thumb-still-gym.webp" alt="Molly on a gym floor with a laptop" width="600" height="900" draggable="false"></button>
+        <button type="button" data-i="5" data-full="../assets/molly/poster-one-night.webp"><img src="../assets/molly/thumb-poster-one-night.webp" alt="Poster: One Night Only, Molly at a keyboard" width="600" height="900" draggable="false"></button>
+        <button type="button" data-i="6" data-full="../assets/molly/still-laptop.webp"><img src="../assets/molly/thumb-still-laptop.webp" alt="Molly holding a laptop marked 09.28.26" width="600" height="900" draggable="false"></button>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="wave small" aria-hidden="true" data-bars="96"></div>
+    </div>
+  </section>
+
+  <!-- ===== END CREDITS ===== -->
+  <section class="credits-roll" id="credits">
+    <div class="wrap">
+      <span class="label night-label">The night</span>
+      <div class="night" id="night" role="region" aria-label="Photos from the reading, in the order of the evening. Select one to open it larger.">
+        <button type="button" data-i="0" style="--r: 1.777"><img src="../assets/molly/night-still-producers.webp" alt="The producers open the evening from the front of the stage" width="1920" height="1080" loading="lazy"></button>
+        <button type="button" data-i="1" style="--r: 1.777"><img src="../assets/molly/night-stage-intro.webp" alt="The producers' introduction, seen from the side of the stage" width="1800" height="1013" loading="lazy"></button>
+        <button type="button" data-i="2" style="--r: 1.777"><img src="../assets/molly/night-still-welcome.webp" alt="Hunter Hawke addresses the audience, the cast seated behind him" width="1920" height="1080" loading="lazy"></button>
+      </div>
+      <div class="night night-2">
+        <button type="button" data-i="3" style="--r: 1.777"><img src="../assets/molly/night-stage-welcome.webp" alt="Hunter Hawke welcomes the audience, seen from the side of the stage" width="1800" height="1013" loading="lazy"></button>
+        <button type="button" data-i="4" style="--r: .8223"><img src="../assets/molly/night-polaroid.webp" alt="Polaroid of the cast seated across the stage" width="1151" height="1400" loading="lazy"></button>
+        <button type="button" data-i="5" style="--r: 1.333"><img src="../assets/molly/night-cast.webp" alt="The cast mid-reading, scripts in hand" width="1800" height="1350" loading="lazy"></button>
+      </div>
+
+      <span class="label roll-label">Read by</span>
+      <ul class="cast">
+        <li><a class="n" href="https://www.instagram.com/emm4broadbent/" target="_blank" rel="noopener" data-who="emma-broadbent">Emma Broadbent</a><span class="r">Narration and action description</span></li>
+        <li><a class="n" href="https://www.instagram.com/andrewbourne/" target="_blank" rel="noopener" data-who="andrew-bourne">Andrew Bourne</a><span class="r">Chris Kimball</span></li>
+        <li><a class="n" href="https://www.instagram.com/alicejokela/" target="_blank" rel="noopener" data-who="alice-jokela">Alice Jokela</a><span class="r">Molly</span></li>
+        <li><a class="n" href="https://www.instagram.com/hunterxhawke/" target="_blank" rel="noopener" data-who="hunter-hawke">Hunter Hawke</a><span class="r">Paul Kimball</span></li>
+        <li><a class="n" href="https://www.enidgraham.com/" target="_blank" rel="noopener" data-who="enid-graham">Enid Graham</a><span class="r">Doc Kimball</span></li>
+        <li><a class="n" href="https://www.instagram.com/lalalolla/" target="_blank" rel="noopener" data-who="lauren-guglielmello">Lauren Guglielmello</a><span class="r">Lexie Kimball, Brianna, Claire</span></li>
+        <li><a class="n" href="https://www.instagram.com/chris.d.ryan/" target="_blank" rel="noopener" data-who="christopher-ryan">Christopher Ryan</a><span class="r">Mr. Fabrizian, Mr. Granscheme, Chris Hansen</span></li>
+        <li><a class="n" href="https://www.megmaccary.com/" target="_blank" rel="noopener" data-who="meg-maccary">Meg MacCary</a><span class="r">Lynne Fantile, Office Lady Karen</span></li>
+        <li><a class="n" href="https://www.instagram.com/imia.__/" target="_blank" rel="noopener" data-who="mia-vallet">Mia Vallet</a><span class="r">Grace Lanie</span></li>
+        <li><a class="n" href="https://www.instagram.com/nicolebates_/" target="_blank" rel="noopener" data-who="nicole-bates">Nicole Bates</a><span class="r">Penelope Weckers</span></li>
+        <li><a class="n" href="https://ellarain.com/" target="_blank" rel="noopener" data-who="ella-rain-bernarduci">Ella Rain Bernarduci</a><span class="r">Camille, Vanessa, Kodie</span></li>
+        <li><a class="n" href="https://www.zoezien.com/" target="_blank" rel="noopener" data-who="zoe-zien">Zoe Zien</a><span class="r">Rosie, Alicia Allison</span></li>
+        <li><a class="n" href="https://www.instagram.com/madkingbob/" target="_blank" rel="noopener" data-who="bob-laine">Bob Laine</a><span class="r">Uncle Jason, Car Speaker, Phone Voice, Agent of the State, the School Police Officer, Stranger #3, Henry Allison</span></li>
+        <li><a class="n" href="https://www.instagram.com/chrisjasonstraker/" target="_blank" rel="noopener" data-who="chris-straker">Chris Straker</a><span class="r">Jonathan, Stranger #2, Stuwie, Waiter, Suited Administrator</span></li>
+        <li><a class="n" href="https://www.instagram.com/rishimutalik/" target="_blank" rel="noopener" data-who="rishi-mutalik">Rishi Mutalik</a><span class="r">Dennis, Stranger #1</span></li>
+        <li><a class="n" href="https://www.instagram.com/supervideoboy_/" target="_blank" rel="noopener" data-who="sam-bianculli">Sam Bianculli</a><span class="r">Nico, Molly’s Brother</span></li>
+      </ul>
+
+      <dl class="crew rule-top">
+        <div><dt>Produced by</dt><dd><a href="https://www.instagram.com/backtoonepodcast/" target="_blank" rel="noopener" data-who="peter-rinaldi">Peter Rinaldi</a> and <a href="https://www.instagram.com/m4xw311/" target="_blank" rel="noopener" data-who="maxwell-di-paolo">Maxwell di Paolo</a></dd></div>
+        <div><dt>Associate producer</dt><dd><a href="https://www.instagram.com/eddioperez/" target="_blank" rel="noopener" data-who="eduardo-perez">Eduardo Perez</a></dd></div>
+        <div><dt>Live sound mix and recording</dt><dd><a href="https://www.instagram.com/m4xw311/" target="_blank" rel="noopener" data-who="maxwell-di-paolo">Maxwell di Paolo</a> and <a href="https://www.instagram.com/eddioperez/" target="_blank" rel="noopener" data-who="eduardo-perez">Eduardo Perez</a></dd></div>
+        <div><dt>Dialogue editing and post mix</dt><dd><a href="https://www.lucaspumarejo.com/" target="_blank" rel="noopener" data-who="lucas-pumarejo">Lucas Pumarejo</a></dd></div>
+        <div><dt>Reference visuals</dt><dd><a href="https://jmkl.co/" target="_blank" rel="noopener" data-who="james-kolsby">James Kolsby</a></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ===== CLOSING ===== -->
+  <section class="closing rule-top" id="next">
+    <div class="wrap">
+      <p>Thank you to everyone who generously contributed their time and talent to bring this reading to life!</p>
+      <p>I’m very open to your thoughts on the script, the performances, and ideas for next steps. If you want to help get <em>Molly</em> made, write to me directly.</p>
+      <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
+      <div class="cta">
+        <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script-2">Download the script</a>
+        <a class="btn btn-line" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly">Get in touch</a>
+      </div>
+      <div class="mail"><span class="addr" id="email">hunter@accipiterpictures.com</span><button type="button" class="caps" id="copy">Copy email</button></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="mini" id="mini" aria-label="Now playing" role="region">
+  <div class="mini-bar" id="mini-bar"><i id="mini-fill"></i></div>
+  <div class="mini-in">
+    <button type="button" class="p-play" id="mini-play" aria-label="Pause">
+      <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+      <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
+    </button>
+    <div class="mini-txt">
+      <div class="mini-title">Looking for Molly</div>
+      <div class="mini-sub" id="mini-sub">0:00:00 · Introduction</div>
+    </div>
+    <button type="button" class="mini-up" id="mini-up" aria-label="Back to the player">↑ <span>Player</span></button>
+  </div>
+</div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Gallery" hidden>
+  <div class="lb-top"><span class="caps lb-count" id="lb-count"></span><button type="button" class="lb-btn" id="lb-close" aria-label="Close gallery">×</button></div>
+  <div class="lb-stage" id="lb-stage">
+    <img id="lb-img" alt="">
+    <button type="button" class="lb-btn lb-prev" id="lb-prev" aria-label="Previous">&lt;</button>
+    <button type="button" class="lb-btn lb-next" id="lb-next" aria-label="Next">&gt;</button>
+  </div>
+</div>
+
+<footer class="rule-top">
+  <div class="wrap">
+    <a class="foot-mark" href="../" aria-label="Accipiter Pictures home"><img src="../assets/icon-hand-bird.png" alt="" width="565" height="600" loading="lazy"></a>
+    <p>© <span id="yr">2026</span> Accipiter Pictures · Hunter Hawke Sound · NYC and Beyond</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Title banner: reaches from above the date to just past the logline
+  (function () {
+    var head = document.querySelector('.m-head'), logline = document.querySelector('.logline');
+    if (!head || !logline) return;
+    function size() {
+      var below = logline.getBoundingClientRect().bottom - head.getBoundingClientRect().bottom;
+      head.style.setProperty('--banner-bottom', -Math.round(below + 70) + 'px');
+    }
+    size(); window.addEventListener('load', size);
+    if ('ResizeObserver' in window) new ResizeObserver(size).observe(document.querySelector('.m-hero')); else window.addEventListener('resize', size);
+  })();
+
+  // Key art marquee: a second, hidden copy of the frames makes the loop seamless.
+  var marquee = document.querySelector('.marquee'), track = document.getElementById('track');
+  var frames = Array.prototype.slice.call(track.querySelectorAll('button'));
+  frames.forEach(function (f) {
+    var c = f.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; track.appendChild(c);
+  });
+  // Position is kept in script: a slow drift, plus whatever the visitor adds by scrolling sideways, dragging or swiping.
+  // Vertical scrolling is left to the page.
+  var x = 0, half = 0, kick = 0, last = 0, drift = reduced ? 0 : 22, running = false, onScreen = true; // drift in px per second
+  function measure() { var h = track.scrollWidth / 2; if (h > 0) half = h; }
+  function wrap() { if (half) { x = x % half; if (x > 0) x -= half; } }
+  function frame(now) {
+    if (!running) return;
+    var dt = last ? Math.min(64, now - last) / 1000 : 0; last = now;
+    if (!dragging) { x -= drift * dt + kick; kick *= 0.9; if (Math.abs(kick) < 0.05) kick = 0; }
+    wrap(); track.style.transform = 'translate3d(' + x.toFixed(2) + 'px,0,0)';
+    requestAnimationFrame(frame);
+  }
+  // Only animate while the strip is on screen and the tab is visible
+  function update() { var go = onScreen && !document.hidden; if (go && !running) { running = true; last = 0; requestAnimationFrame(frame); } else if (!go) running = false; }
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { onScreen = en[0].isIntersecting; update(); }).observe(marquee);
+  document.addEventListener('visibilitychange', update);
+  // Re-measure when the strip's own width changes (images, fonts, rotation), not on every phone toolbar resize
+  if ('ResizeObserver' in window) new ResizeObserver(measure).observe(track); else window.addEventListener('resize', measure);
+  window.addEventListener('load', measure); measure(); update();
+  // Sideways scroll (trackpad swipe, shift + wheel) moves it directly
+  marquee.addEventListener('wheel', function (e) {
+    var dx = e.deltaX || (e.shiftKey ? e.deltaY : 0);
+    if (Math.abs(dx) > Math.abs(e.deltaY) || e.shiftKey) { e.preventDefault(); x -= dx; }
+  }, { passive: false });
+  // Drag with a mouse or swipe with a finger. A drag only starts once the motion is clearly sideways,
+  // so a vertical page scroll that begins on the strip never nudges it. A drag never counts as a click.
+  var pressed = false, dragging = false, startX = 0, startY = 0, startPos = 0, moved = 0, vel = 0, prevX = 0;
+  marquee.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    pressed = true; dragging = false; moved = 0; vel = 0; startX = prevX = e.clientX; startY = e.clientY; startPos = x;
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (!pressed) return;
+    var dx = e.clientX - startX, dy = e.clientY - startY;
+    if (!dragging) {
+      if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+      if (Math.abs(dy) > Math.abs(dx)) { pressed = false; return; }   // a vertical scroll: leave it to the page
+      dragging = true; startPos = x - dx; marquee.classList.add('dragging');
+    }
+    moved = Math.max(moved, Math.abs(dx));
+    x = startPos + dx; vel = e.clientX - prevX; prevX = e.clientX;
+  });
+  function endDrag(e) {
+    var wasDragging = dragging; pressed = false; dragging = false;
+    if (!wasDragging) return;
+    kick = e.type === 'pointercancel' ? 0 : Math.max(-40, Math.min(40, -vel));
+    setTimeout(function () { marquee.classList.remove('dragging'); }, 0);
+  }
+  window.addEventListener('pointerup', endDrag); window.addEventListener('pointercancel', endDrag);
+
+  // Gallery: opens on the image clicked. Key art runs in marquee order; photos from the night are their own set.
+  // Arrows, keys and swipe move through it; Tab stays inside until it closes.
+  var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'),
+      lbCount = document.getElementById('lb-count'), at = 0, opener = null, items = [];
+  function list(nodes) { return nodes.map(function (n) { var im = n.querySelector('img'); return { src: n.dataset.full || im.getAttribute('src'), alt: im.alt }; }); }
+  var sets = { art: list(frames), night: list(Array.prototype.slice.call(document.querySelectorAll('.night button'))) };
+  function go(i) {
+    at = (i + items.length) % items.length;
+    lbImg.src = items[at].src; lbImg.alt = items[at].alt;
+    lbCount.textContent = ('0' + (at + 1)).slice(-2) + ' / ' + ('0' + items.length).slice(-2);
+  }
+  function open(set, i, from) { items = sets[set]; opener = from; go(i); lb.hidden = false; document.body.classList.add('lb-open'); document.getElementById('lb-close').focus(); }
+  function close() { lb.hidden = true; document.body.classList.remove('lb-open'); if (opener && opener.getAttribute('aria-hidden') !== 'true') opener.focus(); }
+  track.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && moved <= 8) open('art', +b.dataset.i, b); });
+  document.querySelectorAll('.night').forEach(function (row) { row.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('night', +b.dataset.i, b); }); });
+  document.getElementById('lb-prev').addEventListener('click', function () { go(at - 1); });
+  document.getElementById('lb-next').addEventListener('click', function () { go(at + 1); });
+  document.getElementById('lb-close').addEventListener('click', close);
+  lb.addEventListener('click', function (e) { if (e.target === lb || e.target.id === 'lb-stage') close(); });
+  var trap = ['lb-close', 'lb-prev', 'lb-next'].map(function (id) { return document.getElementById(id); });
+  document.addEventListener('keydown', function (e) {
+    if (lb.hidden) return;
+    if (e.key === 'ArrowLeft') go(at - 1);
+    else if (e.key === 'ArrowRight') go(at + 1);
+    else if (e.key === 'Escape') close();
+    else if (e.key === 'Tab') {
+      e.preventDefault();
+      var k = trap.indexOf(document.activeElement);
+      trap[(k + (e.shiftKey ? trap.length - 1 : 1)) % trap.length].focus();
+    }
+  });
+  // Once the page has settled, load the gallery images quietly so the arrows feel instant.
+  window.addEventListener('load', function () {
+    setTimeout(function () { sets.art.concat(sets.night).forEach(function (it) { var im = new Image(); im.src = it.src; }); }, 1200);
+  });
+
+  // Copy email, with a select-the-text fallback where the clipboard isn't available (same as the main site).
+  var copyBtn = document.getElementById('copy'), email = document.getElementById('email');
+  copyBtn.addEventListener('click', function () {
+    function done(msg) { copyBtn.textContent = msg; setTimeout(function () { copyBtn.textContent = 'Copy email'; }, 2000); }
+    function fallback() { var r = document.createRange(); r.selectNodeContents(email); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); done('Selected, press Copy'); }
+    try { navigator.clipboard.writeText(email.textContent.trim()).then(function () { done('Copied'); }, fallback); } catch (err) { fallback(); }
+  });
+  var x0 = null;
+  lb.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', function (e) {
+    if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) go(at + (dx < 0 ? 1 : -1));
+  });
+
+  // The player and listener stats run in their own scope, so their names can't clash with the marquee and gallery code above.
+  (function () {
+  // ---------- The reading player ----------
+  var CHAPTERS = [
+    { id: 'introduction', name: 'Introduction', t: 0 },
+    { id: 'statement', name: 'Artist’s Statement', t: 47.7 },   // label still reads 0:00:47
+    { id: 'reading', name: 'Screenplay Reading', t: 166 },
+    { id: 'credits', name: 'Credits', t: 5354 }
+  ];
+  var PEAKS = [90,88,91,94,92,86,96,92,97,88,87,89,88,83,81,84,84,84,83,88,86,89,86,83,81,88,87,92,86,92,91,83,89,90,85,85,84,78,67,81,88,95,87,83,90,81,88,93,89,96,97,85,91,87,83,90,76,85,79,84,80,85,87,82,78,80,83,75,80,77,84,81,72,84,76,73,70,75,74,78,95,77,92,75,86,83,71,76,82,88,85,81,74,78,82,79,81,69,73,77,82,87,71,81,72,72,67,81,72,76,78,63,73,72,76,67,72,66,73,75,65,64,64,69,65,77,73,69,83,76,80,83,81,83,86,85,87,83,82,72,79,74,87,85,80,81,70,78,71,65,68,71,79,77,80,74,74,76,74,76,79,80,82,81,68,75,75,83,80,78,82,89,77,67,73,72,56,74,67,77,86,75,72,66,73,57,86,79,67,77,74,79,75,78,69,79,78,86,75,78,70,69,67,69,74,65,66,75,80,75,73,78,85,80,82,82,83,86,76,81,66,68,81,74,88,90,89,85,87,86,91,66,83,80,86,91,89,85,86,95,89,83,87,89,94,86,82,82,74,78,62,85,79,75,80,72,71,62,72,71,69,90,86,94,95,76,92,81,75,68,75,78,73,82,86,77,78,74,67,70,67,79,82,84,86,89,91,75,80,80,79,87,76,74,79,77,75,78,73,86,82,88,75,72,76,75,78,74,71,72,76,86,77,75,91,80,83,85,74,84,71,67,77,72,70,73,66,77,86,69,72,73,86,83,72,59,83,68,72,82,84,83,77,81,73,82,72,75,81,83,73,82,68,83,84,76,77,64,75,64,74,72,73,73,71,84,81,84,83,82,86,80,82,81,73,75,65,68,74,85,88,90,87,82,82,93,97,88,86,82,87,81,80,75,77,68,79,76,69,71,72,74,79,77,87,81,88,87,81,89,88,82,71,77,69,63,83,88,88,81,94,87,87,95,97,82,82,82,78,83,95,94,78,77,78,79,76,71,82,77,86,98,82,71,82,80,72,76,72,68,72,63,65,89,70,78,80,81,67,79,89,73,62,71,78,74,74,84,85,83,88,81,84,86,70,77,71,78,73,81,74,73,78,89,83,67,67,78,64,79,76,67,69,80,77,76,87,79,85,82,87,74,77,70,78,79,79,82,86,84,70,73,68,74,84,82,96,88,75,77,70,70,77,78,76,77,81,85,89,84,79,90,89,76,87,80,75,70,82,90,79,76,89,85,88,96,82,83,72,77,86,68,73,87,72,73,77,83,87,83,75,78,73,62,72,78,81,83,72,77,69,79,67,62,75,77,65,69,74,69,80,95,78,90,80,76,91,92,82,92,89,93,83,97,85,78,79,81,89,91,88,94,94,95,89,88,84,79,78,86,81,81,76,85,76,80,68,73,78,75,82,88,77,72,77,76,70,75,71,71,71,70,77,75,78,81,73,79,82,86,78,68,59,54,56,59,59,70,77,60,54,58,71,69,72,89,74,78,76,84,81,73,71,71,59,78,69,74,60,63,69,73,74,74,79,90,78,74,89,92,82,89,79,83,70,69,74,78,77,74,83,74,88,92,83,79,69,82,89,92,89,88,88,99,95,84,82,83,90,92,83,86,79,83,83,79,77,78,76,73,76,76,63,68,67,62,69,65,75,70,63,70,70,72,70,73,71,73,70,71,57,72,73,83,67,66,65,78,62,81,58,72,83,96,80,79,64,75,75,71,85,86,68,72,77,76,78,72,81,87,87,95,90,90,75,77,74,80,66,79,81,74,82,78,81,77,76,75,70,67,79,83,79,64,74,77,87,74,66,78,62,99,92,76,75,77,74,93,81,95,91,86,83,73,75,80,80,77,70,72,80,91,78,86,91,99,77,75,81,75,72,76,74,71,80,79,89,81,91,78,75,76,87,83,82,95,75,79,82,77,76,74,73,82,81,82,76,72,74,79,76,66,89,75,84,80,66,81,91,70,79,68,74,71,70,77,79,73,80,73,70,66,77,87,81,83,79,63,63,64,76,83,76,82,89,77,70,80,80,81,87,84,82,75,77,72,63,59,78,68,60,70,73,64,69,62,57,64,64,69,68,82,73,87,76,76,62,67,81,73,74,79,74,69,68,68,64,66,77,77,74,79,63,62,69,85,94,85,91,79,69,82,82,81,64,65,79,80,81,82,98,91,72,62,81,76,76,79,62,85,78,74,74,77,77,71,65,70,61,64,75,74,80,79,76,78,72,66,66,74,89,71,77,55,71,61,69,62,74,71,73,58,57,76,77,68,68,61,75,74,75,78,73,76,81,82,74,75,69,69,66,78,63,45,57,50,63,64,60,65,70,66,72,63,71,73,80,84,73,76,77,72,76,71,70,67,75,73,73,74,79,94,99,82,84,95,94,91,87,89,93,72,94,91,79,77,82,91,92,97,94,92,99,94,80,93,81,67,65,62,77,71,70,57,65,72,71,70,77,72,80,66,73,64,62,69,65,64,73,71,71,64,73,70,73,51,90,90,76,65,64,89,93,89,89,82,88,87,78,71,60,66,73,73,74,73,69,67,81,75,71,79,80,62,71,76,78,70,74,77,70,72,81,76,83,80,82,86,84,71,80,69,80,74,67,87,86,75,72,83,70,74,60,78,80,76,72,78,79,69,81,75,61,52,86,97,97,93,94,99,95,90,99,94,91,97,99,94,94,99,91,97,94,90,87,89,95,86,6,2];
+  var audio = document.getElementById('audio'), player = document.getElementById('player');
+  var DUR = 5471.15, KEY = 'lfm-position', reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function dur() { return isFinite(audio.duration) && audio.duration > 0 ? audio.duration : DUR; }
+  function fmt(t) { t = Math.max(0, Math.floor(t)); var h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), sec = t % 60; return h + ':' + ('0' + m).slice(-2) + ':' + ('0' + sec).slice(-2); }
+  function chapterAt(t) { var c = CHAPTERS[0]; CHAPTERS.forEach(function (x) { if (t >= x.t) c = x; }); return c; }
+  var elCur = document.getElementById('p-cur'), elDur = document.getElementById('p-dur'), elCh = document.getElementById('p-ch'),
+      elJump = document.getElementById('p-jump'), wave = document.getElementById('p-wave'), canvas = document.getElementById('p-canvas'),
+      tip = document.getElementById('p-tip'), list = document.getElementById('p-chapters'), rateBtn = document.getElementById('p-rate');
+
+  // Chapter buttons
+  CHAPTERS.forEach(function (c) {
+    var li = document.createElement('li'), b = document.createElement('button');
+    b.type = 'button'; b.dataset.t = c.t; b.dataset.id = c.id;
+    b.innerHTML = '<span class="ct">' + fmt(c.t) + '</span><span class="cn">' + c.name + '</span>';
+    b.addEventListener('click', function () { seek(c.t, true); logEvent('chapter', { ch: c.id }); history.replaceState(null, '', '#' + c.id); });
+    li.appendChild(b); list.appendChild(li);
+  });
+
+  // Waveform: neon for what's been played, dim for the rest, lavender ticks at each chapter
+  var ctx = canvas.getContext('2d'), hoverX = -1;
+  function draw() {
+    var r = window.devicePixelRatio || 1, w = wave.clientWidth, h = wave.clientHeight;
+    if (canvas.width !== Math.round(w * r) || canvas.height !== Math.round(h * r)) { canvas.width = Math.round(w * r); canvas.height = Math.round(h * r); }
+    ctx.setTransform(r, 0, 0, r, 0, 0); ctx.clearRect(0, 0, w, h);
+    var step = 3, n = Math.floor(w / step), played = audio.currentTime / dur() * w, mid = h / 2;
+    var grad = ctx.createLinearGradient(0, 0, w, 0);
+    grad.addColorStop(0, '#ff2b2b'); grad.addColorStop(.45, '#e8345a'); grad.addColorStop(1, '#c4508c');
+    for (var i = 0; i < n; i++) {
+      var v = PEAKS[Math.min(PEAKS.length - 1, Math.floor(i / n * PEAKS.length))] / 99;
+      var bh = Math.max(2, v * (h - 6)), x = i * step;
+      ctx.fillStyle = x < played ? grad : (hoverX >= 0 && x < hoverX ? 'rgba(180,176,228,.45)' : 'rgba(143,138,132,.38)');
+      ctx.fillRect(x, mid - bh / 2, 2, bh);
+    }
+    ctx.fillStyle = '#b4b0e4';
+    CHAPTERS.forEach(function (c) { if (c.t > 0) ctx.fillRect(Math.round(c.t / dur() * w), 0, 1, h); });
+    if (played > 0) { ctx.fillStyle = '#ffd6de'; ctx.shadowColor = '#e8345a'; ctx.shadowBlur = 8; ctx.fillRect(Math.round(played) - 1, 2, 2, h - 4); ctx.shadowBlur = 0; }
+  }
+
+  function update() {
+    var t = audio.currentTime, c = chapterAt(t);
+    elCur.textContent = fmt(t); elCh.textContent = c.name;
+    elJump.hidden = t >= 165;                       // only offered before the reading begins
+    list.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-current', b.dataset.id === c.id ? 'true' : 'false'); });
+    wave.setAttribute('aria-valuenow', Math.floor(t)); wave.setAttribute('aria-valuetext', fmt(t) + ', ' + c.name);
+    draw();
+  }
+  function seek(t, play) {
+    t = Math.max(0, Math.min(dur() - 0.5, t));
+    if (audio.readyState < 1) { audio.addEventListener('loadedmetadata', function once() { audio.removeEventListener('loadedmetadata', once); audio.currentTime = t; update(); }); audio.load(); }
+    else audio.currentTime = t;
+    update();
+    if (play) audio.play().catch(function () {});
+  }
+
+  document.getElementById('p-play').addEventListener('click', function () { audio.paused ? audio.play().catch(function () {}) : audio.pause(); });
+  document.getElementById('p-back').addEventListener('click', function () { seek(audio.currentTime - 15); });
+  document.getElementById('p-fwd').addEventListener('click', function () { seek(audio.currentTime + 30); });
+  elJump.addEventListener('click', function () { seek(166, true); logEvent('chapter', { ch: 'reading' }); });
+  var RATES = [1, 1.25, 1.5, 0.85], ri = 0;
+  rateBtn.addEventListener('click', function () { ri = (ri + 1) % RATES.length; audio.playbackRate = RATES[ri]; rateBtn.textContent = RATES[ri] + '×'; });
+  audio.addEventListener('play', function () { player.classList.add('playing'); document.getElementById('p-play').setAttribute('aria-label', 'Pause'); });
+  audio.addEventListener('pause', function () { player.classList.remove('playing'); document.getElementById('p-play').setAttribute('aria-label', 'Play the reading'); });
+  audio.addEventListener('loadedmetadata', function () { elDur.textContent = fmt(dur()); update(); });
+  audio.addEventListener('timeupdate', update);
+  window.addEventListener('resize', draw);
+
+  // Scrub on the waveform with mouse, finger or keyboard
+  function tAt(e) { var b = wave.getBoundingClientRect(); return Math.max(0, Math.min(1, (e.clientX - b.left) / b.width)) * dur(); }
+  var scrubbing = false;
+  wave.addEventListener('pointerdown', function (e) { scrubbing = true; wave.setPointerCapture(e.pointerId); seek(tAt(e)); });
+  wave.addEventListener('pointermove', function (e) {
+    var b = wave.getBoundingClientRect(), t = tAt(e);
+    hoverX = e.clientX - b.left; tip.style.left = hoverX + 'px'; tip.textContent = fmt(t) + ' · ' + chapterAt(t).name;
+    if (scrubbing) seek(t); else draw();
+  });
+  wave.addEventListener('pointerup', function () { scrubbing = false; });
+  wave.addEventListener('pointerleave', function () { hoverX = -1; draw(); });
+  wave.addEventListener('keydown', function (e) {
+    var k = { ArrowLeft: -10, ArrowRight: 10, PageDown: -60, PageUp: 60 }[e.key];
+    if (k) { e.preventDefault(); seek(audio.currentTime + k); }
+    else if (e.key === 'Home') { e.preventDefault(); seek(0); }
+    else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); audio.paused ? audio.play().catch(function () {}) : audio.pause(); }
+  });
+
+  // Shareable chapter links: /molly/#statement, #reading, #credits open at that point
+  function fromHash() { var c = CHAPTERS.filter(function (x) { return '#' + x.id === location.hash; })[0]; if (c) { seek(c.t); return true; } return false; }
+  window.addEventListener('hashchange', fromHash);
+  var startedFromHash = fromHash();
+
+  // Remember where this listener left off, on this device only
+  var resumeEl = document.getElementById('p-resume');
+  try {
+    var saved = parseFloat(localStorage.getItem(KEY));
+    if (!startedFromHash && saved > 60 && saved < DUR - 120) {
+      document.getElementById('p-resume-t').textContent = fmt(saved);
+      resumeEl.hidden = false;
+      document.getElementById('p-resume-go').addEventListener('click', function () { seek(saved, true); resumeEl.hidden = true; });
+    }
+  } catch (err) {}
+  var lastSave = 0;
+  audio.addEventListener('timeupdate', function () {
+    if (Date.now() - lastSave < 5000) return; lastSave = Date.now();
+    try { localStorage.setItem(KEY, String(audio.currentTime)); } catch (err) {}
+  });
+  audio.addEventListener('play', function () { resumeEl.hidden = true; });
+
+  // Lock-screen and headphone controls
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: 'Looking for Molly · Live Reading', artist: 'Hunter Hawke', album: 'Rutgers Presbyterian Church · 09.28.26',
+      artwork: [{ src: new URL('../assets/molly/artwork-512.jpg', document.baseURI).href, sizes: '512x512', type: 'image/jpeg' },
+                { src: new URL('../assets/molly/artwork-1024.jpg', document.baseURI).href, sizes: '1024x1024', type: 'image/jpeg' }]
+    });
+    var ms = navigator.mediaSession;
+    ms.setActionHandler('play', function () { audio.play(); });
+    ms.setActionHandler('pause', function () { audio.pause(); });
+    ms.setActionHandler('seekbackward', function () { seek(audio.currentTime - 15); });
+    ms.setActionHandler('seekforward', function () { seek(audio.currentTime + 30); });
+    try { ms.setActionHandler('seekto', function (d) { seek(d.seekTime); }); } catch (err) {}
+    ms.setActionHandler('previoustrack', function () { var c = chapterAt(audio.currentTime - 3); seek(audio.currentTime - c.t > 3 ? c.t : (CHAPTERS[CHAPTERS.indexOf(c) - 1] || c).t); });
+    ms.setActionHandler('nexttrack', function () { var c = CHAPTERS[CHAPTERS.indexOf(chapterAt(audio.currentTime)) + 1]; if (c) seek(c.t); });
+  }
+  update();
+
+  // ---------- End card: shown when the recording finishes ----------
+  var endCard = document.getElementById('p-end');
+  audio.addEventListener('ended', function () { player.classList.add('ended'); endCard.hidden = false; try { localStorage.removeItem(KEY); } catch (err) {} });
+  audio.addEventListener('play', function () { player.classList.remove('ended'); endCard.hidden = true; });
+  document.getElementById('p-again').addEventListener('click', function () { seek(0, true); });
+
+  // ---------- Mini player: appears once listening has started and the full player is off screen ----------
+  var mini = document.getElementById('mini'), miniFill = document.getElementById('mini-fill'), miniSub = document.getElementById('mini-sub');
+  var started = false, playerVisible = true;
+  function miniShow() {
+    var on = started && !playerVisible && !player.classList.contains('ended');
+    mini.classList.toggle('on', on); document.body.classList.toggle('mini-showing', on);
+    mini.setAttribute('aria-hidden', on ? 'false' : 'true');
+    mini.querySelectorAll('button').forEach(function (b) { b.tabIndex = on ? 0 : -1; });
+  }
+  function miniUpdate() {
+    miniFill.style.width = (audio.currentTime / dur() * 100).toFixed(2) + '%';
+    miniSub.textContent = fmt(audio.currentTime) + ' · ' + chapterAt(audio.currentTime).name;
+  }
+  audio.addEventListener('play', function () { started = true; mini.classList.add('playing'); document.getElementById('mini-play').setAttribute('aria-label', 'Pause'); miniShow(); });
+  audio.addEventListener('pause', function () { mini.classList.remove('playing'); document.getElementById('mini-play').setAttribute('aria-label', 'Play'); });
+  audio.addEventListener('ended', miniShow);
+  audio.addEventListener('timeupdate', miniUpdate);
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { playerVisible = en[0].isIntersecting; miniShow(); }, { threshold: 0.15 }).observe(player);
+  document.getElementById('mini-play').addEventListener('click', function () { audio.paused ? audio.play().catch(function () {}) : audio.pause(); });
+  document.getElementById('mini-up').addEventListener('click', function () { player.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' }); });
+  document.getElementById('mini-bar').addEventListener('click', function (e) { var b = this.getBoundingClientRect(); seek((e.clientX - b.left) / b.width * dur()); });
+  miniUpdate(); miniShow();
+
+  // ---------- Listener stats ----------
+  // Each recipient's link carries a short code (?r=k7q2). The page sends the code, never a name; the private
+  // Google Sheet matches codes to people. It logs visits, play and pause, chapter jumps, downloads, email copies,
+  // and which stretches of the recording were actually heard. Reports go to the Listener Room (a Cloudflare Worker).
+  // Nothing is sent until ENDPOINT is set to the Worker's address + /collect.
+  var ENDPOINT = 'https://lfm-092826-room.hunter-e61.workers.dev/collect';
+  var code = '';
+  try {
+    code = (new URLSearchParams(location.search).get('r') || '').replace(/[^a-z0-9-]/gi, '').slice(0, 24);
+    if (code) localStorage.setItem('lfm-r', code); else code = localStorage.getItem('lfm-r') || '';
+  } catch (err) {}
+  var session = Math.random().toString(36).slice(2, 10), queue = [];
+  var device = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'phone' : 'computer';
+  // Where they came from: just the other site's name (gmail, instagram), never the full address
+  var referrer = '';
+  try { var rh = document.referrer ? new URL(document.referrer).hostname : ''; if (rh && rh.indexOf('accipiterpictures.com') < 0) referrer = rh; } catch (err) {}
+  function logEvent(type, data) {
+    if (!ENDPOINT) return;
+    var ev = { type: type, at: new Date().toISOString() };
+    for (var k in data) ev[k] = data[k];
+    queue.push(ev);
+  }
+  function flush(final) {
+    if (!ENDPOINT) return;
+    closeSpan();
+    if (!queue.length) return;
+    var body = JSON.stringify({ r: code, s: session, d: device, ref: referrer, entry: location.hash.slice(1), events: queue.splice(0) });
+    var blob = new Blob([body], { type: 'text/plain;charset=UTF-8' });
+    if (final && navigator.sendBeacon) navigator.sendBeacon(ENDPOINT, blob);
+    else fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', keepalive: true, body: blob }).catch(function () {});
+  }
+  // Heard time: contiguous stretches of normal playback; a jump or pause closes the stretch
+  var spanA = null, lastT = 0;
+  function closeSpan() { if (spanA !== null && lastT - spanA >= 1) logEvent('heard', { a: Math.round(spanA), b: Math.round(lastT) }); spanA = null; }
+  audio.addEventListener('timeupdate', function () {
+    if (audio.paused) return;
+    var t = audio.currentTime;
+    if (spanA === null) { spanA = t; lastT = t; return; }
+    var d = t - lastT;
+    if (d < 0 || d > 3) { closeSpan(); spanA = t; }
+    lastT = t;
+  });
+  audio.addEventListener('play', function () { logEvent('play', { t: Math.round(audio.currentTime) }); });
+  audio.addEventListener('pause', function () { logEvent('pause', { t: Math.round(audio.currentTime) }); closeSpan(); });
+  audio.addEventListener('seeking', function () { closeSpan(); });
+  audio.addEventListener('ended', function () { closeSpan(); logEvent('ended', {}); });
+  ['dl-script', 'dl-script-2', 'dl-script-3'].forEach(function (id) { var a = document.getElementById(id); if (a) a.addEventListener('click', function () { logEvent('download', {}); flush(); }); });
+  document.getElementById('copy').addEventListener('click', function () { logEvent('copy-email', {}); });
+  document.querySelectorAll('a[data-who]').forEach(function (a) { a.addEventListener('click', function () { logEvent('link', { who: a.getAttribute('data-who') }); flush(true); }); });
+  logEvent('visit', { hash: location.hash.slice(1) });
+  flush();
+  setInterval(function () { flush(); }, 15000);
+  document.addEventListener('visibilitychange', function () { if (document.hidden) flush(true); });
+  window.addEventListener('pagehide', function () { flush(true); });
+  })();
+
+  // Woodcut waveform, same recipe as the main site (js/site.js), with paths for this folder.
+  var edges = [1, 2, 3, 4].map(function (k) { return new URL('../assets/wave-edge-' + k + '.png', document.baseURI).href; });
+  document.querySelectorAll('.wave').forEach(function (wave) {
+    var n = +wave.dataset.bars;
+    if (window.innerWidth < 600) n = Math.round(n / 2);
+    var seed = 28;
+    function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < n; i++) {
+      var bar = document.createElement('i');
+      var h = 22 + Math.abs(Math.sin(i * 0.37) * Math.cos(i * 0.11)) * 70 + rnd() * 8;
+      bar.style.cssText = '--h:' + h.toFixed(0) + '%;--w:' + (2 + rnd() * 2).toFixed(1) + 'px;--m:url(' + edges[Math.floor(rnd() * 4)] + ');--r:' + ((rnd() - 0.5) * 3).toFixed(1) + 'deg;animation-duration:' + (1.2 + rnd() * 1.1).toFixed(2) + 's;animation-delay:' + (-rnd() * 2).toFixed(2) + 's';
+      if (i % 11 === 4) bar.className = 'red'; else if (h > 70 || rnd() < 0.12) bar.className = 'hot';
+      frag.appendChild(bar);
+    }
+    wave.appendChild(frag);
+  });
+})();
+</script>
+</body>
+</html>
