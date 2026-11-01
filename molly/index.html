@@ -19,15 +19,15 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,600;1,400;1,600&family=Nanum+Brush+Script&display=swap">
 <!-- Molly title and date: closest free matches to the poster lettering -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600&family=Share+Tech+Mono&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600&family=Share+Tech+Mono&display=swap">
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="stylesheet" href="https://use.typekit.net/nvv1dxb.css">
 <link rel="stylesheet" href="../css/site.css?v=77831a5e">
 <style>
   /* Page-only additions. Everything else comes from the main site's stylesheet.
      One centered column like a poster: neon title lit by screen glow, logline, player, key art.
-     End credits are set like a screenplay title page. The record light appears once, on the player. */
-  :root { --neon: #e8345a; --lav: #b4b0e4; --molly: "Teko", var(--display); --mono: "Share Tech Mono", ui-monospace, monospace; --script: "Courier Prime", "Courier New", Courier, monospace; }
+     The record light appears once, on the player. */
+  :root { --neon: #e8345a; --lav: #b4b0e4; --molly: "Teko", var(--display); --mono: "Share Tech Mono", ui-monospace, monospace; }
   .nav .brand { opacity: 1; transform: none; pointer-events: auto; }
 
   /* ---------- Opening screen ---------- */
@@ -35,10 +35,10 @@
   .m-head { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; isolation: isolate; }
   /* The sign. Before it lights, the tubes read as unlit glass. LOOKING, FOR and MOLLY strike one after another,
      each with a stutter; the wall glow behind rises with them; the date tube comes on last. Afterwards the O in MOLLY
-     buzzes now and then, the way a real sign with one tired tube does. */
+     buzzes now and then, the way a real sign with one tired tube does. Glow stays tight to the glass. */
   .m-head::before {
     content: ""; position: absolute; z-index: -1; left: 50%; top: 52%; width: min(120%, 1100px); aspect-ratio: 2.4; transform: translate(-50%, -50%);
-    background: radial-gradient(closest-side, rgba(232, 52, 90, .22), rgba(180, 176, 228, .08) 55%, transparent 78%); filter: blur(24px); pointer-events: none;
+    background: radial-gradient(closest-side, rgba(232, 52, 90, .11), rgba(180, 176, 228, .04) 55%, transparent 75%); filter: blur(20px); pointer-events: none;
     animation: wall 2.2s ease-out .3s both, breathe 7s ease-in-out 2.5s infinite alternate;
   }
   @keyframes wall { from { opacity: 0; } 30% { opacity: .35; } 55% { opacity: .5; } to { opacity: .85; } }
@@ -47,7 +47,7 @@
   .m-title { margin-top: 8px; font: 600 clamp(60px, 12vw, 164px)/.82 var(--molly); letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; }
   /* Each tube carries its own slice of the poster's red-to-pink gradient */
   .tube { display: inline-block; -webkit-background-clip: text; background-clip: text; color: transparent;
-          filter: drop-shadow(0 0 2px rgba(255, 190, 200, .9)) drop-shadow(0 0 10px rgba(240, 50, 85, .75)) drop-shadow(0 0 34px rgba(232, 52, 90, .45));
+          filter: drop-shadow(0 0 5px rgba(240, 50, 85, .6)) drop-shadow(0 0 16px rgba(232, 52, 90, .28));
           animation: strike .9s steps(1) both; }
   .t1 { background-image: linear-gradient(90deg, #ff2b2b, #f02f47); animation-delay: .35s; }
   .t2 { background-image: linear-gradient(90deg, #ee3050, #e8345a); animation-delay: .95s; }
@@ -57,17 +57,17 @@
   /* Unlit: dim glass, no glow. Then two false starts and on. */
   @keyframes strike {
     0%       { opacity: .13; filter: none; }
-    14%      { opacity: .9; filter: drop-shadow(0 0 2px rgba(255, 190, 200, .9)) drop-shadow(0 0 10px rgba(240, 50, 85, .75)); }
+    14%      { opacity: .9; filter: drop-shadow(0 0 5px rgba(240, 50, 85, .55)); }
     22%      { opacity: .13; filter: none; }
-    40%      { opacity: .75; filter: drop-shadow(0 0 10px rgba(240, 50, 85, .6)); }
+    40%      { opacity: .75; filter: drop-shadow(0 0 4px rgba(240, 50, 85, .45)); }
     46%      { opacity: .2; filter: none; }
-    58%, 100% { opacity: 1; filter: drop-shadow(0 0 2px rgba(255, 190, 200, .9)) drop-shadow(0 0 10px rgba(240, 50, 85, .75)) drop-shadow(0 0 34px rgba(232, 52, 90, .45)); }
+    58%, 100% { opacity: 1; filter: drop-shadow(0 0 5px rgba(240, 50, 85, .6)) drop-shadow(0 0 16px rgba(232, 52, 90, .28)); }
   }
   /* The tired tube: a quick double flicker every nine seconds */
   @keyframes buzz { 0%, 3.4%, 100% { opacity: 1; } 1% { opacity: .3; } 1.8% { opacity: .9; } 2.4% { opacity: .22; } }
 
   .m-date { display: block; font: 400 clamp(25px, 3vw, 40px)/1 var(--mono); letter-spacing: .04em; color: var(--lav);
-            text-shadow: 0 0 2px rgba(235, 232, 255, .9), 0 0 10px rgba(180, 176, 228, .6), 0 0 26px rgba(180, 176, 228, .3); animation: tube-lav .7s steps(1) 2.1s both; }
+            text-shadow: 0 0 6px rgba(180, 176, 228, .55), 0 0 16px rgba(180, 176, 228, .22); animation: tube-lav .7s steps(1) 2.1s both; }
   @keyframes tube-lav { 0% { opacity: .14; text-shadow: none; } 25% { opacity: .8; } 40% { opacity: .2; text-shadow: none; } 60%, 100% { opacity: 1; } }
   .m-by { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 14px; margin-top: clamp(16px, 2.3vw, 26px); }
   .m-by .label { font-size: 13px; }
@@ -88,7 +88,7 @@
   .play-notes a { color: var(--ash); text-decoration: none; transition: color .2s; }
   .play-notes a:hover { color: var(--white); }
 
-  /* Key art marquee: every frame whole, side by side, drifting. Sideways scroll, drag or swipe moves it; scrolling the page speeds it along.
+  /* Key art marquee: every frame whole, side by side, drifting. Sideways scroll, drag or swipe moves it; vertical scrolling stays with the page.
      Hover lights a frame; click opens the gallery. */
   .marquee { margin-top: clamp(40px, 5vw, 64px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; touch-action: pan-y; cursor: grab; -webkit-mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
   .track { display: flex; gap: clamp(10px, 1.2vw, 16px); width: max-content; will-change: transform; }
@@ -116,17 +116,17 @@
   .lb-prev { left: 0; } .lb-next { right: 0; }
   body.lb-open { overflow: hidden; }
 
-  /* ---------- End credits: set like a screenplay title page ---------- */
-  .credits-roll { padding-block: clamp(36px, 4.5vw, 60px) clamp(56px, 7vw, 96px); text-align: center; font-family: var(--script); }
-  .roll-label { display: block; margin-bottom: 28px; font: 700 13px/1 var(--script); letter-spacing: .2em; text-transform: uppercase; color: var(--ash); }
-  .cast { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px clamp(32px, 6vw, 96px); max-width: 860px; margin: 0 auto; list-style: none; }
+  /* ---------- End credits ---------- */
+  .credits-roll { padding-block: clamp(36px, 4.5vw, 60px) clamp(56px, 7vw, 96px); text-align: center; }
+  .roll-label { display: block; margin-bottom: 26px; }
+  .cast { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px clamp(32px, 6vw, 96px); max-width: 860px; margin: 0 auto; list-style: none; }
   .cast li { min-width: 0; }
-  .cast .n { display: block; font: 700 clamp(16px, 1.5vw, 18px)/1.3 var(--script); text-transform: uppercase; letter-spacing: .04em; transition: color .2s; }
-  .cast .r { display: block; margin-top: 4px; font-size: 15px; line-height: 1.45; color: var(--ash); text-wrap: balance; }
+  .cast .n { display: block; font: 600 clamp(17px, 1.6vw, 19px)/1.3 var(--body); transition: color .2s; }
+  .cast .r { display: block; margin-top: 3px; font-size: 14px; line-height: 1.45; color: var(--ash); text-wrap: balance; }
   .cast li:hover .n { color: var(--neon); }
-  .crew { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px clamp(24px, 4vw, 56px); max-width: 860px; margin: clamp(40px, 5vw, 60px) auto 0; padding-top: clamp(32px, 4vw, 44px); }
+  .crew { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px clamp(24px, 4vw, 56px); max-width: 860px; margin: clamp(40px, 5vw, 60px) auto 0; padding-top: clamp(32px, 4vw, 44px); }
   .crew > div { flex: 0 1 240px; }
-  .crew dt { font: 700 12px/1.4 var(--script); letter-spacing: .14em; text-transform: uppercase; color: var(--ash); }
+  .crew dt { font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
   .crew dd { margin-top: 5px; font-size: 16px; line-height: 1.4; }
 
   /* ---------- Closing ---------- */
@@ -247,7 +247,7 @@
   <!-- ===== CLOSING ===== -->
   <section class="closing rule-top" id="next">
     <div class="wrap">
-      <p>Thank you to everyone who generously contributed their time and talent to bring this reading to life, and to everyone who took the time to hear my script out loud.</p>
+      <p>Thank you to everyone who generously contributed their time and talent to bring this reading to life!</p>
       <p>I’m very open to your thoughts on the script, the performances, and ideas for next steps. If you want to help get <em>Molly</em> made, write to me directly.</p>
       <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       <div class="cta">
@@ -286,8 +286,8 @@
     var c = f.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; track.appendChild(c);
   });
   // Position is kept in script: a slow drift, plus whatever the visitor adds by scrolling sideways, dragging or swiping.
-  // Scrolling the page up or down also pushes it along, so it never traps the page scroll.
-  var x = 0, half = 0, kick = 0, last = performance.now(), lastY = window.scrollY, drift = reduced ? 0 : 22; // px per second
+  // Vertical scrolling is left to the page.
+  var x = 0, half = 0, kick = 0, last = performance.now(), drift = reduced ? 0 : 22; // px per second
   function measure() { half = track.scrollWidth / 2; }
   function wrap() { if (half) { x = x % half; if (x > 0) x -= half; } }
   function frame(now) {
@@ -303,8 +303,6 @@
     var dx = e.deltaX || (e.shiftKey ? e.deltaY : 0);
     if (Math.abs(dx) > Math.abs(e.deltaY) || e.shiftKey) { e.preventDefault(); x -= dx; }
   }, { passive: false });
-  // Page scroll nudges it in the same direction
-  window.addEventListener('scroll', function () { var dy = window.scrollY - lastY; lastY = window.scrollY; kick += dy * 0.06; }, { passive: true });
   // Drag with a mouse or swipe with a finger; a drag never counts as a click
   var dragging = false, startX = 0, startPos = 0, moved = 0, vel = 0, prevX = 0;
   marquee.addEventListener('pointerdown', function (e) {
