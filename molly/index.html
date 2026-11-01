@@ -19,48 +19,55 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,600;1,400;1,600&family=Nanum+Brush+Script&display=swap">
 <!-- Molly title and date: closest free matches to the poster lettering -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600&family=Share+Tech+Mono&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600&family=Share+Tech+Mono&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap">
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="stylesheet" href="https://use.typekit.net/nvv1dxb.css">
 <link rel="stylesheet" href="../css/site.css?v=77831a5e">
 <style>
   /* Page-only additions. Everything else comes from the main site's stylesheet.
-     One poster-like opening screen, end credits, one closing. The title is the only big type,
-     and the only place Molly's neon lettering from the posters appears (plus a hover on the cast). */
-  :root { --neon: #e8345a; --lav: #b4b0e4; --molly: "Teko", var(--display); --mono: "Share Tech Mono", ui-monospace, monospace; }
+     One centered column like a poster: neon title lit by screen glow, logline, player, key art.
+     End credits are set like a screenplay title page. The record light appears once, on the player. */
+  :root { --neon: #e8345a; --lav: #b4b0e4; --molly: "Teko", var(--display); --mono: "Share Tech Mono", ui-monospace, monospace; --script: "Courier Prime", "Courier New", Courier, monospace; }
   .nav .brand { opacity: 1; transform: none; pointer-events: auto; }
-  .nav .secret { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
 
   /* ---------- Opening screen ---------- */
-  .m-hero { padding-block: clamp(32px, 5vw, 60px) 0; }
-  .m-hero .rec { justify-content: center; }
-  .m-head { display: flex; flex-direction: column; align-items: center; text-align: center; }
-  .m-present { display: block; margin-bottom: clamp(16px, 2.3vw, 26px); font-size: 13px; }
+  .m-hero { padding-block: clamp(44px, 6.5vw, 84px) 0; }
+  .m-head { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; isolation: isolate; }
+  /* Screen glow: the posters light every face with a laptop or phone; this lights the title the same way */
+  .m-head::before {
+    content: ""; position: absolute; z-index: -1; left: 50%; top: 46%; width: min(120%, 1100px); aspect-ratio: 2.4; transform: translate(-50%, -50%);
+    background: radial-gradient(closest-side, rgba(232, 52, 90, .20), rgba(180, 176, 228, .08) 55%, transparent 78%); filter: blur(24px); pointer-events: none;
+    animation: glow 7s ease-in-out infinite alternate;
+  }
+  @keyframes glow { from { opacity: .75; } to { opacity: 1; } }
   /* The poster lettering, set straight: lavender date, neon red-to-pink title */
   .m-date { display: block; font: 400 clamp(25px, 3vw, 40px)/1 var(--mono); letter-spacing: .04em; color: var(--lav); text-shadow: 0 0 10px rgba(169, 166, 216, .55); }
   .m-title {
     margin-top: 6px; font: 600 clamp(60px, 12vw, 164px)/.82 var(--molly); letter-spacing: .01em; text-transform: uppercase; text-wrap: balance;
     background: linear-gradient(90deg, #ff2b2b 0%, var(--neon) 45%, #c4508c 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
     filter: drop-shadow(0 0 14px rgba(232, 52, 90, .45));
+    animation: warm 1.6s steps(1) .25s both;
   }
+  /* A neon sign warming up: a few uneven flickers, then on for good */
+  @keyframes warm { 0% { opacity: .15; } 8% { opacity: .9; } 12% { opacity: .2; } 22% { opacity: 1; } 26% { opacity: .35; } 34%, 100% { opacity: 1; } }
   .m-by { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 14px; margin-top: clamp(16px, 2.3vw, 26px); }
   .m-by .label { font-size: 13px; }
   .m-by .hand { font-size: clamp(32px, 3.7vw, 44px); }
 
-  .m-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: start; gap: clamp(28px, 4vw, 40px) clamp(32px, 5.5vw, 76px); margin-top: clamp(28px, 4vw, 44px); }
-  .m-grid > * { min-width: 0; }
-  .logline { max-width: 44ch; font-size: clamp(17px, 1.55vw, 20px); line-height: 1.5; text-wrap: pretty; }
-  .meta { display: flex; flex-wrap: wrap; gap: 6px 0; margin-top: 18px; }
-  .meta span + span::before { content: "·"; margin-inline: 10px; color: var(--rec); }
+  .m-body { display: flex; flex-direction: column; align-items: center; max-width: 720px; margin: clamp(30px, 4vw, 44px) auto 0; text-align: center; }
+  .logline { max-width: 52ch; font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; text-wrap: pretty; }
+  .advisory { margin-top: 12px; font-size: 14px; font-style: italic; color: var(--ash); }
+  .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 0; margin-top: 20px; }
+  .meta span + span::before { content: "·"; margin-inline: 10px; color: var(--ash); }
 
   /* Player */
+  .m-play { width: 100%; margin-top: clamp(30px, 4vw, 42px); }
+  .m-play .sound-rec { justify-content: center; }
   .player { margin-top: 10px; padding: 12px; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
   .player iframe { display: block; width: 100%; height: 200px; border: 0; }
-  .play-notes { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 20px; margin-top: 12px; }
+  .play-notes { display: flex; justify-content: flex-end; margin-top: 12px; }
   .play-notes a { color: var(--ash); text-decoration: none; transition: color .2s; }
   .play-notes a:hover { color: var(--white); }
-  .advisory { margin-top: 10px; font-size: 14px; color: var(--ash); }
-  .advisory b { font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--rec); margin-right: 8px; }
 
   /* Key art marquee: every frame whole, side by side, always drifting. Hover lights a frame; click opens the gallery. */
   .marquee { margin-top: clamp(40px, 5vw, 64px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
@@ -88,16 +95,17 @@
   body.lb-open { overflow: hidden; }
   @keyframes drift { to { transform: translateX(-50%); } }
 
-  /* ---------- End credits ---------- */
-  .credits-roll { padding-block: clamp(36px, 4.5vw, 60px) clamp(56px, 7vw, 96px); text-align: center; }
-  .roll-label { display: block; margin-bottom: 26px; }
-  .cast { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px clamp(32px, 6vw, 96px); max-width: 860px; margin: 0 auto; list-style: none; }
+  /* ---------- End credits: set like a screenplay title page ---------- */
+  .credits-roll { padding-block: clamp(36px, 4.5vw, 60px) clamp(56px, 7vw, 96px); text-align: center; font-family: var(--script); }
+  .roll-label { display: block; margin-bottom: 28px; font: 700 13px/1 var(--script); letter-spacing: .2em; text-transform: uppercase; color: var(--ash); }
+  .cast { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px clamp(32px, 6vw, 96px); max-width: 860px; margin: 0 auto; list-style: none; }
   .cast li { min-width: 0; }
-  .cast .n { display: block; font: 600 clamp(17px, 1.6vw, 19px)/1.3 var(--body); transition: color .2s; }
-  .cast .r { display: block; margin-top: 3px; font-size: 14px; line-height: 1.45; color: var(--ash); text-wrap: balance; }
+  .cast .n { display: block; font: 700 clamp(16px, 1.5vw, 18px)/1.3 var(--script); text-transform: uppercase; letter-spacing: .04em; transition: color .2s; }
+  .cast .r { display: block; margin-top: 4px; font-size: 15px; line-height: 1.45; color: var(--ash); text-wrap: balance; }
   .cast li:hover .n { color: var(--neon); }
-  .crew { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px clamp(24px, 4vw, 56px); max-width: 860px; margin: clamp(40px, 5vw, 60px) auto 0; padding-top: clamp(32px, 4vw, 44px); }
-  .crew dt { font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
+  .crew { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px clamp(24px, 4vw, 56px); max-width: 860px; margin: clamp(40px, 5vw, 60px) auto 0; padding-top: clamp(32px, 4vw, 44px); }
+  .crew > div { flex: 0 1 240px; }
+  .crew dt { font: 700 12px/1.4 var(--script); letter-spacing: .14em; text-transform: uppercase; color: var(--ash); }
   .crew dd { margin-top: 5px; font-size: 16px; line-height: 1.4; }
 
   /* ---------- Closing ---------- */
@@ -110,19 +118,16 @@
   .closing .cta { margin-top: 30px; }
 
   @media (max-width: 860px) {
-    .m-grid { grid-template-columns: 1fr; }
-    .crew { grid-template-columns: 1fr; }
   }
   @media (max-width: 600px) {
-    .nav .secret span:last-child { display: none; }
-    .m-hero .rec { display: flex; }
     .track button { height: 300px; }
+    .nav ul { gap: 14px; }
     .lb-prev, .lb-next { top: auto; bottom: 0; transform: none; }
     .cast { grid-template-columns: 1fr; }
     .player iframe { height: 220px; }
   }
   /* Reduced motion: no drift, swipe the strip instead */
-  @media (prefers-reduced-motion: reduce) { .marquee { overflow-x: auto; } .track { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .marquee { overflow-x: auto; } .track, .m-title, .m-head::before { animation: none; } }
 </style>
 </head>
 <body>
@@ -130,7 +135,13 @@
 <header class="nav rule-bottom">
   <div class="wrap">
     <a href="../" class="brand" aria-label="Accipiter Pictures home"><img src="../assets/ap-mark.png" alt="Accipiter Pictures" width="816" height="440"></a>
-    <div class="secret"><i class="dot"></i><span>For those in the know</span></div>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="../#films">Films</a></li>
+        <li><a href="../#sound">Sound</a></li>
+        <li><a href="../#about">About</a></li>
+      </ul>
+    </nav>
   </div>
 </header>
 
@@ -139,32 +150,25 @@
   <!-- ===== OPENING: title, logline, key art, player ===== -->
   <section class="m-hero">
     <div class="wrap">
-      <div class="rec">
-        <span class="on"><i class="dot"></i>Recorded live</span>
-        <span>Feature screenplay · Full reading</span>
-      </div>
-
       <div class="m-head">
-        <span class="label m-present">Peter Rinaldi and Maxwell di Paolo present</span>
         <span class="m-date">09.28.26</span>
         <h1 class="m-title">Looking for Molly</h1>
-        <div class="m-by"><span class="label">Written by</span><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
+        <div class="m-by"><span class="label">A screenplay by</span><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       </div>
 
-      <div class="m-grid">
-        <div>
-          <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a NEET pornsick twenty-something’s world unravels the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</p>
-          <div class="meta caps"><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>45 in the audience</span></div>
-        </div>
-        <div>
-          <span class="sound-rec"><i class="dot"></i>Full-length reading · Audio</span>
+      <div class="m-body">
+        <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a NEET pornsick twenty-something’s world unravels the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</p>
+        <p class="advisory">The material is intentionally challenging and provocative. Audience discretion is advised.</p>
+        <div class="meta caps"><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>45 in the audience</span></div>
+
+        <div class="m-play">
+          <span class="sound-rec"><i class="dot"></i>Full-length reading</span>
           <div class="player">
             <iframe src="https://whyp.it/embeds/track/6oR93ZQILqtr" title="Looking for Molly, full live reading" scrolling="no" allow="autoplay" loading="lazy"></iframe>
           </div>
           <div class="play-notes caps">
             <a href="https://whyp.it/tracks/looking-for-molly-screenplay-reading-at-rpc-septem-PVwQrB7VCaip" target="_blank" rel="noopener">Open on Whyp ↗</a>
           </div>
-          <p class="advisory"><b>Discretion</b>The material is intentionally challenging and provocative. Audience discretion is advised.</p>
         </div>
       </div>
     </div>
@@ -210,7 +214,6 @@
       </ul>
 
       <dl class="crew rule-top">
-        <div><dt>Written by</dt><dd>Hunter Hawke</dd></div>
         <div><dt>Produced by</dt><dd>Peter Rinaldi and Maxwell di Paolo</dd></div>
         <div><dt>Associate producer</dt><dd>Eduardo Perez</dd></div>
         <div><dt>Live sound mix and recording</dt><dd>Maxwell di Paolo and Eduardo Perez</dd></div>
@@ -227,8 +230,7 @@
       <p>I’m very open to your thoughts on the script, the performances, and ideas for next steps. If you want to help get <em>Molly</em> made, write to me directly.</p>
       <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       <div class="cta">
-        <a class="btn btn-solid" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly%20%C2%B7%20script%20request"><i class="dot"></i>Request the script</a>
-        <a class="btn btn-line" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly%20%C2%B7%20thoughts">Share your thoughts</a>
+        <a class="btn btn-solid" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly">Get in touch</a>
       </div>
     </div>
   </section>
@@ -246,7 +248,6 @@
 
 <footer class="rule-top">
   <div class="wrap">
-    <a class="foot-mark" href="../" aria-label="Accipiter Pictures home"><img src="../assets/icon-hand-bird.png" alt="" width="565" height="600" loading="lazy"></a>
     <p>© <span id="yr">2026</span> Accipiter Pictures · Hunter Hawke Sound · NYC and Beyond</p>
   </div>
 </footer>
