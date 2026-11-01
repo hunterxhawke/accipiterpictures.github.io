@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Accipiter Pictures</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Accipiter Pictures is the film label of Hunter Hawke, a New York City writer, director, producer and sound professional. Hunter Hawke Sound offers location sound, post-sound and kit rental.">
+<link rel="icon" type="image/png" href="assets/ap-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Brand fonts. Big Shoulders Display + Jost are free on Google Fonts. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,600;1,400&family=Nanum+Brush+Script&display=swap">
+<!-- Baka Too is an Adobe Fonts face. On the live site, add your Adobe Fonts web project here, e.g.
+<link rel="stylesheet" href="https://use.typekit.net/XXXXXXX.css">
+Until then, Nanum Brush Script stands in for it. -->
+<style>
+  /* Layout: black stage, white type. Big Shoulders for the loud parts, Jost for reading,
+     Baka Too for one hand-written aside per section. Color only appears inside the films. */
+  :root {
+    --black: #000000;          /* brand: pure black */
+    --white: #ffffff;          /* brand: pure white */
+    --ash: #8f8a84;            /* secondary text, warm grey from the woodcut */
+    --soot: #1c1b1a;           /* raised surfaces */
+    --line: #2e2c2a;           /* hairlines */
+    --rec: #e8452c;            /* record light: the one spot of color outside the films */
+    --display: "Big Shoulders Display", "Big Shoulders", "Oswald", Impact, sans-serif;
+    --accent: "baka-too", "Baka Too", "Nanum Brush Script", "Segoe Script", cursive;
+    --body: "Jost", "Futura", "Century Gothic", system-ui, sans-serif;
+    --max: 1180px;
+    --gut: clamp(16px, 4vw, 44px);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; background: var(--black); }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--black); }
+  a { color: inherit; }
+  img { max-width: 100%; height: auto; display: block; }
+  :focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
+  .wrap {
+    max-width: var(--max); margin: 0 auto;
+    padding-left: max(var(--gut), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--gut), env(safe-area-inset-right, 0px));
+  }
+  .display { font-family: var(--display); font-weight: 800; text-transform: uppercase; line-height: 0.9; letter-spacing: 0.005em; text-wrap: balance; }
+  .hand { font-family: var(--accent); font-weight: 400; line-height: 1.1; }
+  .label { font-family: var(--body); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ash); }
+
+  /* ---------- Nav ---------- */
+  .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--black); border-bottom: 3px solid transparent; border-image: url(assets/rule-h-dim.png) 0 0 100% 0 / 0 0 3px 0 stretch; }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 64px; }
+  .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+  .brand img { height: 28px; width: auto; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--rec); animation: blink 2s steps(1) infinite; flex: none; }
+  @keyframes blink { 50% { opacity: .2; } }
+  .nav ul { display: flex; gap: clamp(14px, 3vw, 32px); list-style: none; }
+  .nav ul a { text-decoration: none; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ash); transition: color .2s; }
+  .nav ul a:hover { color: var(--white); }
+
+  /* ---------- Hero ---------- */
+  .hero { padding-block: clamp(56px, 9vw, 112px) clamp(48px, 7vw, 88px); }
+  .rec { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-bottom: clamp(32px, 5vw, 56px); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ash); }
+  .rec .on { display: inline-flex; align-items: center; gap: 8px; color: var(--rec); }
+  .rec .tc { font-variant-numeric: tabular-nums; color: var(--white); letter-spacing: 0.1em; }
+  .hero-mark { width: min(100%, 880px); margin: 0 auto; animation: rise 1.1s cubic-bezier(.2,.7,.2,1) both; }
+  .hero h1 { margin: clamp(8px, 2vw, 24px) 0 0; }
+  .hero-center { text-align: center; }
+  .hero-sub { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 6px 18px; margin-top: clamp(24px, 3vw, 36px); }
+  .hero-sub .hand { font-size: clamp(30px, 4vw, 44px); }
+  .hero-sub .label { color: var(--white); }
+  .hero-roles { margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 56px; }
+  .hero-roles span { font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; font-size: 13px; color: var(--ash); }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
+  .hero .cta { justify-content: center; }
+  /* Buttons: hand-cut shapes and woodcut edges, set in the display face */
+  .btn {
+    position: relative; display: inline-flex; align-items: center; gap: 12px;
+    padding: 14px 28px 13px; border: 0; background: none; color: var(--white);
+    font-family: var(--display); font-weight: 800; font-size: 19px; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase;
+    text-decoration: none; cursor: pointer;
+    transition: transform .3s cubic-bezier(.2,.7,.2,1), clip-path .3s cubic-bezier(.2,.7,.2,1), background .2s, color .2s;
+  }
+  .btn-solid {
+    background: var(--white); color: var(--black);
+    clip-path: polygon(0.6% 7%, 99.2% 0, 100% 88%, 1.8% 100%);
+  }
+  .btn-solid:hover { clip-path: polygon(0 0, 99.6% 9%, 98.4% 100%, 0.8% 92%); transform: rotate(-1.2deg) scale(1.02); }
+  .btn-solid:focus-visible { outline: none; background: var(--rec); color: var(--white); }
+  .btn-line {
+    border: 5px solid transparent; padding: 9px 23px 8px;
+    border-image: url(assets/border-235-b.png) 40 stretch;
+    background-clip: padding-box;
+  }
+  .btn-line:hover { background-color: var(--soot); transform: rotate(1deg); }
+  .btn .play { width: 0; height: 0; border-left: 10px solid currentColor; border-top: 6px solid transparent; border-bottom: 6px solid transparent; }
+  .btn .dot { width: 9px; height: 9px; }
+  /* Waveform: thin bars cut from the edges of the woodcut borders */
+  .wave { display: flex; align-items: center; justify-content: space-between; height: 84px; margin-top: clamp(48px, 7vw, 72px); }
+  .wave i {
+    flex: none; width: var(--w, 3px); height: 20%;
+    background: var(--white); opacity: .32; transform: rotate(var(--r, 0deg));
+    -webkit-mask: var(--m, url(assets/wave-edge-1.png)) center / 100% 100% no-repeat;
+            mask: var(--m, url(assets/wave-edge-1.png)) center / 100% 100% no-repeat;
+    animation: wave 1.6s ease-in-out infinite;
+  }
+  .wave i.hot { opacity: .9; }
+  .wave i.red { background: var(--rec); opacity: 1; }
+  .wave.small { height: 44px; margin-top: 28px; }
+  .wave.small i.red { background: var(--white); }
+  @keyframes wave { 0%, 100% { height: 24%; } 50% { height: var(--h, 70%); } }
+  @keyframes rise { from { opacity: .0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
+
+  /* ---------- Sections ---------- */
+  .block { border-top: 3px solid transparent; border-image: url(assets/rule-h-dim.png) 100% 0 0 0 / 3px 0 0 0 stretch; padding-block: clamp(64px, 9vw, 120px); }
+  .head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; margin-bottom: clamp(36px, 5vw, 56px); }
+  .head h2 { font-size: clamp(52px, 8vw, 104px); }
+  .head .hand { font-size: clamp(26px, 3vw, 36px); color: var(--ash); }
+  .hand .ch { display: inline-block; height: 0.98em; aspect-ratio: 116 / 183; vertical-align: -0.16em; margin-right: 0.04em; background: currentColor; -webkit-mask: url(assets/custom-h.png) center / contain no-repeat; mask: url(assets/custom-h.png) center / contain no-repeat; }
+  .sub { margin-top: clamp(56px, 7vw, 88px); }
+  .sub > .label { display: block; margin-bottom: 20px; }
+
+  /* ---------- The name ---------- */
+  /* The definition: a slim band. On hover the definition lifts away and the hawk's line takes its place. */
+  #name { padding-block: clamp(24px, 3.5vw, 44px); }
+  .name { display: flex; justify-content: center; }
+  .entry {
+    display: grid; width: min(100%, 760px); padding: 14px 24px; cursor: default; outline: none;
+    border: 3px solid transparent; border-image: url(assets/frame-dim.png) 50 / 3px stretch;
+  }
+  .entry .face { grid-area: 1 / 1; display: flex; align-items: center; min-width: 0; transition: opacity .5s ease, transform .6s cubic-bezier(.2,.7,.2,1), filter .5s ease; }
+  .entry .def { gap: 8px 28px; }
+  .entry .term { display: flex; flex-direction: column; flex: none; }
+  .entry .word { font-size: clamp(26px, 2.6vw, 32px); line-height: 1; }
+  .entry .pron { color: var(--ash); font-size: 13px; margin-top: 4px; white-space: nowrap; }
+  .entry .pron i { font-style: normal; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; font-size: 10px; margin-left: 4px; }
+  .entry .def p { color: var(--ash); font-size: 15px; line-height: 1.5; padding-left: 28px; border-left: 3px solid transparent; border-image: url(assets/rule-v-dim.png) 0 0 0 100% / 0 0 0 3px stretch; }
+  .entry .alt { justify-content: center; gap: 16px; opacity: 0; transform: translateY(14px); filter: blur(4px); pointer-events: none; }
+  .entry .lid { flex: none; width: 44px; display: grid; place-items: center; }
+  .entry .lid img { width: 100%; transform: scaleY(.08); transition: transform .5s cubic-bezier(.3,.7,.2,1.25) .2s; }
+  .entry .alt .hand { font-size: clamp(22px, 2.4vw, 28px); line-height: 1.2; color: var(--white); white-space: nowrap; }
+  .entry .hh-word { display: inline-block; height: 1.05em; width: auto; vertical-align: -0.22em; margin-left: 0.1em; }
+  .entry:hover .def, .entry:focus .def { opacity: 0; transform: translateY(-14px); filter: blur(4px); }
+  .entry:hover .alt, .entry:focus .alt { opacity: 1; transform: none; filter: none; transition-delay: .12s; }
+  .entry:hover .lid img, .entry:focus .lid img { transform: scaleY(1); }
+  .entry:focus-visible { border-image-source: url(assets/border-3x2-b.png); }
+  @media (prefers-reduced-motion: reduce) { .entry .face, .entry .lid img { transition: opacity .3s; transform: none !important; filter: none !important; } }
+  @media (max-width: 600px) {
+    .services { grid-template-columns: 1fr; }
+    .svc, .svc + .svc { padding: 20px 0; border-left: 0; border-image: none; }
+    .svc + .svc { border-top: 3px solid transparent; border-image: url(assets/rule-h-dim.png) 100% 0 0 0 / 3px 0 0 0 stretch; }
+    .entry { padding: 14px 18px; }
+    .entry .def { flex-direction: column; align-items: flex-start; }
+    .entry .def p { padding-left: 0; border: 0; border-image: none; }
+    .entry .alt { flex-direction: column; gap: 10px; text-align: center; }
+    .entry .alt .hand { white-space: normal; }
+  }
+  #films .intro { font-size: clamp(19px, 1.8vw, 23px); max-width: 34ch; color: var(--white); margin: calc(clamp(36px, 5vw, 56px) * -0.55) 0 clamp(32px, 4.5vw, 52px); }
+
+  /* ---------- Films ---------- */
+  .films { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(36px, 4vw, 52px) clamp(16px, 2vw, 24px); }
+  .film:first-child { grid-column: 1 / -1; }
+  .film { min-width: 0; }
+  .film a { display: block; text-decoration: none; }
+  .tile {
+    position: relative; aspect-ratio: 16 / 9; max-width: 100%;
+    background: var(--fbg, var(--soot)); color: var(--fink, var(--white));
+    display: grid; place-items: center; overflow: hidden;
+  }
+  .tile .eye {
+    width: 22%; aspect-ratio: 816 / 440; background: currentColor;
+    -webkit-mask: url(assets/ap-mark.png) center / contain no-repeat;
+            mask: url(assets/ap-mark.png) center / contain no-repeat;
+    transition: transform .5s cubic-bezier(.2,.7,.2,1);
+  }
+  .film:first-child .tile .eye { width: 16%; }
+  .tile .frame {
+    position: absolute; inset: 3.5%; background: currentColor; opacity: .9;
+    -webkit-mask: url(assets/border-16x9-b.png) center / 100% 100% no-repeat;
+            mask: url(assets/border-16x9-b.png) center / 100% 100% no-repeat;
+  }
+  .tile .shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+  .tile.has-still { color: var(--white); }
+  .tile.has-still .frame { z-index: 1; opacity: .85; }
+  .film a:hover .shot { transform: scale(1.03); }
+  .tile .still { position: absolute; left: 6%; bottom: 7%; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: .55; }
+  .film a:hover .eye { transform: scale(1.12); }
+  .film-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; margin-top: 16px; }
+  .film-title { font-size: clamp(34px, 4vw, 48px); transition: color .2s; }
+  .film:first-child .film-title { font-size: clamp(44px, 6vw, 76px); }
+  .film a:hover .film-title, .film a:focus-visible .film-title { color: var(--fhi, var(--white)); }
+  .film-title small { font-size: 0.5em; color: var(--ash); margin-left: 6px; }
+  .film-role { font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ash); white-space: nowrap; }
+
+  /* ---------- Sound ---------- */
+  .sound-head { display: grid; grid-template-columns: auto 1fr; gap: clamp(28px, 5vw, 72px); align-items: center; margin-bottom: clamp(32px, 4.5vw, 56px); }
+  .sound-intro { font-size: clamp(20px, 2.2vw, 28px); line-height: 1.35; max-width: 38ch; margin-bottom: clamp(32px, 4.5vw, 52px); text-wrap: balance; }
+  .sound-head img { width: clamp(220px, 30vw, 380px); }
+  .sound-rec { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--rec); }
+  .sound-head .hand { font-size: clamp(38px, 5.4vw, 68px); text-wrap: balance; }
+  .services { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 4px solid transparent; border-image: url(assets/rule-h.png) 100% 0 0 0 / 4px 0 0 0 stretch; }
+  .svc { padding: 24px clamp(14px, 2vw, 24px) 28px 0; min-width: 0; }
+  .svc + .svc { padding-left: clamp(14px, 2vw, 24px); border-left: 3px solid transparent; border-image: url(assets/rule-v-dim.png) 0 0 0 100% / 0 0 0 3px stretch; }
+  .svc h3 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(22px, 2.8vw, 36px); line-height: 1; margin-bottom: 10px; }
+  .svc p { color: var(--ash); font-size: clamp(14px, 1.3vw, 17px); }
+  .sound-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 32px; }
+  .sound-cta .covered { font-size: clamp(24px, 2.4vw, 30px); color: var(--white); }
+
+  .clients { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: center; gap: 52px 36px; padding-block: 16px; }
+  .client { display: flex; align-items: center; justify-content: center; height: 72px; }
+  .client { min-width: 0; }
+  .client img { width: auto; height: auto; max-height: var(--h, 36px); max-width: 100%; opacity: .9; transition: opacity .2s; }
+  .client:hover img { opacity: 1; }
+
+  .ph { position: relative; background: var(--soot); color: var(--ash); display: grid; place-items: center; text-align: center; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; padding: 12px; max-width: 100%; }
+  .ph.framed::after {
+    content: ""; position: absolute; inset: 10px; background: var(--white); opacity: .85;
+    -webkit-mask: var(--border) center / 100% 100% no-repeat; mask: var(--border) center / 100% 100% no-repeat;
+  }
+  .bts { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
+  .bts .photo { grid-column: span 4; aspect-ratio: 3 / 4; }
+  .bts .photo.wide { grid-column: span 8; aspect-ratio: 1.72; --border: url(assets/border-16x9-b.png); }
+  .bts .photo.fill { grid-column: span 4; aspect-ratio: auto; }
+  .bts .photo { overflow: hidden; cursor: default; }
+  .bts .photo img { transition: transform .6s cubic-bezier(.2,.7,.2,1), filter .4s; }
+  .bts .cap {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; pointer-events: none;
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px;
+    padding: 48px 20px 18px; font-size: 15px; letter-spacing: 0.02em; color: var(--white);
+    background: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,0));
+    opacity: 0; transform: translateY(8px); transition: opacity .35s, transform .35s cubic-bezier(.2,.7,.2,1);
+  }
+  .bts .cap em { font-style: italic; font-size: 19px; }
+  .bts .cap .sep { color: var(--rec); }
+  .bts .photo:hover img, .bts .photo:focus-visible img { transform: scale(1.03); filter: brightness(.85); }
+  .bts .photo:hover .cap, .bts .photo:focus-visible .cap { opacity: 1; transform: none; }
+  .bts .photo:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
+  @media (hover: none) { .bts .cap { opacity: 1; transform: none; padding-top: 36px; } }
+  .posters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 36px 16px; }
+  .poster { margin: 0; min-width: 0; }
+  .poster .art { aspect-ratio: 2 / 3; max-width: 100%; background: var(--soot); display: grid; place-items: center; overflow: hidden; }
+  .poster img { width: 100%; height: 100%; object-fit: contain; transition: transform .4s cubic-bezier(.2,.7,.2,1); }
+  .poster:hover img { transform: scale(1.03); }
+  .poster figcaption { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .poster .t { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: 22px; line-height: 1; text-wrap: balance; }
+  .poster .meta { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 8px; border-top: 3px solid transparent; border-image: url(assets/rule-h-dim.png) 100% 0 0 0 / 3px 0 0 0 stretch; }
+  .poster .y { flex: none; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; color: var(--white); font-variant-numeric: tabular-nums; }
+  .poster .r { font-weight: 600; font-size: 11px; line-height: 1.5; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ash); }
+
+  .gear { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 4px solid transparent; border-image: url(assets/rule-h.png) 100% 0 0 0 / 4px 0 0 0 stretch; }
+  .gear > div { padding: 22px 20px 8px 0; min-width: 0; }
+  .gear > div + div { padding-left: 20px; border-left: 3px solid transparent; border-image: url(assets/rule-v-dim.png) 0 0 0 100% / 0 0 0 3px stretch; }
+  .gear h4 { font-weight: 600; font-size: 15px; margin-bottom: 8px; }
+  .gear ul { list-style: none; color: var(--ash); font-size: 15px; }
+  .gear li { padding: 6px 0; border-bottom: 3px solid transparent; border-image: url(assets/rule-h-dim.png) 0 0 100% 0 / 0 0 3px 0 stretch; }
+  .gear li:last-child { border: 0; border-image: none; }
+  .note { color: var(--ash); font-size: 15px; margin-top: 18px; }
+
+  /* ---------- About ---------- */
+  .about { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 6vw, 88px); align-items: start; }
+  .about .ph { aspect-ratio: 4 / 5; --border: url(assets/border-1x1-a.png); }
+  .photo { position: relative; aspect-ratio: 4 / 5; max-width: 100%; margin: 0; background: var(--soot); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .photo.framed::after {
+    content: ""; position: absolute; inset: 10px; background: var(--white); opacity: .9; pointer-events: none;
+    -webkit-mask: var(--border, url(assets/border-1x1-a.png)) center / 100% 100% no-repeat; mask: var(--border, url(assets/border-1x1-a.png)) center / 100% 100% no-repeat;
+  }
+  .bio p { font-size: clamp(18px, 1.6vw, 20px); max-width: 60ch; }
+  .bio p + p { margin-top: 18px; }
+  .bio .first { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(30px, 3.6vw, 44px); line-height: 1; max-width: 20ch; }
+  .bio .sign { display: flex; align-items: center; gap: 14px; margin-top: 28px; }
+  .bio .sign img { width: 46px; transform: translateY(5px); }
+  .bio .sign .hand { font-size: 36px; }
+
+  .contact { margin-top: clamp(56px, 7vw, 88px); border-top: 4px solid transparent; border-image: url(assets/rule-h.png) 100% 0 0 0 / 4px 0 0 0 stretch; padding-top: clamp(28px, 4vw, 44px); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 40px; align-items: end; }
+  .contact .label { display: block; margin-bottom: 10px; }
+  .email { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(28px, 5.2vw, 68px); line-height: 1; text-decoration: none; overflow-wrap: anywhere; user-select: all; }
+  .email:hover { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 8px; }
+  .contact .row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .links { display: flex; flex-direction: column; gap: 10px; min-width: 180px; }
+  .links a { display: flex; justify-content: space-between; gap: 24px; text-decoration: none; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; padding: 10px 0; border-bottom: 3px solid transparent; border-image: url(assets/rule-h-dim.png) 0 0 100% 0 / 0 0 3px 0 stretch; }
+  .links .lk { display: inline-flex; align-items: center; gap: 10px; }
+  .links .ico { width: 15px; height: 15px; flex: none; opacity: .85; }
+  .links a:hover { border-image-source: url(assets/rule-h.png); }
+
+  /* ---------- Footer ---------- */
+  footer { border-top: 3px solid transparent; border-image: url(assets/rule-h-dim.png) 100% 0 0 0 / 3px 0 0 0 stretch; padding-block: clamp(48px, 7vw, 80px) 40px; }
+  footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center; }
+  .foot-mark img { width: clamp(72px, 9vw, 104px); }
+  footer p { color: var(--ash); font-size: 14px; }
+
+  /* ---------- Narrow ---------- */
+  @media (max-width: 1080px) {
+  }
+  @media (max-width: 860px) {
+    .about, .sound-head { grid-template-columns: 1fr; }
+    .clients { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .gear { grid-template-columns: 1fr 1fr; }
+    .gear > div:nth-child(3) { padding-left: 0; border-left: 0; border-image: none; }
+    .posters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .clients { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 32px; }
+    .client { height: 54px; }
+    .client img { max-height: calc(var(--h, 36px) * .75); }
+    .contact { grid-template-columns: 1fr; }
+    .about .ph, .about .photo { max-width: 380px; }
+  }
+  @media (max-width: 600px) {
+    .brand img { height: 22px; }
+    .films { grid-template-columns: 1fr; }
+    .bts .photo { grid-column: span 6; }
+    .bts .photo:first-child { grid-column: 1 / -1; aspect-ratio: 4 / 5; }
+    .bts .photo.wide { grid-column: 1 / -1; aspect-ratio: 3 / 2; }
+    .bts .photo.fill { grid-column: 1 / -1; aspect-ratio: 1; }
+    .posters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .poster:last-child { grid-column: 1 / -1; justify-self: center; width: calc(50% - 8px); }
+    .poster .t { font-size: 18px; }
+    .gear { grid-template-columns: 1fr; }
+    .gear > div, .gear > div + div { padding: 18px 0 4px; border-left: 0; border-image: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hero-mark, .wave i, .dot { animation: none; }
+    .wave i { height: var(--h, 50%); }
+    .tile .eye { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a href="#top" class="brand" aria-label="Accipiter Pictures, back to top"><img src="assets/ap-horizontal.png" alt="Accipiter Pictures" width="1276" height="204"><span class="dot" aria-hidden="true"></span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#films">Films</a></li>
+        <li><a href="#sound">Sound</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="rec"><span class="on"><span class="dot" aria-hidden="true"></span>Rec</span><span class="tc" id="tc" aria-hidden="true">00:00:00:00</span><span>NYC and Beyond</span></p>
+      <div class="hero-center">
+      <h1><img class="hero-mark" src="assets/ap-horizontal-main.png" alt="Accipiter Pictures" width="1276" height="204"></h1>
+      <div class="hero-sub">
+        <span class="label">Films by</span>
+        <span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span>
+      </div>
+      <div class="hero-roles">
+        <span>Writer / Director</span>
+        <span>Producer</span>
+        <span>Sound Professional</span>
+      </div>
+      <div class="cta">
+        <a class="btn btn-solid" href="#films"><span class="play" aria-hidden="true"></span>Watch the films</a>
+        <a class="btn btn-line" href="#sound"><span class="dot" aria-hidden="true"></span>Book sound</a>
+      </div>
+      </div>
+      <div class="wave" aria-hidden="true" data-bars="120"></div>
+    </div>
+  </section>
+
+  <!-- ===== THE NAME ===== -->
+  <section class="block" id="name">
+    <div class="wrap">
+      <div class="name">
+        <div class="entry" tabindex="0">
+          <div class="face def">
+            <div class="term"><span class="word display">Ac·cip·i·ter</span><span class="pron">/ak-SIP-ih-ter/ <i>noun · Latin, “hawk”</i></span></div>
+            <p>A genus of hawks built for the hunt: short wings, sharp eyes. Moves quick in close quarters.</p>
+          </div>
+          <div class="face alt" aria-label="An Accipiter is a Hunter Hawke">
+            <span class="lid" aria-hidden="true"><img src="assets/ap-mark.png" alt=""></span>
+            <span class="hand" aria-hidden="true">An Accipiter is&nbsp;a&nbsp;<img class="hh-word" src="assets/hunter-hawke-wordmark.png" alt="" width="774" height="188"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FILMS ===== -->
+  <section class="block" id="films">
+    <div class="wrap">
+      <div class="head">
+        <h2 class="display">Films</h2>
+      </div>
+      <p class="intro">Original films at the intersection of vulnerability and craft.</p>
+
+      <!-- Each film carries its own colors, like the brand's title cards:
+           --fbg = light color, --fink = dark color, --fhi = title color on hover.
+           Big Slop Sap and Lemon Fresh use the brand book's colors; the rest default to black and white until picked.
+           TODO: set each href to its Vimeo/YouTube link and fill in role + year. -->
+      <div class="films">
+        <article class="film" style="--fhi:#e5483a">
+          <a><div class="tile has-still"><img class="shot" src="assets/stills/big-slop-sap.jpg" alt="Still from Big Slop Sap" width="1600" height="900" loading="lazy"><span class="frame"></span></div>
+          <div class="film-meta"><span class="film-title display">Big Slop Sap</span><span class="film-role">Writer/Director · 2025</span></div></a>
+        </article>
+        <article class="film" style="--fhi:#f2cf63">
+          <a href="https://vimeo.com/304978461" target="_blank" rel="noopener" aria-label="Watch Lemon Fresh"><div class="tile has-still"><img class="shot" src="assets/stills/lemon-fresh.jpg" alt="Still from Lemon Fresh" width="1280" height="720" loading="lazy"><span class="frame"></span></div>
+          <div class="film-meta"><span class="film-title display">Lemon Fresh</span><span class="film-role">Writer/Director · 2018</span></div></a>
+        </article>
+        <article class="film" style="--fhi:#e8834f">
+          <a><div class="tile has-still"><img class="shot" src="assets/stills/intimacy.jpg" alt="Still from intimacy." width="1280" height="720" loading="lazy"><span class="frame"></span></div>
+          <div class="film-meta"><span class="film-title display">intimacy.</span><span class="film-role">Writer/Director · 2024</span></div></a>
+        </article>
+        <article class="film" style="--fhi:#6ea3cf">
+          <a href="https://www.youtube.com/watch?v=PYgFz4vdVSE" target="_blank" rel="noopener" aria-label="Watch Private Message"><div class="tile has-still"><img class="shot" src="assets/stills/private-message.jpg" alt="Still from Private Message" width="1280" height="720" loading="lazy"><span class="frame"></span></div>
+          <div class="film-meta"><span class="film-title display">Private Message</span><span class="film-role">Writer/Director · 2021</span></div></a>
+        </article>
+        <article class="film" style="--fhi:#a9a9a9">
+          <a href="https://vimeo.com/467856478" target="_blank" rel="noopener" aria-label="Watch KEN?"><div class="tile has-still"><img class="shot" src="assets/stills/ken.jpg" alt="Still from KEN?" width="1280" height="720" loading="lazy"><span class="frame"></span></div>
+          <div class="film-meta"><span class="film-title display">KEN?</span><span class="film-role">Writer/Director · 2020</span></div></a>
+        </article>
+        <article class="film" style="--fhi:#ec9aa4">
+          <a href="https://www.youtube.com/watch?v=iqhedGzMvAc" target="_blank" rel="noopener" aria-label="Watch Ode to Cats"><div class="tile has-still"><img class="shot" src="assets/stills/ode-to-cats.jpg" alt="Still from Ode to Cats" width="1280" height="720" loading="lazy"><span class="frame"></span></div>
+          <div class="film-meta"><span class="film-title display">Ode to Cats<small>Teaser</small></span><span class="film-role">Writer/Director · 2021</span></div></a>
+        </article>
+        <article class="film" style="--fhi:#d4553e">
+          <a href="https://www.youtube.com/watch?v=RqrV6_0_j_s" target="_blank" rel="noopener" aria-label="Watch Just Noise"><div class="tile has-still"><img class="shot" src="assets/stills/just-noise.jpg" alt="Still from Just Noise" width="1280" height="720" loading="lazy"><span class="frame"></span></div>
+          <div class="film-meta"><span class="film-title display">Just Noise</span><span class="film-role">Writer/Director · 2018</span></div></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SOUND ===== -->
+  <section class="block" id="sound">
+    <div class="wrap">
+      <div class="sound-head">
+        <img src="assets/hh-stacked-woodcut.png" alt="Hunter Hawke Sound" width="1150" height="708">
+        <div>
+          <p class="sound-rec"><span class="dot" aria-hidden="true"></span>Rolling</p>
+          <p class="hand">Clean sound, the first time, every time!</p>
+          <div class="wave small" aria-hidden="true" data-bars="72"></div>
+        </div>
+      </div>
+
+      <p class="sound-intro">It takes a lot of forethought for sound to feel like an afterthought and still sound this good.</p>
+
+      <div class="services">
+        <div class="svc"><h3>Production sound</h3><p>Rock-solid reliable gear, 12 simultaneous lavaliers in-house. The sky is the limit on your creative!</p></div>
+        <div class="svc"><h3>Post-sound</h3><p>Buttery smooth dialogue edit and a perfectly dialed-in mix.</p></div>
+        <div class="svc"><h3>Kit rental</h3><p>Set-tested gear, charged and ready to roll. Take it solo or bring me along.</p></div>
+      </div>
+      <div class="sound-cta">
+        <a class="btn btn-solid" href="mailto:hunter@accipiterpictures.com?subject=Sound%20booking"><span class="dot" aria-hidden="true"></span>Book Hunter Hawke Sound</a>
+        <span class="hand covered">Leave it to me — I’ve got you covered.</span>
+      </div>
+      <p class="note">Work samples and resume available on request.</p>
+
+      <div class="sub">
+        <span class="label">Past Clients</span>
+        <div class="clients">
+          <div class="client"><img src="assets/clients/maybelline.png" alt="Maybelline New York" width="2256" height="240" style="--h:28px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/oribe.png" alt="Oribe" width="760" height="240" style="--h:38px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/govee.png" alt="Govee" width="894" height="240" style="--h:40px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/golden-hippo.png" alt="Golden Hippo" width="844" height="240" style="--h:56px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/stickerbox.png" alt="Stickerbox" width="1393" height="240" style="--h:32px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/sabah.png" alt="Sabah" width="702" height="240" style="--h:50px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/oh-new-york.png" alt="Oh New York" width="308" height="240" style="--h:58px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/baton.png" alt="Baton" width="805" height="240" style="--h:44px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/milkxp.png" alt="milkXP" width="607" height="240" style="--h:52px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/easy-mondays.png" alt="Easy Mondays" width="541" height="240" style="--h:50px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/crafthouse.png" alt="Crafthouse Pictures" width="1039" height="240" style="--h:42px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/discordia.png" alt="Discordia" width="141" height="240" style="--h:66px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/simone-films.png" alt="Simone Films" width="2140" height="240" style="--h:22px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/cody-lassen.png" alt="Cody Lassen &amp; Associates" width="461" height="240" style="--h:62px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/sure-win.png" alt="Sure Win Productions" width="956" height="240" style="--h:42px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/natures-line-of-drift.png" alt="Nature's Line of Drift Productions" width="644" height="240" style="--h:72px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/doing-things.png" alt="Doing Things" width="559" height="240" style="--h:50px" loading="lazy"></div>
+          <div class="client"><img src="assets/clients/lame.png" alt="LAME." width="1289" height="240" style="--h:28px" loading="lazy"></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <span class="label">Behind the scenes</span>
+        <div class="bts">
+          <figure class="photo" tabindex="0"><img src="assets/photos/bts-studio.jpg" alt="Hunter in a studio with a sound bag and boom pole, throwing a peace sign under a softbox" width="900" height="1200" loading="lazy"><figcaption class="cap"><em>Happy Enough</em><span class="sep" aria-hidden="true">|</span>Short Film</figcaption></figure>
+          <figure class="photo" tabindex="0"><img src="assets/photos/bts-backyard.jpg" alt="Hunter on an outdoor set in headphones, holding a boom with a recorder clipped to the pole" width="900" height="1200" loading="lazy"><figcaption class="cap"><em>Between the Veil</em><span class="sep" aria-hidden="true">|</span>Short Film</figcaption></figure>
+          <figure class="photo" tabindex="0"><img src="assets/photos/bts-orange-room.jpg" alt="Hunter smiling with a boom pole in an orange-lit set, a crew member at the sound cart behind him" width="900" height="1200" loading="lazy"><figcaption class="cap"><em>Old Soul</em><span class="sep" aria-hidden="true">|</span>Feature Film</figcaption></figure>
+          <figure class="photo wide framed" tabindex="0"><img src="assets/photos/bts-lav.jpg" alt="Hunter preparing a lavalier mic and transmitter for an actor" width="1600" height="932" loading="lazy"><figcaption class="cap"><em>The Call</em><span class="sep" aria-hidden="true">|</span>Short Film</figcaption></figure>
+          <figure class="photo fill" tabindex="0"><img src="assets/photos/bts-screening.jpg" alt="Hunter laughing beside a projection screen at a screening" width="1000" height="1000" loading="lazy"><figcaption class="cap"><em>intimacy.</em><span class="sep" aria-hidden="true">|</span>Hosted at DarkRoom</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="sub">
+        <span class="label">Selected Sound Work</span>
+        <!-- TODO: confirm Hunter's credit on each; add links if there are trailers -->
+        <div class="posters">
+          <figure class="poster"><div class="art"><img src="assets/posters/company-of-thieves.jpg" alt="Poster for A Company of Thieves" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">A Company of Thieves</span><span class="meta"><span class="r">Production Sound</span><span class="y">2026</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/what-cant-be-mentioned.jpg" alt="Poster for What Can’t Be Mentioned" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">What Can’t Be Mentioned</span><span class="meta"><span class="r">Additional Sound Mixer</span><span class="y">2026</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/cub.jpg" alt="Poster for Cub" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Cub</span><span class="meta"><span class="r">Production Sound</span><span class="y">2026</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/brooklyn-coffee-shop.jpg" alt="Title card for Brooklyn Coffee Shop" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Brooklyn Coffee Shop</span><span class="meta"><span class="r">Production Sound</span><span class="y">2025</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/actual-nobodies.jpg" alt="Poster for Actual Nobodies" width="700" height="1037" loading="lazy"></div><figcaption><span class="t">Actual Nobodies</span><span class="meta"><span class="r">Sound</span><span class="y">2027</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/sao-paulo-new-york.jpg" alt="Poster for São Paulo, New York" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">São Paulo, New York</span><span class="meta"><span class="r">Production Sound</span><span class="y">2026</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/oh-happy-hour.jpg" alt="Poster for Overheard Happy Hour" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Overheard Happy Hour</span><span class="meta"><span class="r">Production Sound</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/romance-et-misere.jpg" alt="Poster for Romance et Misère" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Romance et Misère</span><span class="meta"><span class="r">Production Sound &amp; Post Mix</span><span class="y">2026</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/accent.jpg" alt="Poster for Accent" width="700" height="1037" loading="lazy"></div><figcaption><span class="t">Accent</span><span class="meta"><span class="r">Production Sound &amp; Dialogue Edit</span><span class="y">2026</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/divine-intervention.jpg" alt="Poster for Divine Intervention" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Divine Intervention</span><span class="meta"><span class="r">Production Sound</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/hot-and-single.jpg" alt="Poster for Hot &amp; Single" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Hot &amp; Single</span><span class="meta"><span class="r">Production Sound</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/lost-dog.jpg" alt="Poster for Lost Dog" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Lost Dog</span><span class="meta"><span class="r">Production Sound</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/cerulea.jpg" alt="Poster for Cerulea" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Cerulea</span><span class="meta"><span class="r">Production Sound</span><span class="y">2026</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/lucy-schulman.jpg" alt="Poster for Lucy Schulman" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Lucy Schulman</span><span class="meta"><span class="r">Additional Boom Operator</span><span class="y">2026</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/grind.jpg" alt="Poster for Grind" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Grind</span><span class="meta"><span class="r">Additional Boom Operator</span></span></figcaption></figure>
+        </div>
+      </div>
+
+      <div class="sub">
+        <span class="label">Gear</span>
+        <div class="gear">
+          <div><h4>Recorders &amp; Mixers</h4><ul>
+            <li>Sound Devices 833 + SL-2</li>
+            <li>Sound Devices MixPre-10 II</li>
+            <li>Sound Devices MixPre-6</li>
+            <li>Zoom F8n Pro</li>
+          </ul></div>
+          <div><h4>Microphones</h4><ul>
+            <li>Schoeps Colette MK41 / CMC5 (×2)</li>
+            <li>Schoeps KMIT shotgun</li>
+            <li>DPA 4017B shotgun</li>
+            <li>DPA 4060 / 4061 lavaliers</li>
+            <li>Sanken COS-11D lavaliers</li>
+          </ul></div>
+          <div><h4>Wireless &amp; Timecode</h4><ul>
+            <li>Wisycom MCR54 &amp; MPR52 receivers</li>
+            <li>Wisycom MTP61 / MTP60 / MTP40S transmitters</li>
+            <li>Sennheiser G4 wireless</li>
+            <li>Sennheiser G4 IEM for client monitoring (×6)</li>
+            <li>Deity TC-1 timecode (×4) + TC-SL1 smart slate</li>
+          </ul></div>
+          <div><h4>Boom &amp; Field Kit</h4><ul>
+            <li>K-Tek KP16CCR graphite boom</li>
+            <li>VdB L-QT quarter-turn boom</li>
+            <li>Rycote &amp; Røde blimps, wind protection</li>
+            <li>K-Tek Stingray bags &amp; harness</li>
+            <li>Sennheiser HD 25 headphones</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="block" id="about">
+    <div class="wrap">
+      <div class="head">
+        <h2 class="display">About</h2>
+        <span class="hand">The <span class="ch" role="img" aria-label="H"></span>unter Behind the Hawke</span>
+      </div>
+      <div class="about">
+        <figure class="photo framed"><img src="assets/photos/headshot.jpg" alt="Hunter Hawke on a rooftop at dusk, holding a boom pole with headphones around his neck" width="1000" height="1250" loading="lazy"></figure>
+        <div class="bio">
+          <p class="first">I listen for the story.</p>
+          <p>I’ve been creating and experimenting within film and music, my two favorite media, for over ten years. Since moving to NYC, working as a sound professional has deepened my understanding of both crafts.</p>
+          <p>Working up close with other creatives and technicians day in and day out has taught me to adapt to all kinds of working styles, so I can show up on any set and meet every production’s sound needs.</p>
+          <p>I also love writing, directing and producing when the right project comes along. In the hustle of it all, it’s important to keep our own creative worlds alive!</p>
+          <div class="sign"><img src="assets/icon-feather.png" alt=""><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
+        </div>
+      </div>
+
+      <div class="contact">
+        <div>
+          <span class="label">Reach out for a sound booking or about anything you’re working on!</span>
+          <a class="email" id="email" href="mailto:hunter@accipiterpictures.com">hunter@<wbr>accipiterpictures.com</a>
+          <div class="row"><button class="btn btn-line" id="copy" type="button">Copy email</button></div>
+        </div>
+        <nav class="links" aria-label="Elsewhere">
+          <a href="https://www.youtube.com/@AccipiterPictures" target="_blank" rel="noopener"><span class="lk"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.8 15.1V8.9L15.6 12z"/></svg>YouTube</span> <span aria-hidden="true">↗</span></a>
+          <a href="https://vimeo.com/accipiterpictures" target="_blank" rel="noopener"><span class="lk"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.1c-.1 2.1-1.6 5-4.4 8.6C15.7 19.5 13.3 21.4 11.3 21.4c-1.2 0-2.3-1.1-3.1-3.4L6.5 11.8C5.9 9.6 5.2 8.4 4.5 8.4c-.2 0-.7.3-1.6 1L2 8.2l2.9-2.6C6.2 4.5 7.2 3.9 7.9 3.8c1.5-.1 2.5.9 2.8 3.1.4 2.4.6 3.9.8 4.5.4 2 .9 2.9 1.4 2.9.4 0 1-.6 1.9-1.9.8-1.3 1.3-2.3 1.3-3 .1-1.1-.3-1.7-1.3-1.7-.5 0-.9.1-1.4.3.9-3 2.7-4.5 5.3-4.4 1.9.1 2.8 1.3 2.7 3.6z"/></svg>Vimeo</span> <span aria-hidden="true">↗</span></a>
+          <a href="https://www.instagram.com/hunterxhawke" target="_blank" rel="noopener"><span class="lk"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.4" r="1.3" fill="currentColor"/></svg>Instagram</span> <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="foot-mark" href="#top" aria-label="Back to top"><img src="assets/icon-hand-bird.png" alt="" width="565" height="600"></a>
+    <p>© <span id="yr">2026</span> Accipiter Pictures · Hunter Hawke Sound · NYC and Beyond</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  // Waveforms: bars with varied peak heights
+  // Woodcut waveforms: thin bars with border-edge texture, uneven widths, a slight hand-set tilt
+  document.querySelectorAll('.wave').forEach(function (wave) {
+    var n = +wave.dataset.bars; if (window.innerWidth < 600) n = Math.round(n / 2);
+    var seed = 7;
+    function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+    for (var i = 0; i < n; i++) {
+      var bar = document.createElement('i');
+      var h = 22 + Math.abs(Math.sin(i * 0.37) * Math.cos(i * 0.11)) * 70 + rnd() * 8;
+      bar.style.setProperty('--h', h.toFixed(0) + '%');
+      bar.style.setProperty('--w', (2 + rnd() * 2).toFixed(1) + 'px');
+      bar.style.setProperty('--m', 'url(assets/wave-edge-' + (1 + Math.floor(rnd() * 4)) + '.png)');
+      bar.style.setProperty('--r', ((rnd() - 0.5) * 3).toFixed(1) + 'deg');
+      bar.style.animationDuration = (1.2 + rnd() * 1.1).toFixed(2) + 's';
+      bar.style.animationDelay = (-rnd() * 2).toFixed(2) + 's';
+      if (i % 11 === 4) bar.classList.add('red');
+      else if (h > 70 || rnd() < 0.12) bar.classList.add('hot');
+      wave.appendChild(bar);
+    }
+  });
+  // Running timecode in the hero, 24 fps
+  (function () {
+    var tc = document.getElementById('tc');
+    if (!tc || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var t0 = performance.now();
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function tick(now) {
+      var f = Math.floor((now - t0) / (1000 / 24));
+      tc.textContent = pad(Math.floor(f / 86400) % 24) + ':' + pad(Math.floor(f / 1440) % 60) + ':' + pad(Math.floor(f / 24) % 60) + ':' + pad(f % 24);
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })();
+  (function () {
+    var btn = document.getElementById('copy'), email = document.getElementById('email');
+    btn.addEventListener('click', function () {
+      var text = email.textContent.trim();
+      function done(msg) { btn.textContent = msg; setTimeout(function () { btn.textContent = 'Copy email'; }, 2000); }
+      function fallback() {
+        var r = document.createRange(); r.selectNodeContents(email);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        done('Selected, press Copy');
+      }
+      try {
+        navigator.clipboard.writeText(text).then(function () { done('Copied'); }, fallback);
+      } catch (e) { fallback(); }
+    });
+  })();
+</script>
+</body>
+</html>
