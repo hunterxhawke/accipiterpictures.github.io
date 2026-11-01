@@ -9,7 +9,10 @@
 <meta name="description" content="Looking for Molly, a feature screenplay by Hunter Hawke. Hear the full live reading recorded at Rutgers Presbyterian Church, New York, September 28, 2026.">
 <meta property="og:title" content="Looking for Molly · Written by Hunter Hawke">
 <meta property="og:description" content="The full live reading of the feature script, recorded in New York on 09.28.26.">
-<meta property="og:image" content="https://accipiterpictures.com/assets/molly/og.jpg">
+<meta property="og:image" content="https://accipiterpictures.com/assets/molly/og-molly.jpg">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="1000">
+<meta property="og:image:alt" content="Looking for Molly key art: Molly on the phone, neon title">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../favicon.ico?v=4" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=4">
@@ -223,13 +226,18 @@
   .roll-label { display: block; margin-bottom: 26px; }
   .cast { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px clamp(32px, 6vw, 96px); max-width: 860px; margin: 0 auto; list-style: none; }
   .cast li { min-width: 0; }
-  .cast .n { display: block; font: 600 clamp(17px, 1.6vw, 19px)/1.3 var(--body); transition: color .2s; }
+  .cast .n { display: block; font: 600 clamp(17px, 1.6vw, 19px)/1.3 var(--body); color: var(--white); text-decoration: none; transition: color .2s, text-shadow .2s; }
+  .cast .ext, .crew .ext { margin-left: .35em; font-size: .75em; color: var(--ash); transition: color .2s; }
   .cast .r { display: block; margin-top: 3px; font-size: 14px; line-height: 1.45; color: var(--ash); text-wrap: balance; }
-  .cast li:hover .n { color: var(--neon); }
+  /* Only names that link somewhere react; the arrow says it opens their page */
+  a.n:hover, a.n:focus-visible, .crew dd a:hover, .crew dd a:focus-visible { color: var(--neon-hi, #ff5a78); text-shadow: 0 0 8px rgba(232, 52, 90, .45); outline: none; }
+  a.n:hover .ext, a.n:focus-visible .ext { color: inherit; }
   .crew { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px clamp(24px, 4vw, 56px); max-width: 860px; margin: clamp(40px, 5vw, 60px) auto 0; padding-top: clamp(32px, 4vw, 44px); }
   .crew > div { flex: 0 1 240px; }
   .crew dt { font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
   .crew dd { margin-top: 5px; font-size: 16px; line-height: 1.4; }
+  .crew dd a { color: var(--white); text-decoration: underline; text-decoration-color: rgba(143, 138, 132, .5); text-underline-offset: 4px; transition: color .2s, text-shadow .2s, text-decoration-color .2s; }
+  .crew dd a:hover, .crew dd a:focus-visible { text-decoration-color: currentColor; }
 
   /* Content note: one quiet line under the player links, red label inline */
   .note { margin-top: 14px; padding-top: 12px; text-align: left; font-size: 13px; line-height: 1.5; color: var(--ash); border-top: 3px solid transparent; border-image: var(--rule-dim) 100% 0 0 0 / 3px 0 0 0 stretch; }
@@ -379,29 +387,29 @@
 
       <span class="label roll-label">Read by</span>
       <ul class="cast">
-        <li><span class="n">Emma Broadbent</span><span class="r">Narration and action description</span></li>
-        <li><span class="n">Andrew Bourne</span><span class="r">Chris Kimball</span></li>
-        <li><span class="n">Alice Jokela</span><span class="r">Molly</span></li>
-        <li><span class="n">Hunter Hawke</span><span class="r">Paul Kimball</span></li>
-        <li><span class="n">Enid Graham</span><span class="r">Doc Kimball</span></li>
-        <li><span class="n">Lauren Guglielmello</span><span class="r">Lexie Kimball, Brianna, Claire</span></li>
-        <li><span class="n">Christopher Ryan</span><span class="r">Mr. Fabrizian, Mr. Granscheme, Chris Hansen</span></li>
-        <li><span class="n">Meg MacCary</span><span class="r">Lynne Fantile, Office Lady Karen</span></li>
-        <li><span class="n">Mia Vallet</span><span class="r">Grace Lanie</span></li>
-        <li><span class="n">Nicole Bates</span><span class="r">Penelope Weckers</span></li>
-        <li><span class="n">Ella Rain Bernarduci</span><span class="r">Camille, Vanessa, Kodie</span></li>
-        <li><span class="n">Zoe Zien</span><span class="r">Rosie, Alicia Allison</span></li>
-        <li><span class="n">Bob Laine</span><span class="r">Uncle Jason, Car Speaker, Phone Voice, Agent of the State, the School Police Officer, Stranger #3, Henry Allison</span></li>
-        <li><span class="n">Chris Straker</span><span class="r">Jonathan, Stranger #2, Stuwie, Waiter, Suited Administrator</span></li>
-        <li><span class="n">Rishi Mutalik</span><span class="r">Dennis, Stranger #1</span></li>
-        <li><span class="n">Sam Bianculli</span><span class="r">Nico, Molly’s Brother</span></li>
+        <li><a class="n" href="https://www.instagram.com/emm4broadbent/" target="_blank" rel="noopener" data-who="emma-broadbent">Emma Broadbent<span class="ext" aria-hidden="true">↗</span></a><span class="r">Narration and action description</span></li>
+        <li><a class="n" href="https://www.instagram.com/andrewbourne/" target="_blank" rel="noopener" data-who="andrew-bourne">Andrew Bourne<span class="ext" aria-hidden="true">↗</span></a><span class="r">Chris Kimball</span></li>
+        <li><a class="n" href="https://www.instagram.com/alicejokela/" target="_blank" rel="noopener" data-who="alice-jokela">Alice Jokela<span class="ext" aria-hidden="true">↗</span></a><span class="r">Molly</span></li>
+        <li><a class="n" href="https://www.instagram.com/hunterxhawke/" target="_blank" rel="noopener" data-who="hunter-hawke">Hunter Hawke<span class="ext" aria-hidden="true">↗</span></a><span class="r">Paul Kimball</span></li>
+        <li><a class="n" href="https://www.enidgraham.com/" target="_blank" rel="noopener" data-who="enid-graham">Enid Graham<span class="ext" aria-hidden="true">↗</span></a><span class="r">Doc Kimball</span></li>
+        <li><a class="n" href="https://www.instagram.com/lalalolla/" target="_blank" rel="noopener" data-who="lauren-guglielmello">Lauren Guglielmello<span class="ext" aria-hidden="true">↗</span></a><span class="r">Lexie Kimball, Brianna, Claire</span></li>
+        <li><a class="n" href="https://www.instagram.com/chris.d.ryan/" target="_blank" rel="noopener" data-who="christopher-ryan">Christopher Ryan<span class="ext" aria-hidden="true">↗</span></a><span class="r">Mr. Fabrizian, Mr. Granscheme, Chris Hansen</span></li>
+        <li><a class="n" href="https://www.megmaccary.com/" target="_blank" rel="noopener" data-who="meg-maccary">Meg MacCary<span class="ext" aria-hidden="true">↗</span></a><span class="r">Lynne Fantile, Office Lady Karen</span></li>
+        <li><a class="n" href="https://www.instagram.com/imia.__/" target="_blank" rel="noopener" data-who="mia-vallet">Mia Vallet<span class="ext" aria-hidden="true">↗</span></a><span class="r">Grace Lanie</span></li>
+        <li><a class="n" href="https://www.instagram.com/nicolebates_/" target="_blank" rel="noopener" data-who="nicole-bates">Nicole Bates<span class="ext" aria-hidden="true">↗</span></a><span class="r">Penelope Weckers</span></li>
+        <li><a class="n" href="https://ellarain.com/" target="_blank" rel="noopener" data-who="ella-rain-bernarduci">Ella Rain Bernarduci<span class="ext" aria-hidden="true">↗</span></a><span class="r">Camille, Vanessa, Kodie</span></li>
+        <li><a class="n" href="https://www.zoezien.com/" target="_blank" rel="noopener" data-who="zoe-zien">Zoe Zien<span class="ext" aria-hidden="true">↗</span></a><span class="r">Rosie, Alicia Allison</span></li>
+        <li><a class="n" href="https://www.instagram.com/madkingbob/" target="_blank" rel="noopener" data-who="bob-laine">Bob Laine<span class="ext" aria-hidden="true">↗</span></a><span class="r">Uncle Jason, Car Speaker, Phone Voice, Agent of the State, the School Police Officer, Stranger #3, Henry Allison</span></li>
+        <li><a class="n" href="https://www.instagram.com/chrisjasonstraker/" target="_blank" rel="noopener" data-who="chris-straker">Chris Straker<span class="ext" aria-hidden="true">↗</span></a><span class="r">Jonathan, Stranger #2, Stuwie, Waiter, Suited Administrator</span></li>
+        <li><a class="n" href="https://www.instagram.com/rishimutalik/" target="_blank" rel="noopener" data-who="rishi-mutalik">Rishi Mutalik<span class="ext" aria-hidden="true">↗</span></a><span class="r">Dennis, Stranger #1</span></li>
+        <li><a class="n" href="https://www.instagram.com/supervideoboy_/" target="_blank" rel="noopener" data-who="sam-bianculli">Sam Bianculli<span class="ext" aria-hidden="true">↗</span></a><span class="r">Nico, Molly’s Brother</span></li>
       </ul>
 
       <dl class="crew rule-top">
-        <div><dt>Produced by</dt><dd>Peter Rinaldi and Maxwell di Paolo</dd></div>
-        <div><dt>Associate producer</dt><dd>Eduardo Perez</dd></div>
-        <div><dt>Live sound mix and recording</dt><dd>Maxwell di Paolo and Eduardo Perez</dd></div>
-        <div><dt>Dialogue editing and post mix</dt><dd>Lucas Pumarejo</dd></div>
+        <div><dt>Produced by</dt><dd><a href="https://www.instagram.com/backtoonepodcast/" target="_blank" rel="noopener" data-who="peter-rinaldi">Peter Rinaldi</a> and <a href="https://www.instagram.com/m4xw311/" target="_blank" rel="noopener" data-who="maxwell-di-paolo">Maxwell di Paolo</a></dd></div>
+        <div><dt>Associate producer</dt><dd><a href="https://www.instagram.com/eddioperez/" target="_blank" rel="noopener" data-who="eduardo-perez">Eduardo Perez</a></dd></div>
+        <div><dt>Live sound mix and recording</dt><dd><a href="https://www.instagram.com/m4xw311/" target="_blank" rel="noopener" data-who="maxwell-di-paolo">Maxwell di Paolo</a> and <a href="https://www.instagram.com/eddioperez/" target="_blank" rel="noopener" data-who="eduardo-perez">Eduardo Perez</a></dd></div>
+        <div><dt>Dialogue editing and post mix</dt><dd><a href="https://www.lucaspumarejo.com/" target="_blank" rel="noopener" data-who="lucas-pumarejo">Lucas Pumarejo</a></dd></div>
         <div><dt>Reference visuals</dt><dd>James Kolsby</dd></div>
       </dl>
     </div>
@@ -697,7 +705,8 @@
   if ('mediaSession' in navigator) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: 'Looking for Molly · Live Reading', artist: 'Hunter Hawke', album: 'Rutgers Presbyterian Church · 09.28.26',
-      artwork: [{ src: new URL('../assets/molly/og.jpg', document.baseURI).href, sizes: '1200x1200', type: 'image/jpeg' }]
+      artwork: [{ src: new URL('../assets/molly/artwork-512.jpg', document.baseURI).href, sizes: '512x512', type: 'image/jpeg' },
+                { src: new URL('../assets/molly/artwork-1024.jpg', document.baseURI).href, sizes: '1024x1024', type: 'image/jpeg' }]
     });
     var ms = navigator.mediaSession;
     ms.setActionHandler('play', function () { audio.play(); });
@@ -787,6 +796,7 @@
   audio.addEventListener('ended', function () { closeSpan(); logEvent('ended', {}); });
   ['dl-script', 'dl-script-2', 'dl-script-3'].forEach(function (id) { var a = document.getElementById(id); if (a) a.addEventListener('click', function () { logEvent('download', {}); flush(); }); });
   document.getElementById('copy').addEventListener('click', function () { logEvent('copy-email', {}); });
+  document.querySelectorAll('a[data-who]').forEach(function (a) { a.addEventListener('click', function () { logEvent('link', { who: a.getAttribute('data-who') }); flush(true); }); });
   logEvent('visit', { hash: location.hash.slice(1) });
   flush();
   setInterval(function () { flush(); }, 15000);
