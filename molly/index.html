@@ -488,6 +488,8 @@
     if (Math.abs(dx) > 40) go(at + (dx < 0 ? 1 : -1));
   });
 
+  // The player and listener stats run in their own scope, so their names can't clash with the marquee and gallery code above.
+  (function () {
   // ---------- The reading player ----------
   var CHAPTERS = [
     { id: 'introduction', name: 'Introduction', t: 0 },
@@ -510,7 +512,7 @@
     var li = document.createElement('li'), b = document.createElement('button');
     b.type = 'button'; b.dataset.t = c.t; b.dataset.id = c.id;
     b.innerHTML = '<span class="ct">' + fmt(c.t) + '</span><span class="cn">' + c.name + '</span>';
-    b.addEventListener('click', function () { seek(c.t, true); track('chapter', { ch: c.id }); history.replaceState(null, '', '#' + c.id); });
+    b.addEventListener('click', function () { seek(c.t, true); logEvent('chapter', { ch: c.id }); history.replaceState(null, '', '#' + c.id); });
     li.appendChild(b); list.appendChild(li);
   });
 
@@ -553,7 +555,7 @@
   document.getElementById('p-play').addEventListener('click', function () { audio.paused ? audio.play().catch(function () {}) : audio.pause(); });
   document.getElementById('p-back').addEventListener('click', function () { seek(audio.currentTime - 15); });
   document.getElementById('p-fwd').addEventListener('click', function () { seek(audio.currentTime + 30); });
-  elJump.addEventListener('click', function () { seek(166, true); track('chapter', { ch: 'reading' }); });
+  elJump.addEventListener('click', function () { seek(166, true); logEvent('chapter', { ch: 'reading' }); });
   var RATES = [1, 1.25, 1.5, 0.85], ri = 0;
   rateBtn.addEventListener('click', function () { ri = (ri + 1) % RATES.length; audio.playbackRate = RATES[ri]; rateBtn.textContent = RATES[ri] + '×'; });
   audio.addEventListener('play', function () { player.classList.add('playing'); document.getElementById('p-play').setAttribute('aria-label', 'Pause'); });
@@ -631,7 +633,7 @@
   } catch (err) {}
   var session = Math.random().toString(36).slice(2, 10), queue = [];
   var device = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'phone' : 'computer';
-  function track(type, data) {
+  function logEvent(type, data) {
     if (!ENDPOINT) return;
     var ev = { type: type, at: new Date().toISOString() };
     for (var k in data) ev[k] = data[k];
@@ -648,7 +650,7 @@
   }
   // Heard time: contiguous stretches of normal playback; a jump or pause closes the stretch
   var spanA = null, lastT = 0;
-  function closeSpan() { if (spanA !== null && lastT - spanA >= 1) track('heard', { a: Math.round(spanA), b: Math.round(lastT) }); spanA = null; }
+  function closeSpan() { if (spanA !== null && lastT - spanA >= 1) logEvent('heard', { a: Math.round(spanA), b: Math.round(lastT) }); spanA = null; }
   audio.addEventListener('timeupdate', function () {
     if (audio.paused) return;
     var t = audio.currentTime;
@@ -657,17 +659,18 @@
     if (d < 0 || d > 3) { closeSpan(); spanA = t; }
     lastT = t;
   });
-  audio.addEventListener('play', function () { track('play', { t: Math.round(audio.currentTime) }); });
-  audio.addEventListener('pause', function () { track('pause', { t: Math.round(audio.currentTime) }); closeSpan(); });
+  audio.addEventListener('play', function () { logEvent('play', { t: Math.round(audio.currentTime) }); });
+  audio.addEventListener('pause', function () { logEvent('pause', { t: Math.round(audio.currentTime) }); closeSpan(); });
   audio.addEventListener('seeking', function () { closeSpan(); });
-  audio.addEventListener('ended', function () { closeSpan(); track('ended', {}); });
-  ['dl-script', 'dl-script-2'].forEach(function (id) { var a = document.getElementById(id); if (a) a.addEventListener('click', function () { track('download', {}); flush(); }); });
-  document.getElementById('copy').addEventListener('click', function () { track('copy-email', {}); });
-  track('visit', { hash: location.hash.slice(1) });
+  audio.addEventListener('ended', function () { closeSpan(); logEvent('ended', {}); });
+  ['dl-script', 'dl-script-2'].forEach(function (id) { var a = document.getElementById(id); if (a) a.addEventListener('click', function () { logEvent('download', {}); flush(); }); });
+  document.getElementById('copy').addEventListener('click', function () { logEvent('copy-email', {}); });
+  logEvent('visit', { hash: location.hash.slice(1) });
   flush();
   setInterval(function () { flush(); }, 15000);
   document.addEventListener('visibilitychange', function () { if (document.hidden) flush(true); });
   window.addEventListener('pagehide', function () { flush(true); });
+  })();
 
   // Woodcut waveform, same recipe as the main site (js/site.js), with paths for this folder.
   var edges = [1, 2, 3, 4].map(function (k) { return new URL('../assets/wave-edge-' + k + '.png', document.baseURI).href; });
