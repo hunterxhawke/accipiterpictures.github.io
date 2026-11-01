@@ -165,7 +165,8 @@
 
   /* ---------- The night: photos from the reading, one justified row; each opens in the gallery ---------- */
   .night-label { display: block; margin-bottom: 20px; }
-  .night { display: flex; gap: clamp(8px, 1vw, 14px); margin-bottom: clamp(48px, 6vw, 72px); }
+  .night { display: flex; gap: clamp(8px, 1vw, 14px); margin-bottom: clamp(8px, 1vw, 14px); }
+  .night-2 { margin-bottom: clamp(48px, 6vw, 72px); }
   .night button { position: relative; flex: var(--r) 1 0; aspect-ratio: var(--r); min-width: 0; padding: 0; border: 0; overflow: hidden; background: var(--soot); cursor: zoom-in; }
   .night img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
   .night button::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--neon); transition: box-shadow .25s var(--ease); pointer-events: none; }
@@ -314,6 +315,11 @@
         <button type="button" data-i="2" style="--r: 1.777"><img src="../assets/molly/night-stage-intro.webp" alt="Introductions in front of the seated cast" width="1800" height="1013" loading="lazy"></button>
         <button type="button" data-i="3" style="--r: 1.333"><img src="../assets/molly/night-cast.webp" alt="The cast mid-reading, scripts in hand" width="1800" height="1350" loading="lazy"></button>
       </div>
+      <div class="night night-2">
+        <button type="button" data-i="4" style="--r: 1.777"><img src="../assets/molly/night-still-welcome.webp" alt="Hunter Hawke addresses the audience from the stage, the cast seated behind him" width="1920" height="1080" loading="lazy"></button>
+        <button type="button" data-i="5" style="--r: 1.777"><img src="../assets/molly/night-still-producers.webp" alt="Introductions from the front of the stage" width="1920" height="1080" loading="lazy"></button>
+        <button type="button" data-i="6" style="--r: 1.777"><img src="../assets/molly/night-still-talk.webp" alt="A conversation in front of the seated cast" width="1920" height="1080" loading="lazy"></button>
+      </div>
 
       <span class="label roll-label">Read by</span>
       <ul class="cast">
@@ -443,7 +449,7 @@
   var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'),
       lbCount = document.getElementById('lb-count'), at = 0, opener = null, items = [];
   function list(nodes) { return nodes.map(function (n) { var im = n.querySelector('img'); return { src: n.dataset.full || im.getAttribute('src'), alt: im.alt }; }); }
-  var sets = { art: list(frames), night: list(Array.prototype.slice.call(document.querySelectorAll('#night button'))) };
+  var sets = { art: list(frames), night: list(Array.prototype.slice.call(document.querySelectorAll('.night button'))) };
   function go(i) {
     at = (i + items.length) % items.length;
     lbImg.src = items[at].src; lbImg.alt = items[at].alt;
@@ -452,7 +458,7 @@
   function open(set, i, from) { items = sets[set]; opener = from; go(i); lb.hidden = false; document.body.classList.add('lb-open'); document.getElementById('lb-close').focus(); }
   function close() { lb.hidden = true; document.body.classList.remove('lb-open'); if (opener && opener.getAttribute('aria-hidden') !== 'true') opener.focus(); }
   track.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && moved <= 8) open('art', +b.dataset.i, b); });
-  document.getElementById('night').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('night', +b.dataset.i, b); });
+  document.querySelectorAll('.night').forEach(function (row) { row.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('night', +b.dataset.i, b); }); });
   document.getElementById('lb-prev').addEventListener('click', function () { go(at - 1); });
   document.getElementById('lb-next').addEventListener('click', function () { go(at + 1); });
   document.getElementById('lb-close').addEventListener('click', close);
