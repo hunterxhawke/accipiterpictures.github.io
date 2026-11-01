@@ -125,7 +125,7 @@ img { max-width: 100%; height: auto; display: block; }
 .name { display: flex; justify-content: center; }
 .entry { display: grid; width: min(100%, 760px); padding: 14px 24px; cursor: default; outline: none; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
 .entry:focus-visible { border-image-source: url(../assets/border-3x2-b.png); }
-.entry .face { grid-area: 1 / 1; display: flex; align-items: center; min-width: 0; transition: opacity .5s ease, transform .6s var(--ease), filter .5s ease; }
+.entry .face { grid-area: 1 / 1; display: flex; will-change: opacity, transform; align-items: center; min-width: 0; transition: opacity .5s ease, transform .6s var(--ease), filter .5s ease; }
 .entry .def { gap: 8px 28px; }
 .entry .term { display: flex; flex-direction: column; flex: none; }
 .entry .word { font-size: clamp(26px, 2.6vw, 32px); line-height: 1; }
@@ -137,9 +137,12 @@ img { max-width: 100%; height: auto; display: block; }
 .entry .lid img { width: 100%; transform: scaleY(.08); transition: transform .5s cubic-bezier(.3, .7, .2, 1.25) .2s; }
 .entry .alt .hand { line-height: 1.2; white-space: nowrap; }
 .entry .hh-word { display: inline-block; height: 1.05em; width: auto; vertical-align: -.22em; margin-left: .1em; }
-.entry:is(:hover, :focus) .def { opacity: 0; transform: translateY(-14px); filter: blur(4px); }
-.entry:is(:hover, :focus) .alt { opacity: 1; transform: none; filter: none; transition-delay: .12s; }
-.entry:is(:hover, :focus) .lid img { transform: none; }
+/* .on is set by js/site.js: mouse hover, keyboard focus, or a tap on touch screens */
+.entry.on .def { opacity: 0; transform: translateY(-14px); filter: blur(4px); }
+.entry.on .alt { opacity: 1; transform: none; filter: none; transition-delay: .12s; }
+.entry.on .lid img { transform: none; }
+/* Touch screens: no blur. Mobile Safari can leave a blurred layer half-repainted. */
+@media (hover: none) { .entry .face { filter: none !important; } }
 
 /* ---------- Films ---------- */
 #films .intro { max-width: 34ch; margin: calc(clamp(36px, 5vw, 56px) * -.55) 0 clamp(32px, 4.5vw, 52px); font-size: clamp(19px, 1.8vw, 23px); }

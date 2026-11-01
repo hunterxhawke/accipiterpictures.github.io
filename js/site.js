@@ -14,6 +14,18 @@
     nav.classList.add('past-hero');
   }
 
+  // Definition card: flips to "An Accipiter is a Hunter Hawke" on mouse hover, keyboard focus,
+  // or a tap (touch screens toggle it, since sticky hover/focus on phones is unreliable).
+  var entry = document.querySelector('.entry');
+  if (entry) {
+    var flip = function (on) { entry.classList.toggle('on', on); };
+    entry.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') flip(true); });
+    entry.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') flip(false); });
+    entry.addEventListener('pointerup', function (e) { if (e.pointerType !== 'mouse') flip(!entry.classList.contains('on')); });
+    entry.addEventListener('keyup', function (e) { if (e.key === 'Tab') flip(true); });
+    entry.addEventListener('blur', function () { if (!entry.matches(':hover')) flip(false); });
+  }
+
   // Woodcut waveforms: thin bars masked with the edges of the woodcut borders,
   // uneven widths and a slight hand-set tilt. Seeded, so every visit looks the same.
   // Absolute URLs: a url() inside a custom property resolves against the stylesheet that uses it.
