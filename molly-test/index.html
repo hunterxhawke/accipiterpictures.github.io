@@ -124,6 +124,37 @@
   .p-chapters .cn { display: block; margin-top: 5px; font-size: 14px; line-height: 1.3; }
   .p-resume { margin-top: 10px; font-size: 13px; color: var(--ash); }
   .p-resume button { padding: 0; border: 0; background: none; color: var(--lav); font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+  /* End card: takes the waveform's place once the credits finish */
+  .p-end { margin-top: 16px; padding: clamp(18px, 3vw, 28px) 12px; text-align: center; }
+  .p-end-title { font: 600 clamp(28px, 4vw, 44px)/.9 var(--molly); text-transform: uppercase; letter-spacing: .01em;
+                 background: linear-gradient(90deg, #ff2b2b, var(--neon) 45%, #c4508c); -webkit-background-clip: text; background-clip: text; color: transparent;
+                 filter: drop-shadow(0 0 5px rgba(240, 50, 85, .6)) drop-shadow(0 0 16px rgba(232, 52, 90, .28)); }
+  .p-end p { max-width: 40ch; margin: 12px auto 0; font-size: 15px; color: var(--ash); }
+  .p-end .cta { margin-top: 20px; }
+  .p-end .again { display: inline-block; margin-top: 16px; padding: 0; border: 0; background: none; cursor: pointer; font: 400 14px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--lav); }
+  .p-end .again:hover, .p-end .again:focus-visible { outline: none; color: var(--white); }
+  .player.ended .p-wave, .player.ended .p-chapters, .player.ended .p-jump { display: none; }
+
+  /* Mini player: once the reading has started and the full player scrolls out of view */
+  .mini { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: rgba(0, 0, 0, .94); transform: translateY(110%); transition: transform .35s var(--ease);
+          padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+  .mini.on { transform: none; }
+  body.lb-open .mini { transform: translateY(110%); }
+  .mini-bar { position: absolute; left: 0; right: 0; top: 0; height: 3px; background: rgba(143, 138, 132, .25); cursor: pointer; }
+  .mini-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: linear-gradient(90deg, #ff2b2b, var(--neon) 45%, #c4508c); box-shadow: 0 0 8px rgba(232, 52, 90, .6); }
+  .mini-in { display: flex; align-items: center; gap: 14px; max-width: var(--max); margin: 0 auto; }
+  .mini .p-play { width: 42px; height: 42px; }
+  .mini .p-play svg { width: 16px; height: 16px; }
+  .mini.playing .i-play { display: none; }
+  .mini.playing .i-pause { display: block; }
+  .mini-txt { flex: 1; min-width: 0; }
+  .mini-title { font: 600 18px/1 var(--molly); text-transform: uppercase; letter-spacing: .02em; color: var(--white); }
+  .mini-sub { margin-top: 4px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font: 400 13px/1.2 var(--mono); color: var(--lav); font-variant-numeric: tabular-nums; }
+  .mini-up { flex: none; padding: 8px; border: 0; background: none; cursor: pointer; color: var(--ash); font: 400 13px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+  .mini-up:hover, .mini-up:focus-visible { outline: none; color: var(--white); }
+  /* keep the footer clear of the bar while it's showing */
+  body.mini-showing footer { padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
   .play-notes { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; margin-top: 12px; }
   .play-notes a { color: var(--ash); text-decoration: none; transition: color .2s; }
   .play-notes a:hover { color: var(--white); }
@@ -217,9 +248,10 @@
     .cast { grid-template-columns: 1fr; }
     .p-ctrls { width: 100%; justify-content: space-between; margin-left: 0; }
     .p-chapters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .mini-up span { display: none; }
   }
   /* Reduced motion: the sign is simply on, and the marquee only moves when the visitor moves it */
-  @media (prefers-reduced-motion: reduce) { .tube, .m-date, .m-alt, .m-head::before { animation: none !important; } }
+  @media (prefers-reduced-motion: reduce) { .tube, .m-date, .m-alt, .m-head::before { animation: none !important; } .mini { transition: none; } }
 </style>
 </head>
 <body>
@@ -279,6 +311,15 @@
             </div>
             <ul class="p-chapters" id="p-chapters"></ul>
             <p class="p-resume" id="p-resume" hidden>You left off at <span id="p-resume-t"></span>. <button type="button" id="p-resume-go">Pick up there</button></p>
+            <div class="p-end" id="p-end" hidden>
+              <div class="p-end-title">Thank you for listening</div>
+              <p>If <em>Molly</em> stayed with you, the script is yours to read, and I’d love to hear what you think.</p>
+              <div class="cta">
+                <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script-3">Download the script</a>
+                <a class="btn btn-line" href="#next">Get in touch</a>
+              </div>
+              <button type="button" class="again" id="p-again">↺ Listen again</button>
+            </div>
           </div>
           <div class="play-notes caps">
             <a href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script">Read the script · PDF ↓</a>
@@ -365,6 +406,21 @@
   </section>
 
 </main>
+
+<div class="mini" id="mini" aria-label="Now playing" role="region">
+  <div class="mini-bar" id="mini-bar"><i id="mini-fill"></i></div>
+  <div class="mini-in">
+    <button type="button" class="p-play" id="mini-play" aria-label="Pause">
+      <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+      <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
+    </button>
+    <div class="mini-txt">
+      <div class="mini-title">Looking for Molly</div>
+      <div class="mini-sub" id="mini-sub">0:00:00 · Introduction</div>
+    </div>
+    <button type="button" class="mini-up" id="mini-up" aria-label="Back to the player">↑ <span>Player</span></button>
+  </div>
+</div>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Gallery" hidden>
   <div class="lb-top"><span class="caps lb-count" id="lb-count"></span><button type="button" class="lb-btn" id="lb-close" aria-label="Close gallery">×</button></div>
@@ -504,7 +560,7 @@
   ];
   var PEAKS = [90,88,91,94,92,86,96,92,97,88,87,89,88,83,81,84,84,84,83,88,86,89,86,83,81,88,87,92,86,92,91,83,89,90,85,85,84,78,67,81,88,95,87,83,90,81,88,93,89,96,97,85,91,87,83,90,76,85,79,84,80,85,87,82,78,80,83,75,80,77,84,81,72,84,76,73,70,75,74,78,95,77,92,75,86,83,71,76,82,88,85,81,74,78,82,79,81,69,73,77,82,87,71,81,72,72,67,81,72,76,78,63,73,72,76,67,72,66,73,75,65,64,64,69,65,77,73,69,83,76,80,83,81,83,86,85,87,83,82,72,79,74,87,85,80,81,70,78,71,65,68,71,79,77,80,74,74,76,74,76,79,80,82,81,68,75,75,83,80,78,82,89,77,67,73,72,56,74,67,77,86,75,72,66,73,57,86,79,67,77,74,79,75,78,69,79,78,86,75,78,70,69,67,69,74,65,66,75,80,75,73,78,85,80,82,82,83,86,76,81,66,68,81,74,88,90,89,85,87,86,91,66,83,80,86,91,89,85,86,95,89,83,87,89,94,86,82,82,74,78,62,85,79,75,80,72,71,62,72,71,69,90,86,94,95,76,92,81,75,68,75,78,73,82,86,77,78,74,67,70,67,79,82,84,86,89,91,75,80,80,79,87,76,74,79,77,75,78,73,86,82,88,75,72,76,75,78,74,71,72,76,86,77,75,91,80,83,85,74,84,71,67,77,72,70,73,66,77,86,69,72,73,86,83,72,59,83,68,72,82,84,83,77,81,73,82,72,75,81,83,73,82,68,83,84,76,77,64,75,64,74,72,73,73,71,84,81,84,83,82,86,80,82,81,73,75,65,68,74,85,88,90,87,82,82,93,97,88,86,82,87,81,80,75,77,68,79,76,69,71,72,74,79,77,87,81,88,87,81,89,88,82,71,77,69,63,83,88,88,81,94,87,87,95,97,82,82,82,78,83,95,94,78,77,78,79,76,71,82,77,86,98,82,71,82,80,72,76,72,68,72,63,65,89,70,78,80,81,67,79,89,73,62,71,78,74,74,84,85,83,88,81,84,86,70,77,71,78,73,81,74,73,78,89,83,67,67,78,64,79,76,67,69,80,77,76,87,79,85,82,87,74,77,70,78,79,79,82,86,84,70,73,68,74,84,82,96,88,75,77,70,70,77,78,76,77,81,85,89,84,79,90,89,76,87,80,75,70,82,90,79,76,89,85,88,96,82,83,72,77,86,68,73,87,72,73,77,83,87,83,75,78,73,62,72,78,81,83,72,77,69,79,67,62,75,77,65,69,74,69,80,95,78,90,80,76,91,92,82,92,89,93,83,97,85,78,79,81,89,91,88,94,94,95,89,88,84,79,78,86,81,81,76,85,76,80,68,73,78,75,82,88,77,72,77,76,70,75,71,71,71,70,77,75,78,81,73,79,82,86,78,68,59,54,56,59,59,70,77,60,54,58,71,69,72,89,74,78,76,84,81,73,71,71,59,78,69,74,60,63,69,73,74,74,79,90,78,74,89,92,82,89,79,83,70,69,74,78,77,74,83,74,88,92,83,79,69,82,89,92,89,88,88,99,95,84,82,83,90,92,83,86,79,83,83,79,77,78,76,73,76,76,63,68,67,62,69,65,75,70,63,70,70,72,70,73,71,73,70,71,57,72,73,83,67,66,65,78,62,81,58,72,83,96,80,79,64,75,75,71,85,86,68,72,77,76,78,72,81,87,87,95,90,90,75,77,74,80,66,79,81,74,82,78,81,77,76,75,70,67,79,83,79,64,74,77,87,74,66,78,62,99,92,76,75,77,74,93,81,95,91,86,83,73,75,80,80,77,70,72,80,91,78,86,91,99,77,75,81,75,72,76,74,71,80,79,89,81,91,78,75,76,87,83,82,95,75,79,82,77,76,74,73,82,81,82,76,72,74,79,76,66,89,75,84,80,66,81,91,70,79,68,74,71,70,77,79,73,80,73,70,66,77,87,81,83,79,63,63,64,76,83,76,82,89,77,70,80,80,81,87,84,82,75,77,72,63,59,78,68,60,70,73,64,69,62,57,64,64,69,68,82,73,87,76,76,62,67,81,73,74,79,74,69,68,68,64,66,77,77,74,79,63,62,69,85,94,85,91,79,69,82,82,81,64,65,79,80,81,82,98,91,72,62,81,76,76,79,62,85,78,74,74,77,77,71,65,70,61,64,75,74,80,79,76,78,72,66,66,74,89,71,77,55,71,61,69,62,74,71,73,58,57,76,77,68,68,61,75,74,75,78,73,76,81,82,74,75,69,69,66,78,63,45,57,50,63,64,60,65,70,66,72,63,71,73,80,84,73,76,77,72,76,71,70,67,75,73,73,74,79,94,99,82,84,95,94,91,87,89,93,72,94,91,79,77,82,91,92,97,94,92,99,94,80,93,81,67,65,62,77,71,70,57,65,72,71,70,77,72,80,66,73,64,62,69,65,64,73,71,71,64,73,70,73,51,90,90,76,65,64,89,93,89,89,82,88,87,78,71,60,66,73,73,74,73,69,67,81,75,71,79,80,62,71,76,78,70,74,77,70,72,81,76,83,80,82,86,84,71,80,69,80,74,67,87,86,75,72,83,70,74,60,78,80,76,72,78,79,69,81,75,61,52,86,97,97,93,94,99,95,90,99,94,91,97,99,94,94,99,91,97,94,90,87,89,95,86,6,2];
   var audio = document.getElementById('audio'), player = document.getElementById('player');
-  var DUR = 5471.15, KEY = 'lfm-position';
+  var DUR = 5471.15, KEY = 'lfm-position', reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function dur() { return isFinite(audio.duration) && audio.duration > 0 ? audio.duration : DUR; }
   function fmt(t) { t = Math.max(0, Math.floor(t)); var h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), sec = t % 60; return h + ':' + ('0' + m).slice(-2) + ':' + ('0' + sec).slice(-2); }
   function chapterAt(t) { var c = CHAPTERS[0]; CHAPTERS.forEach(function (x) { if (t >= x.t) c = x; }); return c; }
@@ -626,6 +682,35 @@
   }
   update();
 
+  // ---------- End card: shown when the recording finishes ----------
+  var endCard = document.getElementById('p-end');
+  audio.addEventListener('ended', function () { player.classList.add('ended'); endCard.hidden = false; try { localStorage.removeItem(KEY); } catch (err) {} });
+  audio.addEventListener('play', function () { player.classList.remove('ended'); endCard.hidden = true; });
+  document.getElementById('p-again').addEventListener('click', function () { seek(0, true); });
+
+  // ---------- Mini player: appears once listening has started and the full player is off screen ----------
+  var mini = document.getElementById('mini'), miniFill = document.getElementById('mini-fill'), miniSub = document.getElementById('mini-sub');
+  var started = false, playerVisible = true;
+  function miniShow() {
+    var on = started && !playerVisible && !player.classList.contains('ended');
+    mini.classList.toggle('on', on); document.body.classList.toggle('mini-showing', on);
+    mini.setAttribute('aria-hidden', on ? 'false' : 'true');
+    mini.querySelectorAll('button').forEach(function (b) { b.tabIndex = on ? 0 : -1; });
+  }
+  function miniUpdate() {
+    miniFill.style.width = (audio.currentTime / dur() * 100).toFixed(2) + '%';
+    miniSub.textContent = fmt(audio.currentTime) + ' · ' + chapterAt(audio.currentTime).name;
+  }
+  audio.addEventListener('play', function () { started = true; mini.classList.add('playing'); document.getElementById('mini-play').setAttribute('aria-label', 'Pause'); miniShow(); });
+  audio.addEventListener('pause', function () { mini.classList.remove('playing'); document.getElementById('mini-play').setAttribute('aria-label', 'Play'); });
+  audio.addEventListener('ended', miniShow);
+  audio.addEventListener('timeupdate', miniUpdate);
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { playerVisible = en[0].isIntersecting; miniShow(); }, { threshold: 0.15 }).observe(player);
+  document.getElementById('mini-play').addEventListener('click', function () { audio.paused ? audio.play().catch(function () {}) : audio.pause(); });
+  document.getElementById('mini-up').addEventListener('click', function () { player.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' }); });
+  document.getElementById('mini-bar').addEventListener('click', function (e) { var b = this.getBoundingClientRect(); seek((e.clientX - b.left) / b.width * dur()); });
+  miniUpdate(); miniShow();
+
   // ---------- Listener stats ----------
   // Each recipient's link carries a short code (?r=k7q2). The page sends the code, never a name; the private
   // Google Sheet matches codes to people. It logs visits, play and pause, chapter jumps, downloads, email copies,
@@ -668,7 +753,7 @@
   audio.addEventListener('pause', function () { logEvent('pause', { t: Math.round(audio.currentTime) }); closeSpan(); });
   audio.addEventListener('seeking', function () { closeSpan(); });
   audio.addEventListener('ended', function () { closeSpan(); logEvent('ended', {}); });
-  ['dl-script', 'dl-script-2'].forEach(function (id) { var a = document.getElementById(id); if (a) a.addEventListener('click', function () { logEvent('download', {}); flush(); }); });
+  ['dl-script', 'dl-script-2', 'dl-script-3'].forEach(function (id) { var a = document.getElementById(id); if (a) a.addEventListener('click', function () { logEvent('download', {}); flush(); }); });
   document.getElementById('copy').addEventListener('click', function () { logEvent('copy-email', {}); });
   logEvent('visit', { hash: location.hash.slice(1) });
   flush();
