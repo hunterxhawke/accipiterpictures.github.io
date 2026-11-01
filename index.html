@@ -193,12 +193,13 @@
   .film a:hover .shot { transform: scale(1.03); }
   .tile .still { position: absolute; left: 6%; bottom: 7%; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: .55; }
   .film a:hover .eye { transform: scale(1.12); }
-  .film-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; margin-top: 16px; }
-  .film-title { font-size: clamp(34px, 4vw, 48px); transition: color .2s; }
+  .film-meta { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+  .film-title { font-size: clamp(34px, 4vw, 48px); line-height: .95; transition: color .2s; text-wrap: balance; }
   .film:first-child .film-title { font-size: clamp(44px, 6vw, 76px); }
   .film a:hover .film-title, .film a:focus-visible .film-title { color: var(--fhi, var(--white)); }
-  .film-title small { font-size: 0.5em; color: var(--ash); margin-left: 6px; }
-  .film-role { font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ash); white-space: nowrap; }
+  .film-sub { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 8px; border-top: 3px solid transparent; border-image: url(assets/rule-h-dim.png) 100% 0 0 0 / 3px 0 0 0 stretch; }
+  .film-year { flex: none; font-weight: 600; font-size: 12px; letter-spacing: 0.14em; color: var(--white); font-variant-numeric: tabular-nums; }
+  .film-role { font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ash); }
 
   /* ---------- Sound ---------- */
   .sound-head { display: grid; grid-template-columns: auto 1fr; gap: clamp(28px, 5vw, 72px); align-items: center; margin-bottom: clamp(32px, 4.5vw, 56px); }
@@ -407,31 +408,31 @@
       <div class="films">
         <article class="film" style="--fhi:#e5483a">
           <a><div class="tile has-still"><img class="shot" src="assets/stills/big-slop-sap.jpg" alt="Still from Big Slop Sap" width="1600" height="900" loading="lazy"><span class="frame"></span></div>
-          <div class="film-meta"><span class="film-title display">Big Slop Sap</span><span class="film-role">Writer/Director · 2025</span></div></a>
+          <div class="film-meta"><span class="film-title display">Big Slop Sap</span><span class="film-sub"><span class="film-role">Writer/Director</span><span class="film-year">2025</span></span></div></a>
         </article>
         <article class="film" style="--fhi:#f2cf63">
           <a href="https://vimeo.com/304978461" target="_blank" rel="noopener" aria-label="Watch Lemon Fresh"><div class="tile has-still"><img class="shot" src="assets/stills/lemon-fresh.jpg" alt="Still from Lemon Fresh" width="1280" height="720" loading="lazy"><span class="frame"></span></div>
-          <div class="film-meta"><span class="film-title display">Lemon Fresh</span><span class="film-role">Writer/Director · 2018</span></div></a>
+          <div class="film-meta"><span class="film-title display">Lemon Fresh</span><span class="film-sub"><span class="film-role">Writer/Director</span><span class="film-year">2018</span></span></div></a>
         </article>
         <article class="film" style="--fhi:#e8834f">
           <a><div class="tile has-still"><img class="shot" src="assets/stills/intimacy.jpg" alt="Still from intimacy." width="1280" height="720" loading="lazy"><span class="frame"></span></div>
-          <div class="film-meta"><span class="film-title display">intimacy.</span><span class="film-role">Writer/Director · 2024</span></div></a>
+          <div class="film-meta"><span class="film-title display">intimacy.</span><span class="film-sub"><span class="film-role">Writer/Director</span><span class="film-year">2024</span></span></div></a>
         </article>
         <article class="film" style="--fhi:#6ea3cf">
           <a href="https://www.youtube.com/watch?v=PYgFz4vdVSE" target="_blank" rel="noopener" aria-label="Watch Private Message"><div class="tile has-still"><img class="shot" src="assets/stills/private-message.jpg" alt="Still from Private Message" width="1280" height="720" loading="lazy"><span class="frame"></span></div>
-          <div class="film-meta"><span class="film-title display">Private Message</span><span class="film-role">Writer/Director · 2021</span></div></a>
+          <div class="film-meta"><span class="film-title display">Private Message</span><span class="film-sub"><span class="film-role">Writer/Director</span><span class="film-year">2021</span></span></div></a>
         </article>
         <article class="film" style="--fhi:#a9a9a9">
           <a href="https://vimeo.com/467856478" target="_blank" rel="noopener" aria-label="Watch KEN?"><div class="tile has-still"><img class="shot" src="assets/stills/ken.jpg" alt="Still from KEN?" width="1280" height="720" loading="lazy"><span class="frame"></span></div>
-          <div class="film-meta"><span class="film-title display">KEN?</span><span class="film-role">Writer/Director · 2020</span></div></a>
+          <div class="film-meta"><span class="film-title display">KEN?</span><span class="film-sub"><span class="film-role">Writer/Director</span><span class="film-year">2020</span></span></div></a>
         </article>
         <article class="film" style="--fhi:#ec9aa4">
           <a href="https://www.youtube.com/watch?v=iqhedGzMvAc" target="_blank" rel="noopener" aria-label="Watch Ode to Cats"><div class="tile has-still"><img class="shot" src="assets/stills/ode-to-cats.jpg" alt="Still from Ode to Cats" width="1280" height="720" loading="lazy"><span class="frame"></span></div>
-          <div class="film-meta"><span class="film-title display">Ode to Cats<small>Teaser</small></span><span class="film-role">Writer/Director · 2021</span></div></a>
+          <div class="film-meta"><span class="film-title display">Ode to Cats</span><span class="film-sub"><span class="film-role">Writer/Director · Teaser</span><span class="film-year">2021</span></span></div></a>
         </article>
         <article class="film" style="--fhi:#d4553e">
           <a href="https://www.youtube.com/watch?v=RqrV6_0_j_s" target="_blank" rel="noopener" aria-label="Watch Just Noise"><div class="tile has-still"><img class="shot" src="assets/stills/just-noise.jpg" alt="Still from Just Noise" width="1280" height="720" loading="lazy"><span class="frame"></span></div>
-          <div class="film-meta"><span class="film-title display">Just Noise</span><span class="film-role">Writer/Director · 2018</span></div></a>
+          <div class="film-meta"><span class="film-title display">Just Noise</span><span class="film-sub"><span class="film-role">Writer/Director</span><span class="film-year">2018</span></span></div></a>
         </article>
       </div>
     </div>
