@@ -40,14 +40,14 @@
   /* The sign. Before it lights, the tubes read as unlit glass. LOOKING, FOR and MOLLY strike one after another,
      each with a stutter; the wall glow behind rises with them; the date tube comes on last. Afterwards the O in MOLLY
      buzzes now and then, the way a real sign with one tired tube does. Glow stays tight to the glass. */
-  /* Banner of the mirrored key art behind the sign: full width, repeating, feathered top and bottom,
+  /* Banner of the mirrored key art behind the sign and logline: full width, repeating, feathered top and bottom,
      and cleared in the middle so the lettering sits on black between the two sides */
   .m-banner {
-    position: absolute; z-index: -2; left: 50%; top: -14%; bottom: -14%; width: 100vw; transform: translateX(-50%); pointer-events: none;
+    position: absolute; z-index: -2; left: 50%; top: -60px; bottom: var(--banner-bottom, -60px); width: 100vw; transform: translateX(-50%); pointer-events: none;
     background: url(../assets/molly/banner-mirror.webp) center / auto 100% repeat-x; opacity: .62;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 24%, #000 76%, transparent 100%), linear-gradient(to right, #000 0, #000 14%, transparent 33%, transparent 67%, #000 86%, #000 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 24%, #000 76%, transparent 100%), linear-gradient(to right, #000 0, #000 12%, transparent 31%, transparent 69%, #000 88%, #000 100%);
     -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(to bottom, transparent 0, #000 24%, #000 76%, transparent 100%), linear-gradient(to right, #000 0, #000 14%, transparent 33%, transparent 67%, #000 86%, #000 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 24%, #000 76%, transparent 100%), linear-gradient(to right, #000 0, #000 12%, transparent 31%, transparent 69%, #000 88%, #000 100%);
     mask-composite: intersect;
     animation: banner-in 1.8s ease-out .2s both;
   }
@@ -252,7 +252,7 @@
   }
   @media (max-width: 600px) {
     .m-head { padding-top: 150px; }
-    .m-banner { top: -24px; bottom: auto; height: 190px; background-size: auto 100%;
+    .m-banner { top: -24px; bottom: auto !important; height: 190px; background-size: auto 100%;
                 -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 30%, #000 62%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 30%, #000 62%, transparent 100%); }
     .marquee { --fh: 300px; }
     .night { overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--gut)); padding-inline: var(--gut); scrollbar-width: none; }
@@ -458,6 +458,18 @@
 (function () {
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Title banner: reaches from above the date to just past the logline
+  (function () {
+    var head = document.querySelector('.m-head'), logline = document.querySelector('.logline');
+    if (!head || !logline) return;
+    function size() {
+      var below = logline.getBoundingClientRect().bottom - head.getBoundingClientRect().bottom;
+      head.style.setProperty('--banner-bottom', -Math.round(below + 70) + 'px');
+    }
+    size(); window.addEventListener('load', size);
+    if ('ResizeObserver' in window) new ResizeObserver(size).observe(document.querySelector('.m-hero')); else window.addEventListener('resize', size);
+  })();
 
   // Key art marquee: a second, hidden copy of the frames makes the loop seamless.
   var marquee = document.querySelector('.marquee'), track = document.getElementById('track');
