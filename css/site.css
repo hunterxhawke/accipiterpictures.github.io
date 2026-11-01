@@ -251,6 +251,7 @@ img { max-width: 100%; height: auto; display: block; }
 /* ---------- About ---------- */
 .about { display: grid; grid-template-columns: 5fr 7fr; align-items: start; gap: clamp(32px, 6vw, 88px); }
 /* Headshot: hover reveals "Meet Hunter" and links to Instagram */
+.credit { margin-top: 10px; font-size: 12px; letter-spacing: .02em; color: var(--ash); }
 .meet a { display: block; height: 100%; }
 .meet img { transition: transform .6s var(--ease), filter .4s; }
 .meet .cap {
@@ -290,7 +291,7 @@ footer p { font-size: 14px; color: var(--ash); }
 /* ---------- Tablet ---------- */
 @media (max-width: 860px) {
   .about, .sound-head { grid-template-columns: 1fr; }
-  .about .photo { max-width: 380px; }
+  .about .portrait { max-width: 380px; }
   .row-grid { --per: 3; }
   .gear { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .gear > div:nth-child(3) { padding-left: 0; border: 0; border-image: none; }
