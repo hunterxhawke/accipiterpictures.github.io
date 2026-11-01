@@ -175,11 +175,14 @@
   .mini .p-play svg { width: 16px; height: 16px; }
   .mini.playing .i-play { display: none; }
   .mini.playing .i-pause { display: block; }
-  .mini-txt { flex: 1; min-width: 0; }
+  /* Tapping anywhere on the bar except play/pause glides back up to the full player */
+  .mini-txt { flex: 1; min-width: 0; align-self: stretch; display: flex; flex-direction: column; justify-content: center; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
+  .mini-txt:focus-visible { outline: 1px solid var(--lav); outline-offset: 4px; }
+  .mini:hover .mini-title { text-shadow: 0 0 8px rgba(232, 52, 90, .45); }
   .mini-title { font: 600 18px/1 var(--molly); text-transform: uppercase; letter-spacing: .02em; color: var(--white); }
+  .mini-title, .mini-sub { display: block; }
+  .mini { cursor: pointer; }
   .mini-sub { margin-top: 4px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font: 400 13px/1.2 var(--mono); color: var(--lav); font-variant-numeric: tabular-nums; }
-  .mini-up { flex: none; padding: 8px; border: 0; background: none; cursor: pointer; color: var(--ash); font: 400 13px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
-  .mini-up:hover, .mini-up:focus-visible { outline: none; color: var(--white); }
   /* keep the footer clear of the bar while it's showing */
   body.mini-showing footer { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
   .play-notes { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; margin-top: 12px; }
@@ -314,7 +317,6 @@
     .cast { grid-template-columns: 1fr; }
     .p-ctrls { width: 100%; justify-content: space-between; margin-left: 0; }
     .p-chapters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .mini-up span { display: none; }
   }
   /* Reduced motion: the sign is simply on, and the marquee only moves when the visitor moves it */
   @media (prefers-reduced-motion: reduce) { .tube, .m-date, .m-alt, .m-head::before, .m-banner { animation: none !important; } .mini { transition: none; } }
@@ -498,11 +500,10 @@
       <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
       <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
     </button>
-    <div class="mini-txt">
-      <div class="mini-title">Looking for Molly</div>
-      <div class="mini-sub" id="mini-sub">0:00:00 · Introduction</div>
-    </div>
-    <button type="button" class="mini-up" id="mini-up" aria-label="Back to the player">↑ <span>Player</span></button>
+    <button type="button" class="mini-txt" id="mini-go" aria-label="Back to the full player">
+      <span class="mini-title">Looking for Molly</span>
+      <span class="mini-sub" id="mini-sub">0:00:00 · Introduction</span>
+    </button>
   </div>
 </div>
 
@@ -804,7 +805,23 @@
   audio.addEventListener('timeupdate', miniUpdate);
   if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { playerVisible = en[0].isIntersecting; miniShow(); }, { threshold: 0.15 }).observe(player);
   document.getElementById('mini-play').addEventListener('click', function () { audio.paused ? audio.play().catch(function () {}) : audio.pause(); });
-  document.getElementById('mini-up').addEventListener('click', function () { player.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' }); });
+  // Tap the bar (anywhere but play/pause or the progress line) to glide back to the full player, easing in and out
+  function glideToPlayer() {
+    var b = player.getBoundingClientRect(), target = window.scrollY + b.top - Math.max(0, (window.innerHeight - b.height) / 2);
+    target = Math.max(0, Math.min(target, document.documentElement.scrollHeight - window.innerHeight));
+    if (reducedMotion) { window.scrollTo(0, target); return; }
+    var from = window.scrollY, dist = target - from, ms = Math.min(1100, 450 + Math.abs(dist) * 0.25), t0 = performance.now();
+    function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+    (function step(now) {
+      var k = Math.min(1, (now - t0) / ms);
+      window.scrollTo(0, from + dist * ease(k));
+      if (k < 1) requestAnimationFrame(step);
+    })(t0);
+  }
+  mini.addEventListener('click', function (e) {
+    if (e.target.closest('#mini-play') || e.target.closest('#mini-bar')) return;
+    glideToPlayer();
+  });
   document.getElementById('mini-bar').addEventListener('click', function (e) { var b = this.getBoundingClientRect(); seek((e.clientX - b.left) / b.width * dur()); });
   miniUpdate(); miniShow();
 
