@@ -171,7 +171,7 @@ img { max-width: 100%; height: auto; display: block; }
 .services { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .svc { padding: 24px clamp(14px, 2vw, 24px) 28px 0; }
 .svc + .svc { padding-left: clamp(14px, 2vw, 24px); border-left: 3px solid transparent; border-image: var(--rule-v) 0 0 0 100% / 0 0 0 3px stretch; }
-.svc h3 { margin-bottom: 10px; font: 800 clamp(22px, 2.8vw, 36px)/1 var(--display); text-transform: uppercase; }
+.svc h3 { margin-bottom: 8px; font: 600 clamp(17px, 1.7vw, 22px)/1.2 var(--body); letter-spacing: .06em; text-transform: uppercase; }
 .svc p { font-size: clamp(14px, 1.3vw, 17px); color: var(--ash); }
 .sound-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 32px; }
 .sound-cta .hand { font-size: clamp(24px, 2.4vw, 30px); }
@@ -216,7 +216,7 @@ img { max-width: 100%; height: auto; display: block; }
 .poster img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease); }
 .poster:hover img { transform: scale(1.03); }
 .poster figcaption { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
-.poster .t { font: 800 22px/1 var(--display); text-transform: uppercase; text-wrap: balance; }
+.poster .t { font: 600 16px/1.25 var(--body); text-wrap: balance; }
 .poster .meta { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 8px; }
 .poster .caps { font-size: 11px; line-height: 1.5; }
 .poster .year { font-size: 11px; }
@@ -242,7 +242,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 .contact { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px 40px; margin-top: clamp(56px, 7vw, 88px); padding-top: clamp(28px, 4vw, 44px); }
 .contact .label { display: block; margin-bottom: 10px; }
-.email { font: 800 clamp(28px, 5.2vw, 68px)/1 var(--display); text-transform: uppercase; text-decoration: none; overflow-wrap: anywhere; user-select: all; }
+.email { font: 600 clamp(24px, 3.8vw, 48px)/1.1 var(--body); letter-spacing: -.01em; text-decoration: none; overflow-wrap: anywhere; user-select: all; }
 .email:hover { text-decoration: underline 3px; text-underline-offset: 8px; }
 .contact .row { margin-top: 18px; }
 .links { display: flex; flex-direction: column; gap: 10px; min-width: 180px; }
@@ -289,7 +289,7 @@ footer p { font-size: 14px; color: var(--ash); }
   .bts .photo:first-child { aspect-ratio: 4 / 5; }
   .bts .photo.wide { aspect-ratio: 3 / 2; }
   .bts .photo.fill { aspect-ratio: 1; }
-  .poster .t { font-size: 18px; }
+  .poster .t { font-size: 15px; }
   .gear { grid-template-columns: 1fr; }
   .gear > div, .gear > div + div { padding: 18px 0 4px; border: 0; border-image: none; }
   .bio .sign { font-size: 40px; }
