@@ -18,57 +18,54 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,600;1,400;1,600&family=Nanum+Brush+Script&display=swap">
+<!-- Molly title and date: closest free matches to the poster lettering -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600&family=Share+Tech+Mono&display=swap">
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="stylesheet" href="https://use.typekit.net/nvv1dxb.css">
 <link rel="stylesheet" href="../css/site.css?v=77831a5e">
 <style>
   /* Page-only additions. Everything else comes from the main site's stylesheet.
-     One poster-like opening screen, end credits, one closing. The title is the only big type.
-     Molly's neon (from the key art) appears only on the active thumbnail and on hover. */
-  :root { --neon: #e8345a; }
+     One poster-like opening screen, end credits, one closing. The title is the only big type,
+     and the only place Molly's neon lettering from the posters appears (plus a hover on the cast). */
+  :root { --neon: #e8345a; --lav: #b4b0e4; --molly: "Teko", var(--display); --mono: "Share Tech Mono", ui-monospace, monospace; }
   .nav .brand { opacity: 1; transform: none; pointer-events: auto; }
   .nav .secret { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
 
   /* ---------- Opening screen ---------- */
-  .m-hero { padding-block: clamp(32px, 5vw, 64px) clamp(32px, 5vw, 56px); }
-  .m-grid {
-    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-areas: "text art" "play art";
-    align-items: start; column-gap: clamp(32px, 5.5vw, 76px); row-gap: clamp(24px, 3vw, 36px);
+  .m-hero { padding-block: clamp(32px, 5vw, 60px) 0; }
+  .m-present { display: block; margin-bottom: clamp(14px, 2vw, 22px); }
+  /* The poster lettering, set straight: lavender date, neon red-to-pink title */
+  .m-date { display: block; font: 400 clamp(22px, 2.6vw, 34px)/1 var(--mono); letter-spacing: .04em; color: var(--lav); text-shadow: 0 0 10px rgba(169, 166, 216, .55); }
+  .m-title {
+    margin-top: 6px; font: 600 clamp(52px, 10.4vw, 142px)/.82 var(--molly); letter-spacing: .01em; text-transform: uppercase; text-wrap: balance;
+    background: linear-gradient(90deg, #ff2b2b 0%, var(--neon) 45%, #c4508c 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 14px rgba(232, 52, 90, .45));
   }
-  .m-text { grid-area: text; min-width: 0; }
-  .m-art { grid-area: art; min-width: 0; }
-  .m-play { grid-area: play; min-width: 0; }
-
-  .m-present { display: block; margin-bottom: 16px; }
-  .m-title { font-size: clamp(66px, 9.6vw, 132px); line-height: .84; }
-  .m-title span { display: block; }
-  .m-title .for { font-size: .4em; line-height: 1; padding-block: .14em .08em; color: var(--ash); }
-  .m-by { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-top: 18px; }
+  .m-by { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-top: clamp(14px, 2vw, 22px); }
   .m-by .hand { font-size: clamp(28px, 3.2vw, 38px); }
-  .logline { max-width: 44ch; margin-top: clamp(20px, 2.6vw, 28px); font-size: clamp(17px, 1.55vw, 20px); line-height: 1.5; text-wrap: pretty; }
+
+  .m-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: start; gap: clamp(28px, 4vw, 40px) clamp(32px, 5.5vw, 76px); margin-top: clamp(28px, 4vw, 44px); }
+  .m-grid > * { min-width: 0; }
+  .logline { max-width: 44ch; font-size: clamp(17px, 1.55vw, 20px); line-height: 1.5; text-wrap: pretty; }
   .meta { display: flex; flex-wrap: wrap; gap: 6px 0; margin-top: 18px; }
   .meta span + span::before { content: "·"; margin-inline: 10px; color: var(--rec); }
 
-  /* Key art: one frame and a filmstrip of all seven */
-  .key { position: relative; aspect-ratio: 2 / 3; max-width: 100%; overflow: hidden; background: var(--soot); border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
-  .key img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .9s ease; }
-  .key img.on { opacity: 1; }
-  .strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; margin-top: 10px; }
-  .strip button { position: relative; aspect-ratio: 2 / 3; padding: 0; border: 0; background: var(--soot); cursor: pointer; overflow: hidden; opacity: .45; transition: opacity .25s; }
-  .strip button img { width: 100%; height: 100%; object-fit: cover; }
-  .strip button::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--neon); transition: box-shadow .25s var(--ease); }
-  .strip button:hover { opacity: .8; }
-  .strip button[aria-current="true"] { opacity: 1; }
-  .strip button[aria-current="true"]::after { box-shadow: inset 0 0 0 2px var(--neon); }
-
   /* Player */
-  .player { padding: 12px; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
+  .player { margin-top: 10px; padding: 12px; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
   .player iframe { display: block; width: 100%; height: 200px; border: 0; }
   .play-notes { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; margin-top: 12px; }
   .play-notes a { color: var(--ash); text-decoration: none; transition: color .2s; }
   .play-notes a:hover { color: var(--white); }
   .advisory { margin-top: 10px; font-size: 14px; color: var(--ash); }
   .advisory b { font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--rec); margin-right: 8px; }
+
+  /* Key art marquee: every frame whole, side by side, drifting left. Hover or focus pauses it. */
+  .marquee { margin-top: clamp(40px, 5vw, 64px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  .track { display: flex; gap: clamp(10px, 1.2vw, 16px); width: max-content; animation: drift 70s linear infinite; }
+  .marquee:hover .track, .marquee:focus-within .track { animation-play-state: paused; }
+  .track figure { flex: none; height: clamp(300px, 34vw, 440px); aspect-ratio: 2 / 3; margin: 0; background: var(--soot); }
+  .track img { width: 100%; height: 100%; object-fit: contain; }
+  @keyframes drift { to { transform: translateX(-50%); } }
 
   /* ---------- End credits ---------- */
   .credits-roll { padding-block: clamp(56px, 7vw, 96px); text-align: center; }
@@ -92,21 +89,18 @@
   .closing .cta { margin-top: 30px; }
 
   @media (max-width: 860px) {
-    .m-grid { grid-template-columns: 1fr; grid-template-areas: "text" "art" "play"; }
-    .m-art { max-width: 460px; }
+    .m-grid { grid-template-columns: 1fr; }
     .crew { grid-template-columns: 1fr; }
   }
   @media (max-width: 600px) {
     .nav .secret span:last-child { display: none; }
     .m-hero .rec { display: flex; }
-    .m-art { max-width: none; }
-    .strip { display: flex; overflow-x: auto; scrollbar-width: none; }
-    .strip::-webkit-scrollbar { display: none; }
-    .strip button { flex: 0 0 15%; }
+    .track figure { height: 300px; }
     .cast { grid-template-columns: 1fr; }
     .player iframe { height: 220px; }
   }
-  @media (prefers-reduced-motion: reduce) { .key img { transition: none; } }
+  /* Reduced motion: no drift, swipe the strip instead */
+  @media (prefers-reduced-motion: reduce) { .marquee { overflow-x: auto; } .track { animation: none; } }
 </style>
 </head>
 <body>
@@ -128,29 +122,17 @@
         <span>Feature screenplay · Full reading</span>
       </div>
 
+      <span class="label m-present">Peter Rinaldi and Maxwell di Paolo present</span>
+      <span class="m-date">09.28.26</span>
+      <h1 class="m-title">Looking for Molly</h1>
+      <div class="m-by"><span class="label">A screenplay by</span><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
+
       <div class="m-grid">
-        <div class="m-text">
-          <span class="label m-present">Peter Rinaldi and Maxwell di Paolo present</span>
-          <h1 class="display m-title"><span>Looking</span><span class="for">for</span><span>Molly</span></h1>
-          <div class="m-by"><span class="label">A screenplay by</span><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
+        <div>
           <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a NEET pornsick twenty-something’s world unravels the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</p>
-          <div class="meta caps"><span>09.28.26</span><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>73 in the pews</span></div>
+          <div class="meta caps"><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>45 in the audience</span></div>
         </div>
-
-        <div class="m-art">
-          <div class="key" id="key" aria-live="polite">
-            <img class="on" src="../assets/molly/poster-molly.webp" alt="Poster: Molly on the phone, neon title" width="1200" height="1800">
-            <img src="../assets/molly/poster-paul.webp" alt="Poster: Paul at his desk, neon title" width="1200" height="1800" loading="lazy">
-            <img src="../assets/molly/poster-mirror.webp" alt="Poster: mirrored collage of Molly around Paul" width="1200" height="1800" loading="lazy">
-            <img src="../assets/molly/poster-one-night.webp" alt="Poster: One Night Only, Molly at a keyboard" width="1200" height="1800" loading="lazy">
-            <img src="../assets/molly/still-profile.webp" alt="Molly in profile, lit by a screen" width="1200" height="1800" loading="lazy">
-            <img src="../assets/molly/still-gym.webp" alt="Molly on a gym floor with a laptop" width="1200" height="1800" loading="lazy">
-            <img src="../assets/molly/still-laptop.webp" alt="Molly holding a laptop marked 09.28.26" width="1200" height="1800" loading="lazy">
-          </div>
-          <div class="strip" id="strip" aria-label="Key art"></div>
-        </div>
-
-        <div class="m-play">
+        <div>
           <span class="sound-rec"><i class="dot"></i>Full-length reading · Audio</span>
           <div class="player">
             <iframe src="https://whyp.it/embeds/track/6oR93ZQILqtr" title="Looking for Molly, full live reading" scrolling="no" allow="autoplay" loading="lazy"></iframe>
@@ -162,7 +144,21 @@
           <p class="advisory"><b>Discretion</b>The material is intentionally challenging and provocative. Audience discretion is advised.</p>
         </div>
       </div>
+    </div>
 
+    <div class="marquee" tabindex="0" aria-label="Key art">
+      <div class="track" id="track">
+        <figure><img src="../assets/molly/poster-molly.webp" alt="Poster: Molly on the phone, neon title" width="1200" height="1800" loading="lazy"></figure>
+        <figure><img src="../assets/molly/poster-paul.webp" alt="Poster: Paul at his desk, neon title" width="1200" height="1800" loading="lazy"></figure>
+        <figure><img src="../assets/molly/still-profile.webp" alt="Molly in profile, lit by a screen" width="1200" height="1800" loading="lazy"></figure>
+        <figure><img src="../assets/molly/poster-mirror.webp" alt="Poster: mirrored collage of Molly around Paul" width="1200" height="1800" loading="lazy"></figure>
+        <figure><img src="../assets/molly/still-gym.webp" alt="Molly on a gym floor with a laptop" width="1200" height="1800" loading="lazy"></figure>
+        <figure><img src="../assets/molly/poster-one-night.webp" alt="Poster: One Night Only, Molly at a keyboard" width="1200" height="1800" loading="lazy"></figure>
+        <figure><img src="../assets/molly/still-laptop.webp" alt="Molly holding a laptop marked 09.28.26" width="1200" height="1800" loading="lazy"></figure>
+      </div>
+    </div>
+
+    <div class="wrap">
       <div class="wave small" aria-hidden="true" data-bars="96"></div>
     </div>
   </section>
@@ -196,7 +192,7 @@
         <div><dt>Associate producer</dt><dd>Eduardo Perez</dd></div>
         <div><dt>Live sound mix and recording</dt><dd>Maxwell di Paolo and Eduardo Perez</dd></div>
         <div><dt>Dialogue editing and post mix</dt><dd>Lucas Pumarejo</dd></div>
-        <div><dt>Reference visuals on-site</dt><dd>James Kolsby</dd></div>
+        <div><dt>Reference visuals</dt><dd>James Kolsby</dd></div>
       </dl>
     </div>
   </section>
@@ -228,23 +224,13 @@
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.getElementById('yr').textContent = new Date().getFullYear();
 
-  // Key art: build the filmstrip from the frames, crossfade every 6s until someone picks one.
-  var frames = Array.prototype.slice.call(document.querySelectorAll('#key img'));
-  var strip = document.getElementById('strip'), cur = 0, timer = null;
-  function show(i) {
-    frames[cur].classList.remove('on'); strip.children[cur].setAttribute('aria-current', 'false');
-    cur = i;
-    frames[cur].loading = 'eager'; frames[cur].classList.add('on'); strip.children[cur].setAttribute('aria-current', 'true');
+  // Key art marquee: a second, hidden copy of the frames makes the loop seamless.
+  var track = document.getElementById('track');
+  if (track && !reduced) {
+    Array.prototype.slice.call(track.children).forEach(function (f) {
+      var c = f.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.querySelector('img').alt = ''; track.appendChild(c);
+    });
   }
-  frames.forEach(function (img, i) {
-    var b = document.createElement('button');
-    b.type = 'button'; b.setAttribute('aria-label', 'Show ' + img.alt); b.setAttribute('aria-current', i === 0 ? 'true' : 'false');
-    var t = document.createElement('img'); t.src = img.getAttribute('src'); t.alt = ''; t.loading = 'lazy';
-    b.appendChild(t);
-    b.addEventListener('click', function () { clearInterval(timer); timer = null; show(i); });
-    strip.appendChild(b);
-  });
-  if (!reduced) timer = setInterval(function () { show((cur + 1) % frames.length); }, 6000);
 
   // Woodcut waveform, same recipe as the main site (js/site.js), with paths for this folder.
   var edges = [1, 2, 3, 4].map(function (k) { return new URL('../assets/wave-edge-' + k + '.png', document.baseURI).href; });
