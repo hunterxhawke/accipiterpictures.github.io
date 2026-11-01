@@ -232,6 +232,18 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* ---------- About ---------- */
 .about { display: grid; grid-template-columns: 5fr 7fr; align-items: start; gap: clamp(32px, 6vw, 88px); }
+/* Headshot: hover reveals "Meet Hunter" and links to Instagram */
+.meet a { display: block; height: 100%; }
+.meet img { transition: transform .6s var(--ease), filter .4s; }
+.meet .cap {
+  position: absolute; inset: auto 0 0; z-index: 2; display: flex; align-items: center; justify-content: center; gap: .4em;
+  padding: 72px 24px 30px; font-size: clamp(30px, 3vw, 38px); background: linear-gradient(to top, rgba(0, 0, 0, .8), transparent);
+  opacity: 0; transform: translateY(10px); transition: opacity .35s, transform .35s var(--ease);
+}
+.meet .cap svg { width: .62em; height: .62em; flex: none; transform: translateY(.06em); }
+.meet a:is(:hover, :focus-visible) img { transform: scale(1.03); filter: brightness(.85); }
+.meet a:is(:hover, :focus-visible) .cap { opacity: 1; transform: none; }
+@media (hover: none) { .meet .cap { opacity: 1; transform: none; padding-top: 56px; } }
 .bio p { max-width: 60ch; font-size: clamp(18px, 1.6vw, 20px); }
 .bio p + p { margin-top: 18px; }
 .bio .first { max-width: 20ch; font: 800 clamp(30px, 3.6vw, 44px)/1 var(--display); text-transform: uppercase; }
