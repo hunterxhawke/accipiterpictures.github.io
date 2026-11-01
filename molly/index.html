@@ -742,7 +742,8 @@
   // ---------- Listener stats ----------
   // Each recipient's link carries a short code (?r=k7q2). The page sends the code, never a name; the private
   // Google Sheet matches codes to people. It logs visits, play and pause, chapter jumps, downloads, email copies,
-  // and which stretches of the recording were actually heard. Nothing is sent until ENDPOINT is set.
+  // and which stretches of the recording were actually heard. Reports go to the Listener Room (a Cloudflare Worker).
+  // Nothing is sent until ENDPOINT is set to the Worker's address + /collect.
   var ENDPOINT = '';
   var code = '';
   try {
@@ -751,6 +752,9 @@
   } catch (err) {}
   var session = Math.random().toString(36).slice(2, 10), queue = [];
   var device = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'phone' : 'computer';
+  // Where they came from: just the other site's name (gmail, instagram), never the full address
+  var referrer = '';
+  try { var rh = document.referrer ? new URL(document.referrer).hostname : ''; if (rh && rh.indexOf('accipiterpictures.com') < 0) referrer = rh; } catch (err) {}
   function logEvent(type, data) {
     if (!ENDPOINT) return;
     var ev = { type: type, at: new Date().toISOString() };
@@ -761,7 +765,7 @@
     if (!ENDPOINT) return;
     closeSpan();
     if (!queue.length) return;
-    var body = JSON.stringify({ r: code, s: session, d: device, events: queue.splice(0) });
+    var body = JSON.stringify({ r: code, s: session, d: device, ref: referrer, entry: location.hash.slice(1), events: queue.splice(0) });
     var blob = new Blob([body], { type: 'text/plain;charset=UTF-8' });
     if (final && navigator.sendBeacon) navigator.sendBeacon(ENDPOINT, blob);
     else fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', keepalive: true, body: blob }).catch(function () {});
