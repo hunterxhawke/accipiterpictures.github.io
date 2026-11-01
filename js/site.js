@@ -5,12 +5,12 @@
   document.getElementById('yr').textContent = new Date().getFullYear();
 
   // Intro (first visit from outside the site; see the script in the page head).
-  // The bird rises in, winks, waves you in with its wing, then glides into its place in the hero logo.
+  // The bird rises in, winks, then glides into its place in the hero logo.
   var intro = document.querySelector('.splash');
   if (intro && document.documentElement.classList.contains('splash-on') && intro.animate) {
     var root = document.documentElement,
         bird = intro.querySelector('.splash-bird'), rig = intro.querySelector('.splash-rig'),
-        wing = intro.querySelector('.splash-wing'), eye = intro.querySelector('.splash-eye'),
+        eye = intro.querySelector('.splash-eye'),
         logo = document.querySelector('.hero-mark'),
         smooth = 'cubic-bezier(.2, .7, .2, 1)', glide = 'cubic-bezier(.65, 0, .25, 1)',
         running = [], ended = false;
@@ -30,7 +30,7 @@
     var finish = function (fast) {
       if (ended) return;
       ended = true;
-      var shown = logo && logo.animate([{ opacity: 0 }, { opacity: 1 }], { duration: fast ? 300 : 550, easing: 'ease', fill: 'forwards' });
+      var shown = logo && logo.animate([{ opacity: 0 }, { opacity: 1 }], { duration: fast ? 300 : 400, easing: 'ease', fill: 'forwards' });
       var done = function () {
         running.forEach(function (a) { a.cancel(); });
         intro.remove();
@@ -38,21 +38,21 @@
         root.style.overflow = '';
         if (shown) shown.cancel();
       };
-      (fast ? intro.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, easing: 'ease', fill: 'forwards' }).finished : wait(550)).then(done);
+      (fast ? intro.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, easing: 'ease', fill: 'forwards' }).finished : wait(400)).then(done);
     };
 
     // Land on the bird in the hero logo, when the logo is on screen.
     var land = function () {
       var r = logo && logo.getBoundingClientRect();
       if (!r || !r.width || r.top < 0 || r.bottom > innerHeight) {
-        return play(bird, [{ transform: 'none', opacity: 1 }, { transform: 'translateY(-10px) scale(.92)', opacity: 0 }], { duration: 600, easing: glide })
+        return play(bird, [{ transform: 'none', opacity: 1 }, { transform: 'translateY(-10px) scale(.92)', opacity: 0 }], { duration: 450, easing: glide })
           .then(function () { finish(true); });
       }
       intro.classList.remove('playing');   // the Skip link bows out
       var b = bird.getBoundingClientRect(), k = r.width / 1276;   // the layers sit at (445, -20) in the 1276-wide logo
       var tx = r.left + 445 * k - b.left, ty = r.top - 20 * k - b.top, s = (423 * k) / b.width;
-      intro.animate([{ backgroundColor: '#000' }, { backgroundColor: 'rgba(0,0,0,0)' }], { duration: 800, delay: 120, easing: 'ease', fill: 'forwards' });
-      return play(bird, [{ transform: 'none' }, { transform: 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')' }], { duration: 850, easing: glide })
+      intro.animate([{ backgroundColor: '#000' }, { backgroundColor: 'rgba(0,0,0,0)' }], { duration: 600, delay: 80, easing: 'ease', fill: 'forwards' });
+      return play(bird, [{ transform: 'none' }, { transform: 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')' }], { duration: 650, easing: glide })
         .then(function () { finish(); });
     };
 
@@ -69,39 +69,25 @@
       if (ended) return;
       intro.classList.add('playing');
       // 1. Arrive: rise out of the dark, eye already open
-      play(bird, [{ opacity: 0 }, { opacity: 1 }], { duration: 500, easing: 'ease' });
+      play(bird, [{ opacity: 0 }, { opacity: 1 }], { duration: 350, easing: 'ease' });
       return play(rig, [
-        { transform: 'translateY(22px) scale(.94)', filter: 'blur(6px)' },
+        { transform: 'translateY(18px) scale(.95)', filter: 'blur(5px)' },
         { transform: 'none', filter: 'blur(0)' }
-      ], { duration: 900, easing: smooth });
+      ], { duration: 600, easing: smooth });
     }).then(function () {
       if (ended) return;
       // 2. Wink, with a small cock of the head
       play(rig, [
         { transform: 'none' }, { transform: 'rotate(-4deg)', offset: .35 }, { transform: 'rotate(-4deg)', offset: .65 }, { transform: 'none' }
-      ], { duration: 640, delay: 150, easing: 'ease-in-out' });
+      ], { duration: 480, delay: 60, easing: 'ease-in-out' });
       return play(eye, [
         { transform: 'scaleY(1)' },
         { transform: 'scaleY(.08)', offset: .3, easing: 'ease-out' },
         { transform: 'scaleY(.08)', offset: .5, easing: 'cubic-bezier(.3, 1.6, .5, 1)' },
         { transform: 'scaleY(1)' }
-      ], { duration: 500, delay: 260 });
+      ], { duration: 380, delay: 140 });
     }).then(function () {
-      if (ended) return;
-      // 3. Wave you in: two beats of the wing, the body lifting with each
-      play(rig, [
-        { transform: 'none' }, { transform: 'translateY(-5px)', offset: .25 }, { transform: 'none', offset: .5 },
-        { transform: 'translateY(-3px)', offset: .75 }, { transform: 'none' }
-      ], { duration: 900, delay: 180, easing: 'ease-in-out' });
-      return play(wing, [
-        { transform: 'rotate(0)' },
-        { transform: 'rotate(24deg)', offset: .25, easing: 'cubic-bezier(.5, 0, .5, 1)' },
-        { transform: 'rotate(-2deg)', offset: .5, easing: 'cubic-bezier(.5, 0, .5, 1)' },
-        { transform: 'rotate(14deg)', offset: .75, easing: 'cubic-bezier(.5, 0, .5, 1)' },
-        { transform: 'rotate(0)' }
-      ], { duration: 900, delay: 180, easing: 'ease-in-out' });
-    }).then(function () {
-      if (!ended) return wait(120).then(land);
+      if (!ended) return wait(160).then(land);
     }).catch(function () { finish(true); });
   }
 
