@@ -69,6 +69,10 @@
   .m-date { display: block; font: 400 clamp(25px, 3vw, 40px)/1 var(--mono); letter-spacing: .04em; color: var(--lav);
             text-shadow: 0 0 6px rgba(180, 176, 228, .55), 0 0 16px rgba(180, 176, 228, .22); animation: tube-lav .7s steps(1) 2.1s both; }
   @keyframes tube-lav { 0% { opacity: .14; text-shadow: none; } 25% { opacity: .8; } 40% { opacity: .2; text-shadow: none; } 60%, 100% { opacity: 1; } }
+  /* The script's alternate title: a thinner lavender tube under the sign, lit last */
+  .m-alt { display: block; max-width: 34ch; margin-top: clamp(14px, 2vw, 22px); font: 400 clamp(14px, 1.65vw, 21px)/1.35 var(--mono); letter-spacing: .14em; text-transform: uppercase; text-wrap: balance; color: var(--lav);
+           text-shadow: 0 0 6px rgba(180, 176, 228, .5), 0 0 14px rgba(180, 176, 228, .2); animation: tube-lav .7s steps(1) 2.5s both; }
+  .m-alt i { font-style: normal; color: var(--ash); text-shadow: none; margin-right: .5em; }
   .m-by { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 14px; margin-top: clamp(16px, 2.3vw, 26px); }
   .m-by .label { font-size: 13px; }
   .m-by .hand { font-size: clamp(32px, 3.7vw, 44px); }
@@ -168,7 +172,7 @@
     .player iframe { height: 220px; }
   }
   /* Reduced motion: the sign is simply on, and the marquee only moves when the visitor moves it */
-  @media (prefers-reduced-motion: reduce) { .tube, .m-date, .m-head::before { animation: none !important; } }
+  @media (prefers-reduced-motion: reduce) { .tube, .m-date, .m-alt, .m-head::before { animation: none !important; } }
 </style>
 </head>
 <body>
@@ -194,6 +198,7 @@
       <div class="m-head">
         <span class="m-date">09.28.26</span>
         <h1 class="m-title" aria-label="Looking for Molly"><span class="tube t1" aria-hidden="true">Looking</span> <span class="tube t2" aria-hidden="true">for</span> <span aria-hidden="true" style="white-space:nowrap"><span class="tube t3">M</span><span class="tube t4">O</span><span class="tube t5">lly</span></span></h1>
+        <span class="m-alt"><i>or</i>I’m Not Exactly Proud of What My Life Has Become</span>
         <div class="m-by"><span class="label">A screenplay by</span><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       </div>
 
