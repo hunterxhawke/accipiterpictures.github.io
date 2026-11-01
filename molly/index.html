@@ -181,8 +181,14 @@
   .mini.playing .i-play { display: none; }
   .mini.playing .i-pause { display: block; }
   /* Tapping anywhere on the bar except play/pause glides back up to the full player */
-  .mini-txt { flex: 1; min-width: 0; align-self: stretch; display: flex; flex-direction: column; justify-content: center; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
-  .mini-txt:focus-visible { outline: 1px solid var(--lav); outline-offset: 4px; }
+  .mini-hit { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .mini-hit:focus-visible { outline: 1px solid var(--lav); outline-offset: -4px; }
+  .mini-in { position: relative; z-index: 1; pointer-events: none; }
+  .mini-in .p-play { pointer-events: auto; }
+  .mini-bar { z-index: 2; }
+  /* On phones the thin progress line is display only, so a tap anywhere on the bar goes back to the player */
+  @media (hover: none) and (pointer: coarse) { .mini-bar { pointer-events: none; } }
+  .mini-txt { flex: 1; min-width: 0; text-align: left; }
   .mini:hover .mini-title { text-shadow: 0 0 8px rgba(232, 52, 90, .45); }
   .mini-title { font: 600 18px/1 var(--molly); text-transform: uppercase; letter-spacing: .02em; color: var(--white); }
   .mini-title, .mini-sub { display: block; }
@@ -510,16 +516,17 @@
 </main>
 
 <div class="mini" id="mini" aria-label="Now playing" role="region">
+  <button type="button" class="mini-hit" id="mini-go" aria-label="Back to the full player"></button>
   <div class="mini-bar" id="mini-bar"><i id="mini-fill"></i></div>
   <div class="mini-in">
     <button type="button" class="p-play" id="mini-play" aria-label="Pause">
       <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
       <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
     </button>
-    <button type="button" class="mini-txt" id="mini-go" aria-label="Back to the full player">
+    <div class="mini-txt" aria-hidden="true">
       <span class="mini-title">Looking for Molly</span>
       <span class="mini-sub" id="mini-sub">0:00:00 · Introduction</span>
-    </button>
+    </div>
   </div>
 </div>
 
@@ -837,10 +844,7 @@
       if (k < 1) requestAnimationFrame(step);
     })(t0);
   }
-  mini.addEventListener('click', function (e) {
-    if (e.target.closest('#mini-play') || e.target.closest('#mini-bar')) return;
-    glideToPlayer();
-  });
+  document.getElementById('mini-go').addEventListener('click', glideToPlayer);
   document.getElementById('mini-bar').addEventListener('click', function (e) { var b = this.getBoundingClientRect(); seek((e.clientX - b.left) / b.width * dur()); });
   miniUpdate(); miniShow();
 
