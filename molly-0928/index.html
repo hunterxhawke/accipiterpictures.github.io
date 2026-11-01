@@ -83,7 +83,7 @@
   .m-play .sound-rec { justify-content: center; }
   .player { margin-top: 10px; padding: 12px; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
   .player iframe { display: block; width: 100%; height: 200px; border: 0; }
-  .play-notes { display: flex; justify-content: flex-end; margin-top: 12px; }
+  .play-notes { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; margin-top: 12px; }
   .play-notes a { color: var(--ash); text-decoration: none; transition: color .2s; }
   .play-notes a:hover { color: var(--white); }
 
@@ -115,6 +115,16 @@
   .lb-prev { left: 0; } .lb-next { right: 0; }
   body.lb-open { overflow: hidden; }
 
+  /* ---------- The night: photos from the reading, one justified row; each opens in the gallery ---------- */
+  .night-label { display: block; margin-bottom: 20px; }
+  .night { display: flex; gap: clamp(8px, 1vw, 14px); margin-bottom: clamp(48px, 6vw, 72px); }
+  .night button { position: relative; flex: var(--r) 1 0; aspect-ratio: var(--r); min-width: 0; padding: 0; border: 0; overflow: hidden; background: var(--soot); cursor: zoom-in; }
+  .night img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+  .night button::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--neon); transition: box-shadow .25s var(--ease); pointer-events: none; }
+  .night button:is(:hover, :focus-visible) img { transform: scale(1.04); }
+  .night button:is(:hover, :focus-visible)::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
+  .night button:focus-visible { outline: none; }
+
   /* ---------- End credits ---------- */
   .credits-roll { padding-block: clamp(36px, 4.5vw, 60px) clamp(56px, 7vw, 96px); text-align: center; }
   .roll-label { display: block; margin-bottom: 26px; }
@@ -128,8 +138,8 @@
   .crew dt { font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
   .crew dd { margin-top: 5px; font-size: 16px; line-height: 1.4; }
 
-  /* Content note: framed, red label, closing the credits as in the first draft */
-  .note { display: flex; gap: 14px; align-items: flex-start; max-width: 62ch; margin: 44px auto 0; padding: 18px 22px; text-align: left; font-size: 15px; color: var(--ash); border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
+  /* Content note: framed with the red label, sitting under the player */
+  .note { display: flex; gap: 14px; align-items: flex-start; max-width: 62ch; margin: 22px auto 0; padding: 16px 20px; text-align: left; font-size: 15px; color: var(--ash); border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
   .note .label { flex: none; color: var(--rec); padding-top: 2px; }
 
   /* ---------- Closing ---------- */
@@ -140,11 +150,18 @@
   .closing .sign img { width: 1em; transform: translateY(.11em); }
   .closing .sign .hand { transform: translateY(.2em); }
   .closing .cta { margin-top: 30px; }
+  .mail { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 16px; margin-top: 18px; }
+  .mail .addr { font: 600 clamp(17px, 1.6vw, 19px)/1.3 var(--body); user-select: all; overflow-wrap: anywhere; }
+  .mail button { padding: 0; border: 0; background: none; color: var(--ash); cursor: pointer; transition: color .2s; }
+  .mail button:hover, .mail button:focus-visible { color: var(--white); }
 
   @media (max-width: 860px) {
   }
   @media (max-width: 600px) {
     .track button { height: 300px; }
+    .night { overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--gut)); padding-inline: var(--gut); scrollbar-width: none; }
+    .night::-webkit-scrollbar { display: none; }
+    .night button { flex: none; height: 220px; scroll-snap-align: center; }
     .nav ul { gap: 14px; }
     .lb-prev, .lb-next { top: auto; bottom: 0; transform: none; }
     .cast { grid-template-columns: 1fr; }
@@ -190,8 +207,10 @@
             <iframe src="https://whyp.it/embeds/track/6oR93ZQILqtr" title="Looking for Molly, full live reading" scrolling="no" allow="autoplay" loading="lazy"></iframe>
           </div>
           <div class="play-notes caps">
+            <a href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download>Read the script · PDF ↓</a>
             <a href="https://whyp.it/tracks/looking-for-molly-screenplay-reading-at-rpc-septem-PVwQrB7VCaip" target="_blank" rel="noopener">Open on Whyp ↗</a>
           </div>
+          <div class="note"><span class="label">Content note</span><span>The material is intentionally challenging and provocative. Audience discretion is advised.</span></div>
         </div>
       </div>
     </div>
@@ -216,6 +235,14 @@
   <!-- ===== END CREDITS ===== -->
   <section class="credits-roll" id="credits">
     <div class="wrap">
+      <span class="label night-label">The night</span>
+      <div class="night" id="night" role="region" aria-label="Photos from the reading. Select one to open it larger.">
+        <button type="button" data-i="0" style="--r: .937"><img src="../assets/molly/night-polaroid.webp" alt="Polaroid of the cast seated across the stage" width="1031" height="1100" loading="lazy"></button>
+        <button type="button" data-i="1" style="--r: 1.777"><img src="../assets/molly/night-stage-welcome.webp" alt="Hunter Hawke welcomes the audience, the cast seated behind him" width="1800" height="1013" loading="lazy"></button>
+        <button type="button" data-i="2" style="--r: 1.777"><img src="../assets/molly/night-stage-intro.webp" alt="Introductions in front of the seated cast" width="1800" height="1013" loading="lazy"></button>
+        <button type="button" data-i="3" style="--r: 1.333"><img src="../assets/molly/night-cast.webp" alt="The cast mid-reading, scripts in hand" width="1800" height="1350" loading="lazy"></button>
+      </div>
+
       <span class="label roll-label">Read by</span>
       <ul class="cast">
         <li><span class="n">Emma Broadbent</span><span class="r">Narration and action description</span></li>
@@ -243,8 +270,6 @@
         <div><dt>Dialogue editing and post mix</dt><dd>Lucas Pumarejo</dd></div>
         <div><dt>Reference visuals</dt><dd>James Kolsby</dd></div>
       </dl>
-
-      <div class="note"><span class="label">Content note</span><span>The material is intentionally challenging and provocative. Audience discretion is advised.</span></div>
     </div>
   </section>
 
@@ -255,14 +280,16 @@
       <p>I’m very open to your thoughts on the script, the performances, and ideas for next steps. If you want to help get <em>Molly</em> made, write to me directly.</p>
       <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       <div class="cta">
-        <a class="btn btn-solid" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly">Get in touch</a>
+        <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download>Download the script</a>
+        <a class="btn btn-line" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly">Get in touch</a>
       </div>
+      <div class="mail"><span class="addr" id="email">hunter@accipiterpictures.com</span><button type="button" class="caps" id="copy">Copy email</button></div>
     </div>
   </section>
 
 </main>
 
-<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Key art gallery" hidden>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Gallery" hidden>
   <div class="lb-top"><span class="caps lb-count" id="lb-count"></span><button type="button" class="lb-btn" id="lb-close" aria-label="Close gallery">×</button></div>
   <div class="lb-stage" id="lb-stage">
     <img id="lb-img" src="" alt="">
@@ -322,27 +349,48 @@
   function endDrag() { if (!dragging) return; dragging = false; kick = -vel; setTimeout(function () { marquee.classList.remove('dragging'); }, 0); }
   window.addEventListener('pointerup', endDrag); window.addEventListener('pointercancel', endDrag);
 
-  // Gallery: opens on the frame clicked, same order as the marquee. Arrows, keys and swipe move through it.
+  // Gallery: opens on the image clicked. Key art runs in marquee order; photos from the night are their own set.
+  // Arrows, keys and swipe move through it; Tab stays inside until it closes.
   var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'),
-      lbCount = document.getElementById('lb-count'), at = 0, opener = null;
-  var items = frames.map(function (f) { var im = f.querySelector('img'); return { src: im.getAttribute('src'), alt: im.alt }; });
+      lbCount = document.getElementById('lb-count'), at = 0, opener = null, items = [];
+  function list(nodes) { return nodes.map(function (n) { var im = n.querySelector('img'); return { src: im.getAttribute('src'), alt: im.alt }; }); }
+  var sets = { art: list(frames), night: list(Array.prototype.slice.call(document.querySelectorAll('#night button'))) };
   function go(i) {
     at = (i + items.length) % items.length;
     lbImg.src = items[at].src; lbImg.alt = items[at].alt;
     lbCount.textContent = ('0' + (at + 1)).slice(-2) + ' / ' + ('0' + items.length).slice(-2);
   }
-  function open(i, from) { opener = from; go(i); lb.hidden = false; document.body.classList.add('lb-open'); document.getElementById('lb-close').focus(); }
+  function open(set, i, from) { items = sets[set]; opener = from; go(i); lb.hidden = false; document.body.classList.add('lb-open'); document.getElementById('lb-close').focus(); }
   function close() { lb.hidden = true; document.body.classList.remove('lb-open'); if (opener && opener.getAttribute('aria-hidden') !== 'true') opener.focus(); }
-  track.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && moved <= 6) open(+b.dataset.i, b); });
+  track.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && moved <= 6) open('art', +b.dataset.i, b); });
+  document.getElementById('night').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('night', +b.dataset.i, b); });
   document.getElementById('lb-prev').addEventListener('click', function () { go(at - 1); });
   document.getElementById('lb-next').addEventListener('click', function () { go(at + 1); });
   document.getElementById('lb-close').addEventListener('click', close);
   lb.addEventListener('click', function (e) { if (e.target === lb || e.target.id === 'lb-stage') close(); });
+  var trap = ['lb-close', 'lb-prev', 'lb-next'].map(function (id) { return document.getElementById(id); });
   document.addEventListener('keydown', function (e) {
     if (lb.hidden) return;
     if (e.key === 'ArrowLeft') go(at - 1);
     else if (e.key === 'ArrowRight') go(at + 1);
     else if (e.key === 'Escape') close();
+    else if (e.key === 'Tab') {
+      e.preventDefault();
+      var k = trap.indexOf(document.activeElement);
+      trap[(k + (e.shiftKey ? trap.length - 1 : 1)) % trap.length].focus();
+    }
+  });
+  // Once the page has settled, load the gallery images quietly so the arrows feel instant.
+  window.addEventListener('load', function () {
+    setTimeout(function () { sets.art.concat(sets.night).forEach(function (it) { var im = new Image(); im.src = it.src; }); }, 1200);
+  });
+
+  // Copy email, with a select-the-text fallback where the clipboard isn't available (same as the main site).
+  var copyBtn = document.getElementById('copy'), email = document.getElementById('email');
+  copyBtn.addEventListener('click', function () {
+    function done(msg) { copyBtn.textContent = msg; setTimeout(function () { copyBtn.textContent = 'Copy email'; }, 2000); }
+    function fallback() { var r = document.createRange(); r.selectNodeContents(email); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); done('Selected, press Copy'); }
+    try { navigator.clipboard.writeText(email.textContent.trim()).then(function () { done('Copied'); }, fallback); } catch (err) { fallback(); }
   });
   var x0 = null;
   lb.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
