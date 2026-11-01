@@ -744,7 +744,7 @@
   // Google Sheet matches codes to people. It logs visits, play and pause, chapter jumps, downloads, email copies,
   // and which stretches of the recording were actually heard. Reports go to the Listener Room (a Cloudflare Worker).
   // Nothing is sent until ENDPOINT is set to the Worker's address + /collect.
-  var ENDPOINT = '';
+  var ENDPOINT = 'https://lfm-092826-room.hunter-e61.workers.dev/collect';
   var code = '';
   try {
     code = (new URLSearchParams(location.search).get('r') || '').replace(/[^a-z0-9-]/gi, '').slice(0, 24);
