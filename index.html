@@ -154,9 +154,6 @@
   .entry:focus-visible { border-image-source: url(assets/border-3x2-b.png); }
   @media (prefers-reduced-motion: reduce) { .entry .face, .entry .lid img { transition: opacity .3s; transform: none !important; filter: none !important; } }
   @media (max-width: 600px) {
-    .services { grid-template-columns: 1fr; }
-    .svc, .svc + .svc { padding: 20px 0; border-left: 0; border-image: none; }
-    .svc + .svc { border-top: 3px solid transparent; border-image: url(assets/rule-h-dim.png) 100% 0 0 0 / 3px 0 0 0 stretch; }
     .entry { padding: 14px 18px; }
     .entry .def { flex-direction: column; align-items: flex-start; }
     .entry .def p { padding-left: 0; border: 0; border-image: none; }
@@ -314,6 +311,9 @@
     .about .ph, .about .photo { max-width: 380px; }
   }
   @media (max-width: 600px) {
+    .services { grid-template-columns: 1fr; }
+    .svc, .svc + .svc { padding: 20px 0; border-left: 0; border-image: none; }
+    .svc + .svc { border-left: 0; border-top: 3px solid transparent; border-image: url(assets/rule-h-dim.png) 100% 0 0 0 / 3px 0 0 0 stretch; }
     .brand img { height: 22px; }
     .films { grid-template-columns: 1fr; }
     .bts .photo { grid-column: span 6; }
