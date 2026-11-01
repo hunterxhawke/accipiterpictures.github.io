@@ -7,7 +7,7 @@
 <!-- Hidden page: reachable only by link. Not in the main nav, not indexed. -->
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="description" content="Looking for Molly, a feature screenplay by Hunter Hawke. Hear the full live reading recorded at Rutgers Presbyterian Church, New York, September 28, 2026.">
-<meta property="og:title" content="Looking for Molly · A screenplay by Hunter Hawke">
+<meta property="og:title" content="Looking for Molly · Written by Hunter Hawke">
 <meta property="og:description" content="The full live reading of the feature script, recorded in New York on 09.28.26.">
 <meta property="og:image" content="https://accipiterpictures.com/assets/molly/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -65,29 +65,31 @@
   /* Key art marquee: every frame whole, side by side, always drifting. Hover lights a frame; click opens the gallery. */
   .marquee { margin-top: clamp(40px, 5vw, 64px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
   .track { display: flex; gap: clamp(10px, 1.2vw, 16px); width: max-content; animation: drift 70s linear infinite; }
-  .track button { position: relative; flex: none; height: clamp(300px, 34vw, 440px); aspect-ratio: 2 / 3; padding: 0; border: 0; background: var(--soot); cursor: zoom-in; }
-  .track img { width: 100%; height: 100%; object-fit: contain; }
+  .track button { position: relative; flex: none; height: clamp(300px, 34vw, 440px); aspect-ratio: 2 / 3; padding: 0; overflow: hidden; border: 0; background: var(--soot); cursor: zoom-in; }
+  .track img { width: 100%; height: 100%; object-fit: contain; transition: transform .6s var(--ease); }
+  .track button:is(:hover, :focus-visible) img { transform: scale(1.04); }
   .track button::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--neon), 0 0 0 0 rgba(232, 52, 90, 0); transition: box-shadow .25s var(--ease); pointer-events: none; }
   .track button:is(:hover, :focus-visible)::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
   .track button:focus-visible { outline: none; }
 
   /* Gallery: big frames, arrows, keyboard and swipe */
-  .lb { position: fixed; inset: 0; z-index: 50; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; background: rgba(0, 0, 0, .94);
+  .lb { position: fixed; inset: 0; z-index: 50; display: grid; grid-template-rows: auto minmax(0, 1fr); background: rgba(0, 0, 0, .94);
         padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
   .lb-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-  .lb-count { font-variant-numeric: tabular-nums; }
+  .lb-count { font: 400 18px/1 var(--mono); letter-spacing: .08em; color: var(--lav); text-shadow: 0 0 8px rgba(180, 176, 228, .5); }
   .lb-stage { position: relative; display: flex; align-items: center; justify-content: center; min-height: 0; padding-block: 12px; }
-  .lb-stage img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; box-shadow: 0 0 0 3px var(--neon), 0 0 34px 4px rgba(232, 52, 90, .35); }
-  .lb-btn { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border: 0; background: none; color: var(--white); font: 800 30px/1 var(--display); cursor: pointer; opacity: .7; transition: opacity .2s, color .2s; }
-  .lb-btn:hover, .lb-btn:focus-visible { opacity: 1; color: var(--neon); }
+  .lb-stage img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+  .lb-btn { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border: 0; background: none; color: var(--neon); font: 400 40px/1 var(--mono); cursor: pointer;
+            text-shadow: 0 0 10px rgba(232, 52, 90, .6); opacity: .75; transition: opacity .2s, text-shadow .2s, color .2s; }
+  .lb-btn:hover, .lb-btn:focus-visible { opacity: 1; color: #ff5a78; text-shadow: 0 0 6px rgba(255, 90, 120, .9), 0 0 22px rgba(232, 52, 90, .8); outline: none; }
+  #lb-close { font-size: 32px; }
   .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); }
   .lb-prev { left: 0; } .lb-next { right: 0; }
-  .lb-cap { text-align: center; color: var(--ash); font-size: 14px; min-height: 1.5em; }
   body.lb-open { overflow: hidden; }
   @keyframes drift { to { transform: translateX(-50%); } }
 
   /* ---------- End credits ---------- */
-  .credits-roll { padding-block: clamp(56px, 7vw, 96px); text-align: center; }
+  .credits-roll { padding-block: clamp(36px, 4.5vw, 60px) clamp(56px, 7vw, 96px); text-align: center; }
   .roll-label { display: block; margin-bottom: 26px; }
   .cast { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px clamp(32px, 6vw, 96px); max-width: 860px; margin: 0 auto; list-style: none; }
   .cast li { min-width: 0; }
@@ -146,7 +148,7 @@
         <span class="label m-present">Peter Rinaldi and Maxwell di Paolo present</span>
         <span class="m-date">09.28.26</span>
         <h1 class="m-title">Looking for Molly</h1>
-        <div class="m-by"><span class="label">A screenplay by</span><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
+        <div class="m-by"><span class="label">Written by</span><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       </div>
 
       <div class="m-grid">
@@ -186,7 +188,7 @@
   </section>
 
   <!-- ===== END CREDITS ===== -->
-  <section class="credits-roll rule-top" id="credits">
+  <section class="credits-roll" id="credits">
     <div class="wrap">
       <span class="label roll-label">Read by</span>
       <ul class="cast">
@@ -222,8 +224,8 @@
   <!-- ===== CLOSING ===== -->
   <section class="closing rule-top" id="next">
     <div class="wrap">
-      <p>Thank you to everyone who generously contributed their time and talent to bring this reading to life, and to everyone who took the time to hear my script out loud. I wish you a beautiful day!</p>
-      <p>I’m very open to your thoughts on the script and the performances, and to ideas for next steps. If you’d like the PDF, or want to help get Molly made, write to me directly.</p>
+      <p>Thank you to everyone who generously contributed their time and talent to bring this reading to life, and to everyone who took the time to hear my script out loud.</p>
+      <p>I’m very open to your thoughts on the script, the performances, and ideas for next steps. If you want to help get <em>Molly</em> made, write to me directly.</p>
       <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       <div class="cta">
         <a class="btn btn-solid" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly%20%C2%B7%20script%20request"><i class="dot"></i>Request the script</a>
@@ -235,13 +237,12 @@
 </main>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Key art gallery" hidden>
-  <div class="lb-top"><span class="caps lb-count" id="lb-count"></span><button type="button" class="lb-btn" id="lb-close" aria-label="Close gallery">✕</button></div>
+  <div class="lb-top"><span class="caps lb-count" id="lb-count"></span><button type="button" class="lb-btn" id="lb-close" aria-label="Close gallery">×</button></div>
   <div class="lb-stage" id="lb-stage">
     <img id="lb-img" src="" alt="">
-    <button type="button" class="lb-btn lb-prev" id="lb-prev" aria-label="Previous">←</button>
-    <button type="button" class="lb-btn lb-next" id="lb-next" aria-label="Next">→</button>
+    <button type="button" class="lb-btn lb-prev" id="lb-prev" aria-label="Previous">&lt;</button>
+    <button type="button" class="lb-btn lb-next" id="lb-next" aria-label="Next">&gt;</button>
   </div>
-  <p class="lb-cap" id="lb-cap"></p>
 </div>
 
 <footer class="rule-top">
@@ -264,13 +265,13 @@
   });
 
   // Gallery: opens on the frame clicked, same order as the marquee. Arrows, keys and swipe move through it.
-  var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'), lbCap = document.getElementById('lb-cap'),
+  var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'),
       lbCount = document.getElementById('lb-count'), at = 0, opener = null;
   var items = frames.map(function (f) { var im = f.querySelector('img'); return { src: im.getAttribute('src'), alt: im.alt }; });
   function go(i) {
     at = (i + items.length) % items.length;
-    lbImg.src = items[at].src; lbImg.alt = items[at].alt; lbCap.textContent = items[at].alt;
-    lbCount.textContent = (at + 1) + ' / ' + items.length;
+    lbImg.src = items[at].src; lbImg.alt = items[at].alt;
+    lbCount.textContent = ('0' + (at + 1)).slice(-2) + ' / ' + ('0' + items.length).slice(-2);
   }
   function open(i, from) { opener = from; go(i); lb.hidden = false; document.body.classList.add('lb-open'); document.getElementById('lb-close').focus(); }
   function close() { lb.hidden = true; document.body.classList.remove('lb-open'); if (opener && opener.getAttribute('aria-hidden') !== 'true') opener.focus(); }
