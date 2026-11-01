@@ -232,9 +232,9 @@
   /* Credit links: a hand-cut woodcut rule under the name instead of a plain underline.
      The rule is the site's woodcut texture, leveled so it runs flat, used as a mask so it can take the neon on hover.
      Names never break across lines, so every rule stays whole. */
-  a.n, .crew dd a { position: relative; display: inline-block; white-space: nowrap; color: var(--white); text-decoration: none; padding-bottom: 5px; transition: color .2s, text-shadow .2s; }
+  a.n, .crew dd a { position: relative; display: inline-block; white-space: nowrap; color: var(--white); text-decoration: none; padding-bottom: 2px; transition: color .2s, text-shadow .2s; }
   a.n::after, .crew dd a::after {
-    content: ""; position: absolute; left: -1px; right: -1px; bottom: -2px; height: 6px; background: var(--ash); opacity: .7;
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 4px; background: var(--ash); opacity: .7;
     -webkit-mask: url(../assets/rule-level.png) center / 100% 100% no-repeat; mask: url(../assets/rule-level.png) center / 100% 100% no-repeat;
     transition: background .2s, opacity .2s, filter .2s;
   }
