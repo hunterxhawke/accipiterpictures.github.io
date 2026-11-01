@@ -255,6 +255,8 @@
   html.lfm-pending .gated, html.lfm-locked .gated { display: none !important; }
   .gate { display: none; width: 100%; max-width: 560px; margin-top: clamp(30px, 4vw, 42px); text-align: left; }
   html.lfm-locked .gate { display: block; }
+  html.lfm-locked footer { border-top: 0; border-image: none; }
+  html.lfm-locked .m-hero .wave.small { margin-top: clamp(44px, 6vw, 68px); }
   .gate-lead { font: 400 clamp(18px, 2vw, 21px)/1.45 var(--body); text-align: center; }
   .gate-lead b { font: 400 .9em/1 var(--mono); color: var(--lav); letter-spacing: .08em; text-transform: uppercase; text-shadow: 0 0 6px rgba(180, 176, 228, .45); }
   .gate-sub { margin-top: 10px; text-align: center; color: var(--ash); font-size: 15px; }
@@ -344,11 +346,11 @@
 
         <div class="gate" id="gate" aria-live="polite">
           <p class="gate-lead" id="gate-lead"><b>By invitation</b><br>This reading is shared one link at a time.</p>
-          <p class="gate-sub" id="gate-sub">If someone sent you a link, open it from their original message. Otherwise, ask below and I’ll send you yours.</p>
+          <p class="gate-sub" id="gate-sub">If someone sent you a link, open it from their original message. Otherwise submit below, and I’ll send you yours!</p>
           <form id="gate-form" novalidate>
             <label><span class="label">Your name</span><input id="g-name" name="name" autocomplete="name" required></label>
             <label><span class="label">Email</span><input id="g-email" name="email" type="email" autocomplete="email" required></label>
-            <label><span class="label">How did you hear about it? <span style="text-transform:none;letter-spacing:0">(optional)</span></span><textarea id="g-note" name="note"></textarea></label>
+            <label><span class="label">How did you hear about it?</span><textarea id="g-note" name="note" required></textarea></label>
             <label class="hp" aria-hidden="true">Website<input id="g-website" name="website" tabindex="-1" autocomplete="off"></label>
             <button class="btn btn-solid" type="submit">Request access</button>
             <p class="gate-msg" id="gate-msg" role="alert"></p>
@@ -878,11 +880,12 @@
   var gate = document.getElementById('gate'), gform = document.getElementById('gate-form'), gmsg = document.getElementById('gate-msg');
   gform.addEventListener('submit', function (e) {
     e.preventDefault();
-    var name = document.getElementById('g-name').value.trim(), email = document.getElementById('g-email').value.trim();
+    var name = document.getElementById('g-name').value.trim(), email = document.getElementById('g-email').value.trim(), note = document.getElementById('g-note').value.trim();
     gmsg.className = 'gate-msg';
     if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { gmsg.className = 'gate-msg err'; gmsg.textContent = 'Please add your name and a valid email.'; return; }
+    if (!note) { gmsg.className = 'gate-msg err'; gmsg.textContent = 'Please say how you heard about the reading.'; return; }
     var btn = gform.querySelector('button'); btn.disabled = true; gmsg.textContent = 'Sending…';
-    fetch(BASE + '/request-access', { method: 'POST', body: JSON.stringify({ name: name, email: email, note: document.getElementById('g-note').value.trim(), website: document.getElementById('g-website').value, r: code }) })
+    fetch(BASE + '/request-access', { method: 'POST', body: JSON.stringify({ name: name, email: email, note: note, website: document.getElementById('g-website').value, r: code }) })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok || r.status === 429, j: j }; }); })
       .then(function (res) {
         if (res.ok) { gate.classList.add('sent'); gmsg.textContent = ''; }
