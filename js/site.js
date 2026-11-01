@@ -4,6 +4,16 @@
 
   document.getElementById('yr').textContent = new Date().getFullYear();
 
+  // Show the logo mark in the top bar only once the hero's full logo has scrolled away.
+  var nav = document.querySelector('.nav'), hero = document.querySelector('.hero-mark');
+  if (nav && hero && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      nav.classList.toggle('past-hero', !entries[0].isIntersecting && entries[0].boundingClientRect.top < 0);
+    }).observe(hero);
+  } else if (nav) {
+    nav.classList.add('past-hero');
+  }
+
   // Woodcut waveforms: thin bars masked with the edges of the woodcut borders,
   // uneven widths and a slight hand-set tilt. Seeded, so every visit looks the same.
   // Absolute URLs: a url() inside a custom property resolves against the stylesheet that uses it.

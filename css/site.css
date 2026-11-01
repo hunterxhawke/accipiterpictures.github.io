@@ -62,6 +62,9 @@ img { max-width: 100%; height: auto; display: block; }
 .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 64px; }
 .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
 .brand img { height: 26px; width: auto; }
+/* The mark stays hidden while the hero's full logo is on screen, then fades in */
+.brand { opacity: 0; transform: translateY(-4px); pointer-events: none; transition: opacity .45s ease, transform .45s var(--ease); }
+.nav.past-hero .brand { opacity: 1; transform: none; pointer-events: auto; }
 .nav ul { display: flex; gap: clamp(14px, 3vw, 32px); list-style: none; }
 .nav ul a { text-decoration: none; font-weight: 600; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--ash); transition: color .2s; }
 .nav ul a:hover { color: var(--white); }
@@ -293,5 +296,6 @@ footer p { font-size: 14px; color: var(--ash); }
   html { scroll-behavior: auto; }
   .hero-mark, .wave i, .dot { animation: none; }
   .wave i { height: var(--h, 50%); }
+  .brand { transition: none; transform: none; }
   .entry .face, .entry .lid img { transition: opacity .3s; transform: none !important; filter: none !important; }
 }
