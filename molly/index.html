@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Looking for Molly · Accipiter Pictures</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Hidden page: reachable only by link. Not in the main nav, not indexed. -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="description" content="Looking for Molly, a feature screenplay by Hunter Hawke. Hear the full live reading recorded at Rutgers Presbyterian Church, New York, September 28, 2026.">
+<meta property="og:title" content="Looking for Molly · Written by Hunter Hawke">
+<meta property="og:description" content="The full live reading of the feature script, recorded in New York on 09.28.26.">
+<meta property="og:image" content="https://accipiterpictures.com/assets/molly/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.ico?v=4" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg?v=4">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,600;1,400;1,600&family=Nanum+Brush+Script&display=swap">
+<!-- Molly title and date: closest free matches to the poster lettering -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600&family=Share+Tech+Mono&display=swap">
+<link rel="preconnect" href="https://use.typekit.net" crossorigin>
+<link rel="stylesheet" href="https://use.typekit.net/nvv1dxb.css">
+<link rel="stylesheet" href="../css/site.css?v=77831a5e">
+<style>
+  /* Page-only additions. Everything else comes from the main site's stylesheet.
+     One centered column like a poster: neon title lit by screen glow, logline, player, key art.
+     The record light appears once, on the player. */
+  :root { --neon: #e8345a; --lav: #b4b0e4; --molly: "Teko", var(--display); --mono: "Share Tech Mono", ui-monospace, monospace; }
+  .nav .brand { opacity: 1; transform: none; pointer-events: auto; }
+
+  /* ---------- Opening screen ---------- */
+  .m-hero { padding-block: clamp(44px, 6.5vw, 84px) 0; }
+  .m-head { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; isolation: isolate; }
+  /* The sign. Before it lights, the tubes read as unlit glass. LOOKING, FOR and MOLLY strike one after another,
+     each with a stutter; the wall glow behind rises with them; the date tube comes on last. Afterwards the O in MOLLY
+     buzzes now and then, the way a real sign with one tired tube does. Glow stays tight to the glass. */
+  .m-head::before {
+    content: ""; position: absolute; z-index: -1; left: 50%; top: 52%; width: min(120%, 1100px); aspect-ratio: 2.4; transform: translate(-50%, -50%);
+    background: radial-gradient(closest-side, rgba(232, 52, 90, .11), rgba(180, 176, 228, .04) 55%, transparent 75%); filter: blur(20px); pointer-events: none;
+    animation: wall 2.2s ease-out .3s both, breathe 7s ease-in-out 2.5s infinite alternate;
+  }
+  @keyframes wall { from { opacity: 0; } 30% { opacity: .35; } 55% { opacity: .5; } to { opacity: .85; } }
+  @keyframes breathe { from { opacity: .85; } to { opacity: 1; } }
+
+  .m-title { margin-top: 8px; font: 600 clamp(60px, 12vw, 164px)/.82 var(--molly); letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; }
+  /* Each tube carries its own slice of the poster's red-to-pink gradient */
+  .tube { display: inline-block; -webkit-background-clip: text; background-clip: text; color: transparent;
+          filter: drop-shadow(0 0 5px rgba(240, 50, 85, .6)) drop-shadow(0 0 16px rgba(232, 52, 90, .28));
+          animation: strike .9s steps(1) both; }
+  .t1 { background-image: linear-gradient(90deg, #ff2b2b, #f02f47); animation-delay: .35s; }
+  .t2 { background-image: linear-gradient(90deg, #ee3050, #e8345a); animation-delay: .95s; }
+  .t3 { background-image: linear-gradient(90deg, #e5365e, #df3a66); animation-delay: 1.45s; }
+  .t4 { background-image: linear-gradient(90deg, #da3e6e, #d4437a); animation: strike .9s steps(1) 1.45s both, buzz 9s steps(1) 4.5s infinite; }
+  .t5 { background-image: linear-gradient(90deg, #cf467f, #c4508c); animation-delay: 1.45s; }
+  /* Unlit: dim glass, no glow. Then two false starts and on. */
+  @keyframes strike {
+    0%       { opacity: .13; filter: none; }
+    14%      { opacity: .9; filter: drop-shadow(0 0 5px rgba(240, 50, 85, .55)); }
+    22%      { opacity: .13; filter: none; }
+    40%      { opacity: .75; filter: drop-shadow(0 0 4px rgba(240, 50, 85, .45)); }
+    46%      { opacity: .2; filter: none; }
+    58%, 100% { opacity: 1; filter: drop-shadow(0 0 5px rgba(240, 50, 85, .6)) drop-shadow(0 0 16px rgba(232, 52, 90, .28)); }
+  }
+  /* The tired tube: a quick double flicker every nine seconds */
+  @keyframes buzz { 0%, 3.4%, 100% { opacity: 1; } 1% { opacity: .3; } 1.8% { opacity: .9; } 2.4% { opacity: .22; } }
+
+  .m-date { display: block; font: 400 clamp(25px, 3vw, 40px)/1 var(--mono); letter-spacing: .04em; color: var(--lav);
+            text-shadow: 0 0 6px rgba(180, 176, 228, .55), 0 0 16px rgba(180, 176, 228, .22); animation: tube-lav .7s steps(1) 2.1s both; }
+  @keyframes tube-lav { 0% { opacity: .14; text-shadow: none; } 25% { opacity: .8; } 40% { opacity: .2; text-shadow: none; } 60%, 100% { opacity: 1; } }
+  /* The script's alternate title: a thinner lavender tube under the sign, lit last */
+  .m-alt { display: block; max-width: 34ch; margin-top: clamp(14px, 2vw, 22px); font: 400 clamp(14px, 1.65vw, 21px)/1.35 var(--mono); letter-spacing: .14em; text-transform: uppercase; text-wrap: balance; color: var(--lav);
+           text-shadow: 0 0 6px rgba(180, 176, 228, .5), 0 0 14px rgba(180, 176, 228, .2); animation: tube-lav .7s steps(1) 2.5s both; }
+  .m-alt i { font-style: normal; margin-right: .5em; }
+  .m-by { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 14px; margin-top: clamp(16px, 2.3vw, 26px); }
+  .m-by .label { font-size: 13px; }
+  .m-by .hand { font-size: clamp(32px, 3.7vw, 44px); }
+
+  .m-body { display: flex; flex-direction: column; align-items: center; max-width: 720px; margin: clamp(30px, 4vw, 44px) auto 0; text-align: center; }
+  .logline { max-width: 52ch; font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; text-wrap: pretty; }
+  .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 0; margin-top: 20px; }
+  .meta span + span::before { content: "·"; margin-inline: 10px; color: var(--ash); }
+
+  /* Player */
+  .m-play { width: 100%; margin-top: clamp(30px, 4vw, 42px); }
+  .m-play .sound-rec { justify-content: center; }
+  .player { margin-top: 10px; padding: 12px; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
+  .player iframe { display: block; width: 100%; height: 200px; border: 0; }
+  .play-notes { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; margin-top: 12px; }
+  .play-notes a { color: var(--ash); text-decoration: none; transition: color .2s; }
+  .play-notes a:hover { color: var(--white); }
+
+  /* Key art marquee: every frame whole, side by side, drifting. Sideways scroll, drag or swipe moves it; vertical scrolling stays with the page.
+     Hover lights a frame; click opens the gallery. */
+  .marquee { margin-top: clamp(40px, 5vw, 64px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; touch-action: pan-y; cursor: grab; -webkit-mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  .track { display: flex; gap: clamp(10px, 1.2vw, 16px); width: max-content; will-change: transform; }
+  .marquee.dragging { cursor: grabbing; }
+  .marquee.dragging .track button { pointer-events: none; }
+  .track button { position: relative; flex: none; height: clamp(300px, 34vw, 440px); aspect-ratio: 2 / 3; padding: 0; overflow: hidden; border: 0; background: var(--soot); cursor: zoom-in; }
+  .track img { width: 100%; height: 100%; object-fit: contain; transition: transform .6s var(--ease); }
+  .track button:is(:hover, :focus-visible) img { transform: scale(1.04); }
+  .track button::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--neon), 0 0 0 0 rgba(232, 52, 90, 0); transition: box-shadow .25s var(--ease); pointer-events: none; }
+  .track button:is(:hover, :focus-visible)::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
+  .track button:focus-visible { outline: none; }
+
+  /* Gallery: big frames, arrows, keyboard and swipe */
+  .lb { position: fixed; inset: 0; z-index: 50; display: grid; grid-template-rows: auto minmax(0, 1fr); background: rgba(0, 0, 0, .94);
+        padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+  .lb[hidden] { display: none; }  /* .lb sets display: grid, which would otherwise override the hidden attribute */
+  .lb-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .lb-count { font: 400 18px/1 var(--mono); letter-spacing: .08em; color: var(--lav); text-shadow: 0 0 8px rgba(180, 176, 228, .5); }
+  .lb-stage { position: relative; display: flex; align-items: center; justify-content: center; min-height: 0; padding-block: 12px; }
+  .lb-stage img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+  .lb-btn { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border: 0; background: none; color: var(--neon); font: 400 40px/1 var(--mono); cursor: pointer;
+            text-shadow: 0 0 10px rgba(232, 52, 90, .6); opacity: .75; transition: opacity .2s, text-shadow .2s, color .2s; }
+  .lb-btn:hover, .lb-btn:focus-visible { opacity: 1; color: #ff5a78; text-shadow: 0 0 6px rgba(255, 90, 120, .9), 0 0 22px rgba(232, 52, 90, .8); outline: none; }
+  #lb-close { font-size: 32px; }
+  .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); }
+  .lb-prev { left: 0; } .lb-next { right: 0; }
+  body.lb-open { overflow: hidden; }
+
+  /* ---------- The night: photos from the reading, one justified row; each opens in the gallery ---------- */
+  .night-label { display: block; margin-bottom: 20px; }
+  .night { display: flex; gap: clamp(8px, 1vw, 14px); margin-bottom: clamp(48px, 6vw, 72px); }
+  .night button { position: relative; flex: var(--r) 1 0; aspect-ratio: var(--r); min-width: 0; padding: 0; border: 0; overflow: hidden; background: var(--soot); cursor: zoom-in; }
+  .night img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+  .night button::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--neon); transition: box-shadow .25s var(--ease); pointer-events: none; }
+  .night button:is(:hover, :focus-visible) img { transform: scale(1.04); }
+  .night button:is(:hover, :focus-visible)::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
+  .night button:focus-visible { outline: none; }
+
+  /* ---------- End credits ---------- */
+  .credits-roll { padding-block: clamp(36px, 4.5vw, 60px) clamp(56px, 7vw, 96px); text-align: center; }
+  .roll-label { display: block; margin-bottom: 26px; }
+  .cast { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px clamp(32px, 6vw, 96px); max-width: 860px; margin: 0 auto; list-style: none; }
+  .cast li { min-width: 0; }
+  .cast .n { display: block; font: 600 clamp(17px, 1.6vw, 19px)/1.3 var(--body); transition: color .2s; }
+  .cast .r { display: block; margin-top: 3px; font-size: 14px; line-height: 1.45; color: var(--ash); text-wrap: balance; }
+  .cast li:hover .n { color: var(--neon); }
+  .crew { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px clamp(24px, 4vw, 56px); max-width: 860px; margin: clamp(40px, 5vw, 60px) auto 0; padding-top: clamp(32px, 4vw, 44px); }
+  .crew > div { flex: 0 1 240px; }
+  .crew dt { font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
+  .crew dd { margin-top: 5px; font-size: 16px; line-height: 1.4; }
+
+  /* Content note: one quiet line under the player links, red label inline */
+  .note { margin-top: 14px; padding-top: 12px; text-align: left; font-size: 13px; line-height: 1.5; color: var(--ash); border-top: 3px solid transparent; border-image: var(--rule-dim) 100% 0 0 0 / 3px 0 0 0 stretch; }
+  .note .label { margin-right: 10px; font-size: 10px; color: var(--rec); }
+
+  /* ---------- Closing ---------- */
+  .closing { padding-block: clamp(48px, 6vw, 80px); text-align: center; }
+  .closing p { max-width: 50ch; margin: 0 auto; font-size: clamp(18px, 1.8vw, 22px); line-height: 1.5; text-wrap: balance; }
+  .closing p + p { margin-top: 14px; color: var(--ash); font-size: clamp(16px, 1.4vw, 18px); }
+  .closing .sign { display: inline-flex; align-items: center; gap: .3em; margin-top: 26px; font-size: 42px; }
+  .closing .sign img { width: 1em; transform: translateY(.11em); }
+  .closing .sign .hand { transform: translateY(.2em); }
+  .closing .cta { margin-top: 30px; }
+  .mail { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 16px; margin-top: 18px; }
+  .mail .addr { font: 600 clamp(17px, 1.6vw, 19px)/1.3 var(--body); user-select: all; overflow-wrap: anywhere; }
+  .mail button { padding: 0; border: 0; background: none; color: var(--ash); cursor: pointer; transition: color .2s; }
+  .mail button:hover, .mail button:focus-visible { color: var(--white); }
+
+  @media (max-width: 860px) {
+  }
+  @media (max-width: 600px) {
+    .track button { height: 300px; }
+    .night { overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--gut)); padding-inline: var(--gut); scrollbar-width: none; }
+    .night::-webkit-scrollbar { display: none; }
+    .night button { flex: none; height: 220px; scroll-snap-align: center; }
+    .nav ul { gap: 14px; }
+    .lb-prev, .lb-next { top: auto; bottom: 0; transform: none; }
+    .cast { grid-template-columns: 1fr; }
+    .player iframe { height: 220px; }
+  }
+  /* Reduced motion: the sign is simply on, and the marquee only moves when the visitor moves it */
+  @media (prefers-reduced-motion: reduce) { .tube, .m-date, .m-alt, .m-head::before { animation: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="nav rule-bottom">
+  <div class="wrap">
+    <a href="../" class="brand" aria-label="Accipiter Pictures home"><img src="../assets/ap-mark.png" alt="Accipiter Pictures" width="816" height="440"></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="../#films">Films</a></li>
+        <li><a href="../#sound">Sound</a></li>
+        <li><a href="../#about">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== OPENING: title, logline, key art, player ===== -->
+  <section class="m-hero">
+    <div class="wrap">
+      <div class="m-head">
+        <span class="m-date">09.28.26</span>
+        <h1 class="m-title" aria-label="Looking for Molly"><span class="tube t1" aria-hidden="true">Looking</span> <span class="tube t2" aria-hidden="true">for</span> <span aria-hidden="true" style="white-space:nowrap"><span class="tube t3">M</span><span class="tube t4">O</span><span class="tube t5">lly</span></span></h1>
+        <span class="m-alt"><i>or</i>I’m Not Exactly Proud of What My Life Has Become</span>
+        <div class="m-by"><span class="label">A screenplay by</span><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
+      </div>
+
+      <div class="m-body">
+        <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a NEET pornsick twenty-something’s world unravels the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</p>
+        <div class="meta caps"><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>45 in the audience</span></div>
+
+        <div class="m-play">
+          <span class="sound-rec"><i class="dot"></i>Full-length reading</span>
+          <div class="player">
+            <iframe src="https://whyp.it/embeds/track/6oR93ZQILqtr" title="Looking for Molly, full live reading" scrolling="no" allow="autoplay" loading="lazy"></iframe>
+          </div>
+          <div class="play-notes caps">
+            <a href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download>Read the script · PDF ↓</a>
+            <a href="https://whyp.it/tracks/looking-for-molly-screenplay-reading-at-rpc-septem-PVwQrB7VCaip" target="_blank" rel="noopener">Open on Whyp ↗</a>
+          </div>
+          <p class="note"><span class="label">Content note</span><span>The material is intentionally challenging and provocative. Audience discretion is advised.</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee" role="region" aria-label="Key art. Select a frame to open the gallery.">
+      <div class="track" id="track">
+        <button type="button" data-i="0"><img src="../assets/molly/poster-molly.webp" alt="Poster: Molly on the phone, neon title" width="1200" height="1800" loading="lazy"></button>
+        <button type="button" data-i="1"><img src="../assets/molly/poster-paul.webp" alt="Poster: Paul at his desk, neon title" width="1200" height="1800" loading="lazy"></button>
+        <button type="button" data-i="2"><img src="../assets/molly/still-profile.webp" alt="Molly in profile, lit by a screen" width="1200" height="1800" loading="lazy"></button>
+        <button type="button" data-i="3"><img src="../assets/molly/poster-mirror.webp" alt="Poster: mirrored collage of Molly around Paul" width="1200" height="1800" loading="lazy"></button>
+        <button type="button" data-i="4"><img src="../assets/molly/still-gym.webp" alt="Molly on a gym floor with a laptop" width="1200" height="1800" loading="lazy"></button>
+        <button type="button" data-i="5"><img src="../assets/molly/poster-one-night.webp" alt="Poster: One Night Only, Molly at a keyboard" width="1200" height="1800" loading="lazy"></button>
+        <button type="button" data-i="6"><img src="../assets/molly/still-laptop.webp" alt="Molly holding a laptop marked 09.28.26" width="1200" height="1800" loading="lazy"></button>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="wave small" aria-hidden="true" data-bars="96"></div>
+    </div>
+  </section>
+
+  <!-- ===== END CREDITS ===== -->
+  <section class="credits-roll" id="credits">
+    <div class="wrap">
+      <span class="label night-label">The night</span>
+      <div class="night" id="night" role="region" aria-label="Photos from the reading. Select one to open it larger.">
+        <button type="button" data-i="0" style="--r: .937"><img src="../assets/molly/night-polaroid.webp" alt="Polaroid of the cast seated across the stage" width="1031" height="1100" loading="lazy"></button>
+        <button type="button" data-i="1" style="--r: 1.777"><img src="../assets/molly/night-stage-welcome.webp" alt="Hunter Hawke welcomes the audience, the cast seated behind him" width="1800" height="1013" loading="lazy"></button>
+        <button type="button" data-i="2" style="--r: 1.777"><img src="../assets/molly/night-stage-intro.webp" alt="Introductions in front of the seated cast" width="1800" height="1013" loading="lazy"></button>
+        <button type="button" data-i="3" style="--r: 1.333"><img src="../assets/molly/night-cast.webp" alt="The cast mid-reading, scripts in hand" width="1800" height="1350" loading="lazy"></button>
+      </div>
+
+      <span class="label roll-label">Read by</span>
+      <ul class="cast">
+        <li><span class="n">Emma Broadbent</span><span class="r">Narration and action description</span></li>
+        <li><span class="n">Andrew Bourne</span><span class="r">Chris Kimball</span></li>
+        <li><span class="n">Alice Jokela</span><span class="r">Molly</span></li>
+        <li><span class="n">Hunter Hawke</span><span class="r">Paul Kimball</span></li>
+        <li><span class="n">Enid Graham</span><span class="r">Doc Kimball</span></li>
+        <li><span class="n">Lauren Guglielmello</span><span class="r">Lexie Kimball, Brianna, Claire</span></li>
+        <li><span class="n">Christopher Ryan</span><span class="r">Mr. Fabrizian, Mr. Granscheme, Chris Hansen</span></li>
+        <li><span class="n">Meg MacCary</span><span class="r">Lynne Fantile, Office Lady Karen</span></li>
+        <li><span class="n">Mia Vallet</span><span class="r">Grace Lanie</span></li>
+        <li><span class="n">Nicole Bates</span><span class="r">Penelope Weckers</span></li>
+        <li><span class="n">Ella Rain Bernarduci</span><span class="r">Camille, Vanessa, Kodie</span></li>
+        <li><span class="n">Zoe Zien</span><span class="r">Rosie, Alicia Allison</span></li>
+        <li><span class="n">Bob Laine</span><span class="r">Uncle Jason, Car Speaker, Phone Voice, Agent of the State, the School Police Officer, Stranger #3, Henry Allison</span></li>
+        <li><span class="n">Chris Straker</span><span class="r">Jonathan, Stranger #2, Stuwie, Waiter, Suited Administrator</span></li>
+        <li><span class="n">Rishi Mutalik</span><span class="r">Dennis, Stranger #1</span></li>
+        <li><span class="n">Sam Bianculli</span><span class="r">Nico, Molly’s Brother</span></li>
+      </ul>
+
+      <dl class="crew rule-top">
+        <div><dt>Produced by</dt><dd>Peter Rinaldi and Maxwell di Paolo</dd></div>
+        <div><dt>Associate producer</dt><dd>Eduardo Perez</dd></div>
+        <div><dt>Live sound mix and recording</dt><dd>Maxwell di Paolo and Eduardo Perez</dd></div>
+        <div><dt>Dialogue editing and post mix</dt><dd>Lucas Pumarejo</dd></div>
+        <div><dt>Reference visuals</dt><dd>James Kolsby</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ===== CLOSING ===== -->
+  <section class="closing rule-top" id="next">
+    <div class="wrap">
+      <p>Thank you to everyone who generously contributed their time and talent to bring this reading to life!</p>
+      <p>I’m very open to your thoughts on the script, the performances, and ideas for next steps. If you want to help get <em>Molly</em> made, write to me directly.</p>
+      <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
+      <div class="cta">
+        <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download>Download the script</a>
+        <a class="btn btn-line" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly">Get in touch</a>
+      </div>
+      <div class="mail"><span class="addr" id="email">hunter@accipiterpictures.com</span><button type="button" class="caps" id="copy">Copy email</button></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Gallery" hidden>
+  <div class="lb-top"><span class="caps lb-count" id="lb-count"></span><button type="button" class="lb-btn" id="lb-close" aria-label="Close gallery">×</button></div>
+  <div class="lb-stage" id="lb-stage">
+    <img id="lb-img" alt="">
+    <button type="button" class="lb-btn lb-prev" id="lb-prev" aria-label="Previous">&lt;</button>
+    <button type="button" class="lb-btn lb-next" id="lb-next" aria-label="Next">&gt;</button>
+  </div>
+</div>
+
+<footer class="rule-top">
+  <div class="wrap">
+    <a class="foot-mark" href="../" aria-label="Accipiter Pictures home"><img src="../assets/icon-hand-bird.png" alt="" width="565" height="600" loading="lazy"></a>
+    <p>© <span id="yr">2026</span> Accipiter Pictures · Hunter Hawke Sound · NYC and Beyond</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Key art marquee: a second, hidden copy of the frames makes the loop seamless.
+  var marquee = document.querySelector('.marquee'), track = document.getElementById('track');
+  var frames = Array.prototype.slice.call(track.querySelectorAll('button'));
+  frames.forEach(function (f) {
+    var c = f.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; track.appendChild(c);
+  });
+  // Position is kept in script: a slow drift, plus whatever the visitor adds by scrolling sideways, dragging or swiping.
+  // Vertical scrolling is left to the page.
+  var x = 0, half = 0, kick = 0, last = performance.now(), drift = reduced ? 0 : 22; // px per second
+  function measure() { half = track.scrollWidth / 2; }
+  function wrap() { if (half) { x = x % half; if (x > 0) x -= half; } }
+  function frame(now) {
+    var dt = Math.min(64, now - last) / 1000; last = now;
+    if (!dragging) { x -= drift * dt + kick; kick *= 0.9; if (Math.abs(kick) < 0.05) kick = 0; }
+    wrap(); track.style.transform = 'translate3d(' + x + 'px,0,0)';
+    requestAnimationFrame(frame);
+  }
+  window.addEventListener('load', measure); window.addEventListener('resize', measure); measure();
+  requestAnimationFrame(frame);
+  // Sideways scroll (trackpad swipe, shift + wheel) moves it directly
+  marquee.addEventListener('wheel', function (e) {
+    var dx = e.deltaX || (e.shiftKey ? e.deltaY : 0);
+    if (Math.abs(dx) > Math.abs(e.deltaY) || e.shiftKey) { e.preventDefault(); x -= dx; }
+  }, { passive: false });
+  // Drag with a mouse or swipe with a finger; a drag never counts as a click
+  var dragging = false, startX = 0, startPos = 0, moved = 0, vel = 0, prevX = 0;
+  marquee.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0) return;
+    dragging = true; moved = 0; startX = prevX = e.clientX; startPos = x; vel = 0;
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (!dragging) return;
+    moved = Math.max(moved, Math.abs(e.clientX - startX));
+    if (moved > 6) marquee.classList.add('dragging');
+    x = startPos + (e.clientX - startX); vel = e.clientX - prevX; prevX = e.clientX;
+  });
+  function endDrag() { if (!dragging) return; dragging = false; kick = -vel; setTimeout(function () { marquee.classList.remove('dragging'); }, 0); }
+  window.addEventListener('pointerup', endDrag); window.addEventListener('pointercancel', endDrag);
+
+  // Gallery: opens on the image clicked. Key art runs in marquee order; photos from the night are their own set.
+  // Arrows, keys and swipe move through it; Tab stays inside until it closes.
+  var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'),
+      lbCount = document.getElementById('lb-count'), at = 0, opener = null, items = [];
+  function list(nodes) { return nodes.map(function (n) { var im = n.querySelector('img'); return { src: im.getAttribute('src'), alt: im.alt }; }); }
+  var sets = { art: list(frames), night: list(Array.prototype.slice.call(document.querySelectorAll('#night button'))) };
+  function go(i) {
+    at = (i + items.length) % items.length;
+    lbImg.src = items[at].src; lbImg.alt = items[at].alt;
+    lbCount.textContent = ('0' + (at + 1)).slice(-2) + ' / ' + ('0' + items.length).slice(-2);
+  }
+  function open(set, i, from) { items = sets[set]; opener = from; go(i); lb.hidden = false; document.body.classList.add('lb-open'); document.getElementById('lb-close').focus(); }
+  function close() { lb.hidden = true; document.body.classList.remove('lb-open'); if (opener && opener.getAttribute('aria-hidden') !== 'true') opener.focus(); }
+  track.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && moved <= 6) open('art', +b.dataset.i, b); });
+  document.getElementById('night').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('night', +b.dataset.i, b); });
+  document.getElementById('lb-prev').addEventListener('click', function () { go(at - 1); });
+  document.getElementById('lb-next').addEventListener('click', function () { go(at + 1); });
+  document.getElementById('lb-close').addEventListener('click', close);
+  lb.addEventListener('click', function (e) { if (e.target === lb || e.target.id === 'lb-stage') close(); });
+  var trap = ['lb-close', 'lb-prev', 'lb-next'].map(function (id) { return document.getElementById(id); });
+  document.addEventListener('keydown', function (e) {
+    if (lb.hidden) return;
+    if (e.key === 'ArrowLeft') go(at - 1);
+    else if (e.key === 'ArrowRight') go(at + 1);
+    else if (e.key === 'Escape') close();
+    else if (e.key === 'Tab') {
+      e.preventDefault();
+      var k = trap.indexOf(document.activeElement);
+      trap[(k + (e.shiftKey ? trap.length - 1 : 1)) % trap.length].focus();
+    }
+  });
+  // Once the page has settled, load the gallery images quietly so the arrows feel instant.
+  window.addEventListener('load', function () {
+    setTimeout(function () { sets.art.concat(sets.night).forEach(function (it) { var im = new Image(); im.src = it.src; }); }, 1200);
+  });
+
+  // Copy email, with a select-the-text fallback where the clipboard isn't available (same as the main site).
+  var copyBtn = document.getElementById('copy'), email = document.getElementById('email');
+  copyBtn.addEventListener('click', function () {
+    function done(msg) { copyBtn.textContent = msg; setTimeout(function () { copyBtn.textContent = 'Copy email'; }, 2000); }
+    function fallback() { var r = document.createRange(); r.selectNodeContents(email); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); done('Selected, press Copy'); }
+    try { navigator.clipboard.writeText(email.textContent.trim()).then(function () { done('Copied'); }, fallback); } catch (err) { fallback(); }
+  });
+  var x0 = null;
+  lb.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', function (e) {
+    if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) go(at + (dx < 0 ? 1 : -1));
+  });
+
+  // Woodcut waveform, same recipe as the main site (js/site.js), with paths for this folder.
+  var edges = [1, 2, 3, 4].map(function (k) { return new URL('../assets/wave-edge-' + k + '.png', document.baseURI).href; });
+  document.querySelectorAll('.wave').forEach(function (wave) {
+    var n = +wave.dataset.bars;
+    if (window.innerWidth < 600) n = Math.round(n / 2);
+    var seed = 28;
+    function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < n; i++) {
+      var bar = document.createElement('i');
+      var h = 22 + Math.abs(Math.sin(i * 0.37) * Math.cos(i * 0.11)) * 70 + rnd() * 8;
+      bar.style.cssText = '--h:' + h.toFixed(0) + '%;--w:' + (2 + rnd() * 2).toFixed(1) + 'px;--m:url(' + edges[Math.floor(rnd() * 4)] + ');--r:' + ((rnd() - 0.5) * 3).toFixed(1) + 'deg;animation-duration:' + (1.2 + rnd() * 1.1).toFixed(2) + 's;animation-delay:' + (-rnd() * 2).toFixed(2) + 's';
+      if (i % 11 === 4) bar.className = 'red'; else if (h > 70 || rnd() < 0.12) bar.className = 'hot';
+      frag.appendChild(bar);
+    }
+    wave.appendChild(frag);
+  });
+})();
+</script>
+</body>
+</html>
