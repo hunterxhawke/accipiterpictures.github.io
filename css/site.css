@@ -121,7 +121,7 @@ img { max-width: 100%; height: auto; display: block; }
 .splash-bird { width: clamp(190px, 46vw, 360px); aspect-ratio: 423 / 243; transform-origin: 0 0; opacity: 0; }
 .splash-rig { position: relative; width: 100%; height: 100%; }
 .splash-rig img, .splash-head { position: absolute; inset: 0; width: 100%; height: 100%; }
-.splash-head { transform-origin: 42.2% 80%; }   /* the base of the neck: the head tilts inside the still hood */
+.splash-head { transform-origin: 20.3% 81.9%; }   /* the back of the neck: the head tilts inside the still hood */
 .splash-eye { transform-origin: 49.3% 52.9%; }    /* center of the eye */
 
 /* ---------- Sections ---------- */

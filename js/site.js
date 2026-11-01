@@ -71,7 +71,7 @@
       if (ended) return;
       // 2. Wink, with a small cock of the head (the hood stays still)
       play(head, [
-        { transform: 'none' }, { transform: 'rotate(-4deg)', offset: .35 }, { transform: 'rotate(-4deg)', offset: .65 }, { transform: 'none' }
+        { transform: 'none' }, { transform: 'rotate(-3deg)', offset: .35 }, { transform: 'rotate(-3deg)', offset: .65 }, { transform: 'none' }
       ], { duration: 480, delay: 60, easing: 'ease-in-out' });
       return play(eye, [
         { transform: 'scaleY(1)' },
