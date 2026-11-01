@@ -23,100 +23,90 @@
 <link rel="stylesheet" href="../css/site.css?v=77831a5e">
 <style>
   /* Page-only additions. Everything else comes from the main site's stylesheet.
-     Molly's neon (from the key art) appears only on hover, the way the films carry their own color on the main page. */
-  :root { --neon: #e8345a; --lav: #a9a6d8; }
+     One poster-like opening screen, end credits, one closing. The title is the only big type.
+     Molly's neon (from the key art) appears only on the active thumbnail and on hover. */
+  :root { --neon: #e8345a; }
   .nav .brand { opacity: 1; transform: none; pointer-events: auto; }
   .nav .secret { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
 
-  .m-hero { padding-block: clamp(48px, 8vw, 104px) clamp(40px, 6vw, 72px); }
-  .m-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: center; gap: clamp(32px, 6vw, 80px); }
-  .m-present { display: block; margin-bottom: clamp(18px, 2.4vw, 28px); }
-  .m-title { font-size: clamp(76px, 12.5vw, 172px); line-height: .84; }
+  /* ---------- Opening screen ---------- */
+  .m-hero { padding-block: clamp(32px, 5vw, 64px) clamp(32px, 5vw, 56px); }
+  .m-grid {
+    display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-areas: "text art" "play art";
+    align-items: start; column-gap: clamp(32px, 5.5vw, 76px); row-gap: clamp(24px, 3vw, 36px);
+  }
+  .m-text { grid-area: text; min-width: 0; }
+  .m-art { grid-area: art; min-width: 0; }
+  .m-play { grid-area: play; min-width: 0; }
+
+  .m-present { display: block; margin-bottom: 16px; }
+  .m-title { font-size: clamp(66px, 9.6vw, 132px); line-height: .84; }
   .m-title span { display: block; }
-  .m-title .for { font-size: .42em; line-height: 1; padding-block: .12em .06em; color: var(--ash); }
-  .m-by { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-top: clamp(22px, 3vw, 32px); }
-  .m-by .hand { font-size: clamp(30px, 3.8vw, 44px); }
-  .m-hero .cta { justify-content: flex-start; margin-top: clamp(28px, 4vw, 40px); }
-  .key { aspect-ratio: 1; animation: rise 1.1s var(--ease) both; }
-  .key img { transition: transform .8s var(--ease); }
-  .key:hover img { transform: scale(1.03); }
+  .m-title .for { font-size: .4em; line-height: 1; padding-block: .14em .08em; color: var(--ash); }
+  .m-by { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-top: 18px; }
+  .m-by .hand { font-size: clamp(28px, 3.2vw, 38px); }
+  .logline { max-width: 44ch; margin-top: clamp(20px, 2.6vw, 28px); font-size: clamp(17px, 1.55vw, 20px); line-height: 1.5; text-wrap: pretty; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 0; margin-top: 18px; }
+  .meta span + span::before { content: "·"; margin-inline: 10px; color: var(--rec); }
 
-  .logline { font: 600 clamp(24px, 3.1vw, 39px)/1.28 var(--body); letter-spacing: -.01em; max-width: 32ch; text-wrap: pretty; }
-  .logline em { font-style: normal; color: var(--ash); }
+  /* Key art: one frame and a filmstrip of all seven */
+  .key { position: relative; aspect-ratio: 2 / 3; max-width: 100%; overflow: hidden; background: var(--soot); border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
+  .key img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .9s ease; }
+  .key img.on { opacity: 1; }
+  .strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; margin-top: 10px; }
+  .strip button { position: relative; aspect-ratio: 2 / 3; padding: 0; border: 0; background: var(--soot); cursor: pointer; overflow: hidden; opacity: .45; transition: opacity .25s; }
+  .strip button img { width: 100%; height: 100%; object-fit: cover; }
+  .strip button::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--neon); transition: box-shadow .25s var(--ease); }
+  .strip button:hover { opacity: .8; }
+  .strip button[aria-current="true"] { opacity: 1; }
+  .strip button[aria-current="true"]::after { box-shadow: inset 0 0 0 2px var(--neon); }
 
-  .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: clamp(48px, 6vw, 72px); }
-  .facts > div { padding: 22px clamp(14px, 2vw, 24px) 6px 0; }
-  .facts > div + div { padding-left: clamp(14px, 2vw, 24px); border-left: 3px solid transparent; border-image: var(--rule-v) 0 0 0 100% / 0 0 0 3px stretch; }
-  .facts .label { display: block; margin-bottom: 10px; }
-  .facts b { display: block; font: 800 clamp(30px, 3.8vw, 50px)/.95 var(--display); text-transform: uppercase; font-variant-numeric: tabular-nums; text-wrap: balance; }
-  .facts small { display: block; margin-top: 8px; font-size: 14px; color: var(--ash); }
-
-  .listen { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px 40px; }
-  .listen h2 { font-size: clamp(52px, 8vw, 104px); }
-  .listen p { max-width: 46ch; margin-top: 14px; font-size: clamp(17px, 1.5vw, 19px); }
-  .listen p b { font-weight: 600; font-variant-numeric: tabular-nums; }
-  .player { margin-top: clamp(28px, 4vw, 40px); padding: 14px; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
+  /* Player */
+  .player { padding: 12px; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
   .player iframe { display: block; width: 100%; height: 200px; border: 0; }
-  .player-alt { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-top: 14px; }
-  .player-alt a { color: var(--ash); text-decoration: none; transition: color .2s; }
-  .player-alt a:hover { color: var(--white); }
+  .play-notes { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; margin-top: 12px; }
+  .play-notes a { color: var(--ash); text-decoration: none; transition: color .2s; }
+  .play-notes a:hover { color: var(--white); }
+  .advisory { margin-top: 10px; font-size: 14px; color: var(--ash); }
+  .advisory b { font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--rec); margin-right: 8px; }
 
-  /* Key art: seven uniform 2:3 frames. A scroll strip on phones. */
-  .art-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 18px); }
-  .art-grid figure { margin: 0; position: relative; aspect-ratio: 2 / 3; overflow: hidden; background: var(--soot); }
-  .art-grid figure:first-child { grid-column: span 2; grid-row: span 2; }
-  .art-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease), filter .4s; }
-  .art-grid figure:hover img { transform: scale(1.03); filter: brightness(.9); }
-  .art-grid figure::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--neon); transition: box-shadow .3s var(--ease); pointer-events: none; }
-  .art-grid figure:hover::after { box-shadow: inset 0 0 0 3px var(--neon); }
-
-  .cast { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: clamp(20px, 3vw, 40px); list-style: none; }
-  .cast li { padding: 16px 0 14px; border-bottom: 3px solid transparent; border-image: var(--rule-dim) 0 0 100% 0 / 0 0 3px 0 stretch; }
-  .cast .n { display: block; font: 600 clamp(18px, 1.7vw, 21px)/1.25 var(--body); transition: color .2s; }
-  .cast .r { display: block; margin-top: 4px; font-size: 14px; line-height: 1.45; color: var(--ash); }
+  /* ---------- End credits ---------- */
+  .credits-roll { padding-block: clamp(56px, 7vw, 96px); text-align: center; }
+  .roll-label { display: block; margin-bottom: 26px; }
+  .cast { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px clamp(32px, 6vw, 96px); max-width: 860px; margin: 0 auto; list-style: none; }
+  .cast li { min-width: 0; }
+  .cast .n { display: block; font: 600 clamp(17px, 1.6vw, 19px)/1.3 var(--body); transition: color .2s; }
+  .cast .r { display: block; margin-top: 3px; font-size: 14px; line-height: 1.45; color: var(--ash); text-wrap: balance; }
   .cast li:hover .n { color: var(--neon); }
+  .crew { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px clamp(24px, 4vw, 56px); max-width: 860px; margin: clamp(40px, 5vw, 60px) auto 0; padding-top: clamp(32px, 4vw, 44px); }
+  .crew dt { font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
+  .crew dd { margin-top: 5px; font-size: 16px; line-height: 1.4; }
 
-  .credits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(56px, 7vw, 88px); }
-  .credits > div { padding: 22px 20px 10px 0; }
-  .credits > div + div { padding-left: 20px; border-left: 3px solid transparent; border-image: var(--rule-v) 0 0 0 100% / 0 0 0 3px stretch; }
-  .credits dl { display: grid; gap: 16px; }
-  .credits dt { font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
-  .credits dd { margin-top: 4px; font-size: 16px; }
-
-  .note { display: flex; gap: 14px; align-items: flex-start; max-width: 62ch; margin-top: 44px; padding: 18px 22px; font-size: 15px; color: var(--ash); border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
-  .note .label { flex: none; color: var(--rec); padding-top: 2px; }
-
-  .thanks { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px 48px; }
-  .thanks p { max-width: 44ch; font: 400 clamp(22px, 2.6vw, 32px)/1.35 var(--body); text-wrap: pretty; }
-  .thanks p + p { margin-top: 16px; color: var(--ash); font-size: clamp(18px, 1.8vw, 22px); }
-  .thanks .sign { display: inline-flex; align-items: center; gap: .3em; font-size: 46px; }
-  .thanks .sign img { width: 1em; transform: translateY(.11em); }
-  .thanks .sign .hand { transform: translateY(.2em); }
-
-  .next { text-align: center; }
-  .next h2 { font-size: clamp(48px, 7.4vw, 96px); }
-  .next .hand { display: block; margin-top: 18px; font-size: clamp(28px, 3.2vw, 40px); color: var(--ash); }
-  .next p { max-width: 50ch; margin: 22px auto 0; font-size: clamp(17px, 1.5vw, 19px); }
-  .next .cta { margin-top: 36px; }
+  /* ---------- Closing ---------- */
+  .closing { padding-block: clamp(48px, 6vw, 80px); text-align: center; }
+  .closing p { max-width: 50ch; margin: 0 auto; font-size: clamp(18px, 1.8vw, 22px); line-height: 1.5; text-wrap: balance; }
+  .closing p + p { margin-top: 14px; color: var(--ash); font-size: clamp(16px, 1.4vw, 18px); }
+  .closing .sign { display: inline-flex; align-items: center; gap: .3em; margin-top: 26px; font-size: 42px; }
+  .closing .sign img { width: 1em; transform: translateY(.11em); }
+  .closing .sign .hand { transform: translateY(.2em); }
+  .closing .cta { margin-top: 30px; }
 
   @media (max-width: 860px) {
-    .m-grid, .listen, .thanks { grid-template-columns: 1fr; }
-    .key { max-width: 460px; }
-    .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .facts > div:nth-child(3) { padding-left: 0; border: 0; border-image: none; }
-    .cast { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .credits { grid-template-columns: 1fr; }
-    .credits > div, .credits > div + div { padding: 18px 0 6px; border: 0; border-image: none; }
+    .m-grid { grid-template-columns: 1fr; grid-template-areas: "text" "art" "play"; }
+    .m-art { max-width: 460px; }
+    .crew { grid-template-columns: 1fr; }
   }
   @media (max-width: 600px) {
     .nav .secret span:last-child { display: none; }
     .m-hero .rec { display: flex; }
-    .art-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--gut)); padding-inline: var(--gut); scrollbar-width: none; }
-    .art-grid::-webkit-scrollbar { display: none; }
-    .art-grid figure { flex: 0 0 72%; scroll-snap-align: center; }
+    .m-art { max-width: none; }
+    .strip { display: flex; overflow-x: auto; scrollbar-width: none; }
+    .strip::-webkit-scrollbar { display: none; }
+    .strip button { flex: 0 0 15%; }
     .cast { grid-template-columns: 1fr; }
     .player iframe { height: 220px; }
   }
+  @media (prefers-reduced-motion: reduce) { .key img { transition: none; } }
 </style>
 </head>
 <body>
@@ -130,87 +120,57 @@
 
 <main>
 
-  <!-- ===== HERO ===== -->
+  <!-- ===== OPENING: title, logline, key art, player ===== -->
   <section class="m-hero">
     <div class="wrap">
       <div class="rec">
         <span class="on"><i class="dot"></i>Recorded live</span>
         <span>Feature screenplay · Full reading</span>
-        <span>Rutgers Presbyterian Church · 09.28.26</span>
       </div>
+
       <div class="m-grid">
-        <div>
+        <div class="m-text">
           <span class="label m-present">Peter Rinaldi and Maxwell di Paolo present</span>
           <h1 class="display m-title"><span>Looking</span><span class="for">for</span><span>Molly</span></h1>
           <div class="m-by"><span class="label">A screenplay by</span><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
-          <div class="cta">
-            <a class="btn btn-solid" href="#listen"><span class="play"></span>Hear the reading</a>
-            <a class="btn btn-line" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly%20%C2%B7%20script%20request">Request the script</a>
+          <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a NEET pornsick twenty-something’s world unravels the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</p>
+          <div class="meta caps"><span>09.28.26</span><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>73 in the pews</span></div>
+        </div>
+
+        <div class="m-art">
+          <div class="key" id="key" aria-live="polite">
+            <img class="on" src="../assets/molly/poster-molly.webp" alt="Poster: Molly on the phone, neon title" width="1200" height="1800">
+            <img src="../assets/molly/poster-paul.webp" alt="Poster: Paul at his desk, neon title" width="1200" height="1800" loading="lazy">
+            <img src="../assets/molly/poster-mirror.webp" alt="Poster: mirrored collage of Molly around Paul" width="1200" height="1800" loading="lazy">
+            <img src="../assets/molly/poster-one-night.webp" alt="Poster: One Night Only, Molly at a keyboard" width="1200" height="1800" loading="lazy">
+            <img src="../assets/molly/still-profile.webp" alt="Molly in profile, lit by a screen" width="1200" height="1800" loading="lazy">
+            <img src="../assets/molly/still-gym.webp" alt="Molly on a gym floor with a laptop" width="1200" height="1800" loading="lazy">
+            <img src="../assets/molly/still-laptop.webp" alt="Molly holding a laptop marked 09.28.26" width="1200" height="1800" loading="lazy">
           </div>
+          <div class="strip" id="strip" aria-label="Key art"></div>
         </div>
-        <figure class="photo framed key">
-          <img src="../assets/molly/square-paul.webp" alt="Looking for Molly key art: Paul lit by a laptop screen" width="1600" height="1600">
-        </figure>
-      </div>
-      <div class="wave" aria-hidden="true" data-bars="120"></div>
-    </div>
-  </section>
 
-  <!-- ===== THE STORY ===== -->
-  <section class="block rule-top" id="story">
-    <div class="wrap">
-      <div class="head"><h2 class="display">The Story</h2><span class="hand">one week, two infatuations</span></div>
-      <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a NEET pornsick twenty-something’s world unravels <em>the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</em></p>
-
-      <div class="facts rule-top">
-        <div><span class="label">One night only</span><b>09.28.26</b><small>Monday · Doors 7, reading 7:30</small></div>
-        <div><span class="label">The room</span><b>Rutgers Pres.</b><small>236 W 73rd St · New York</small></div>
-        <div><span class="label">On the page</span><b>16 voices</b><small>35 roles between them</small></div>
-        <div><span class="label">In the pews</span><b>73</b><small>Came out to listen</small></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== LISTEN ===== -->
-  <section class="block rule-top" id="listen">
-    <div class="wrap">
-      <div class="listen">
-        <div>
+        <div class="m-play">
           <span class="sound-rec"><i class="dot"></i>Full-length reading · Audio</span>
-          <h2 class="display">Listen</h2>
-          <p>The whole script, read straight through by the cast and recorded in the room. The reading itself starts at <b>2:46</b>, after the introduction. Headphones recommended.</p>
+          <div class="player">
+            <iframe src="https://whyp.it/embeds/track/6oR93ZQILqtr" title="Looking for Molly, full live reading" scrolling="no" allow="autoplay" loading="lazy"></iframe>
+          </div>
+          <div class="play-notes caps">
+            <span>The reading starts at 2:46</span>
+            <a href="https://whyp.it/tracks/looking-for-molly-screenplay-reading-at-rpc-septem-PVwQrB7VCaip" target="_blank" rel="noopener">Open on Whyp ↗</a>
+          </div>
+          <p class="advisory"><b>Discretion</b>The material is intentionally challenging and provocative. Audience discretion is advised.</p>
         </div>
       </div>
-      <div class="player">
-        <iframe src="https://whyp.it/embeds/track/6oR93ZQILqtr" title="Looking for Molly, full live reading" scrolling="no" allow="autoplay" loading="lazy"></iframe>
-      </div>
-      <div class="player-alt caps">
-        <span>On mobile, it keeps playing in the background</span>
-        <a href="https://whyp.it/tracks/looking-for-molly-screenplay-reading-at-rpc-septem-PVwQrB7VCaip" target="_blank" rel="noopener">Open on Whyp ↗</a>
-      </div>
+
+      <div class="wave small" aria-hidden="true" data-bars="96"></div>
     </div>
   </section>
 
-  <!-- ===== KEY ART ===== -->
-  <section class="block rule-top" id="art">
+  <!-- ===== END CREDITS ===== -->
+  <section class="credits-roll rule-top" id="credits">
     <div class="wrap">
-      <div class="head"><h2 class="display">Key Art</h2><span class="hand">from the campaign</span></div>
-      <div class="art-grid">
-        <figure><img src="../assets/molly/poster-molly.webp" alt="Poster: Molly on the phone, neon title" width="1200" height="1800" loading="lazy"></figure>
-        <figure><img src="../assets/molly/poster-paul.webp" alt="Poster: Paul at his desk, neon title" width="1200" height="1800" loading="lazy"></figure>
-        <figure><img src="../assets/molly/poster-mirror.webp" alt="Poster: mirrored collage of Molly around Paul" width="1200" height="1800" loading="lazy"></figure>
-        <figure><img src="../assets/molly/poster-one-night.webp" alt="Poster: One Night Only, Molly at a keyboard" width="1200" height="1800" loading="lazy"></figure>
-        <figure><img src="../assets/molly/still-profile.webp" alt="Molly in profile, lit by a screen" width="1200" height="1800" loading="lazy"></figure>
-        <figure><img src="../assets/molly/still-gym.webp" alt="Molly on a gym floor with a laptop" width="1200" height="1800" loading="lazy"></figure>
-        <figure><img src="../assets/molly/still-laptop.webp" alt="Molly holding a laptop marked 09.28.26" width="1200" height="1800" loading="lazy"></figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== CAST & CREDITS ===== -->
-  <section class="block rule-top" id="cast">
-    <div class="wrap">
-      <div class="head"><h2 class="display">The Cast</h2><span class="hand">and everyone they played</span></div>
+      <span class="label roll-label">Read by</span>
       <ul class="cast">
         <li><span class="n">Emma Broadbent</span><span class="r">Narration and action description</span></li>
         <li><span class="n">Andrew Bourne</span><span class="r">Chris Kimball</span></li>
@@ -230,43 +190,23 @@
         <li><span class="n">Sam Bianculli</span><span class="r">Nico, Molly’s Brother</span></li>
       </ul>
 
-      <div class="credits rule-top">
-        <div><dl>
-          <div><dt>Written by</dt><dd>Hunter Hawke</dd></div>
-          <div><dt>Produced by</dt><dd>Peter Rinaldi and Maxwell di Paolo</dd></div>
-          <div><dt>Associate producer</dt><dd>Eduardo Perez</dd></div>
-        </dl></div>
-        <div><dl>
-          <div><dt>Live sound mix and recording</dt><dd>Maxwell di Paolo and Eduardo Perez</dd></div>
-          <div><dt>Dialogue editing and post-production mix</dt><dd>Lucas Pumarejo</dd></div>
-        </dl></div>
-        <div><dl>
-          <div><dt>Reference visuals captured on-site</dt><dd>James Kolsby</dd></div>
-          <div><dt>Hosted at</dt><dd>Rutgers Presbyterian Church, New York</dd></div>
-        </dl></div>
-      </div>
-
-      <div class="note"><span class="label">Discretion</span><span>The material is intentionally challenging and provocative. Audience discretion is advised.</span></div>
+      <dl class="crew rule-top">
+        <div><dt>Written by</dt><dd>Hunter Hawke</dd></div>
+        <div><dt>Produced by</dt><dd>Peter Rinaldi and Maxwell di Paolo</dd></div>
+        <div><dt>Associate producer</dt><dd>Eduardo Perez</dd></div>
+        <div><dt>Live sound mix and recording</dt><dd>Maxwell di Paolo and Eduardo Perez</dd></div>
+        <div><dt>Dialogue editing and post mix</dt><dd>Lucas Pumarejo</dd></div>
+        <div><dt>Reference visuals on-site</dt><dd>James Kolsby</dd></div>
+      </dl>
     </div>
   </section>
 
-  <!-- ===== THANKS ===== -->
-  <section class="block rule-top" id="thanks">
-    <div class="wrap thanks">
-      <div>
-        <p>Thank you to everyone who generously contributed their time and talent to bring this reading to life, and to everyone who took the time to hear my script out loud.</p>
-        <p>I wish you a beautiful day!</p>
-      </div>
-      <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
-    </div>
-  </section>
-
-  <!-- ===== NEXT ===== -->
-  <section class="block rule-top next" id="next">
+  <!-- ===== CLOSING ===== -->
+  <section class="closing rule-top" id="next">
     <div class="wrap">
-      <h2 class="display">What comes next</h2>
-      <span class="hand">producers, financiers, actors, friends</span>
-      <p>I’m very open to your thoughts on the script and the performances, and to any ideas for next steps this project should consider. If you’d like the PDF, or want to help get Molly made, write to me directly.</p>
+      <p>Thank you to everyone who generously contributed their time and talent to bring this reading to life, and to everyone who took the time to hear my script out loud. I wish you a beautiful day!</p>
+      <p>I’m very open to your thoughts on the script and the performances, and to ideas for next steps. If you’d like the PDF, or want to help get Molly made, write to me directly.</p>
+      <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       <div class="cta">
         <a class="btn btn-solid" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly%20%C2%B7%20script%20request"><i class="dot"></i>Request the script</a>
         <a class="btn btn-line" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly%20%C2%B7%20thoughts">Share your thoughts</a>
@@ -284,9 +224,29 @@
 </footer>
 
 <script>
-// Woodcut waveforms, same recipe as the main site (js/site.js), with paths for this folder.
 (function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Key art: build the filmstrip from the frames, crossfade every 6s until someone picks one.
+  var frames = Array.prototype.slice.call(document.querySelectorAll('#key img'));
+  var strip = document.getElementById('strip'), cur = 0, timer = null;
+  function show(i) {
+    frames[cur].classList.remove('on'); strip.children[cur].setAttribute('aria-current', 'false');
+    cur = i;
+    frames[cur].loading = 'eager'; frames[cur].classList.add('on'); strip.children[cur].setAttribute('aria-current', 'true');
+  }
+  frames.forEach(function (img, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.setAttribute('aria-label', 'Show ' + img.alt); b.setAttribute('aria-current', i === 0 ? 'true' : 'false');
+    var t = document.createElement('img'); t.src = img.getAttribute('src'); t.alt = ''; t.loading = 'lazy';
+    b.appendChild(t);
+    b.addEventListener('click', function () { clearInterval(timer); timer = null; show(i); });
+    strip.appendChild(b);
+  });
+  if (!reduced) timer = setInterval(function () { show((cur + 1) % frames.length); }, 6000);
+
+  // Woodcut waveform, same recipe as the main site (js/site.js), with paths for this folder.
   var edges = [1, 2, 3, 4].map(function (k) { return new URL('../assets/wave-edge-' + k + '.png', document.baseURI).href; });
   document.querySelectorAll('.wave').forEach(function (wave) {
     var n = +wave.dataset.bars;
