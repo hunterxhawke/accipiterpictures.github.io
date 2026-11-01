@@ -230,11 +230,12 @@
   .cast .r { display: block; margin-top: 3px; font-size: 14px; line-height: 1.45; color: var(--ash); text-wrap: balance; }
   /* Only names that link somewhere react; the arrow says it opens their page */
   /* Credit links: a hand-cut woodcut rule under the name instead of a plain underline.
-     The rule is the site's own woodcut texture used as a mask, so it can take the neon on hover. */
-  a.n, .crew dd a { position: relative; color: var(--white); text-decoration: none; padding-bottom: 4px; transition: color .2s, text-shadow .2s; }
+     The rule is the site's woodcut texture, leveled so it runs flat, used as a mask so it can take the neon on hover.
+     Names never break across lines, so every rule stays whole. */
+  a.n, .crew dd a { position: relative; display: inline-block; white-space: nowrap; color: var(--white); text-decoration: none; padding-bottom: 5px; transition: color .2s, text-shadow .2s; }
   a.n::after, .crew dd a::after {
-    content: ""; position: absolute; left: -1px; right: -1px; bottom: -1px; height: 4px; background: var(--ash); opacity: .7;
-    -webkit-mask: url(../assets/rule-h.png) center / 100% 100% no-repeat; mask: url(../assets/rule-h.png) center / 100% 100% no-repeat;
+    content: ""; position: absolute; left: -1px; right: -1px; bottom: -2px; height: 6px; background: var(--ash); opacity: .7;
+    -webkit-mask: url(../assets/rule-level.png) center / 100% 100% no-repeat; mask: url(../assets/rule-level.png) center / 100% 100% no-repeat;
     transition: background .2s, opacity .2s, filter .2s;
   }
   a.n:hover, a.n:focus-visible, .crew dd a:hover, .crew dd a:focus-visible { color: var(--neon-hi, #ff5a78); text-shadow: 0 0 8px rgba(232, 52, 90, .45); outline: none; }
