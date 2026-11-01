@@ -131,10 +131,10 @@ img { max-width: 100%; height: auto; display: block; }
 .entry .pron { margin-top: 4px; font-size: 13px; color: var(--ash); white-space: nowrap; }
 .entry .pron i { margin-left: 4px; font: normal 600 10px var(--body); letter-spacing: .12em; text-transform: uppercase; }
 .entry .def p { padding-left: 28px; font-size: 15px; line-height: 1.5; color: var(--ash); }
-.entry .alt { justify-content: center; gap: 16px; opacity: 0; transform: translateY(14px); filter: blur(4px); pointer-events: none; }
-.entry .lid { flex: none; width: 44px; }
+.entry .alt { justify-content: center; gap: .6em; font-size: clamp(22px, 2.4vw, 28px); opacity: 0; transform: translateY(14px); filter: blur(4px); pointer-events: none; }
+.entry .lid { flex: none; width: 1.6em; }
 .entry .lid img { width: 100%; transform: scaleY(.08); transition: transform .5s cubic-bezier(.3, .7, .2, 1.25) .2s; }
-.entry .alt .hand { font-size: clamp(22px, 2.4vw, 28px); line-height: 1.2; white-space: nowrap; }
+.entry .alt .hand { line-height: 1.2; white-space: nowrap; }
 .entry .hh-word { display: inline-block; height: 1.05em; width: auto; vertical-align: -.22em; margin-left: .1em; }
 .entry:is(:hover, :focus) .def { opacity: 0; transform: translateY(-14px); filter: blur(4px); }
 .entry:is(:hover, :focus) .alt { opacity: 1; transform: none; filter: none; transition-delay: .12s; }
@@ -235,9 +235,10 @@ img { max-width: 100%; height: auto; display: block; }
 .bio p { max-width: 60ch; font-size: clamp(18px, 1.6vw, 20px); }
 .bio p + p { margin-top: 18px; }
 .bio .first { max-width: 20ch; font: 800 clamp(30px, 3.6vw, 44px)/1 var(--display); text-transform: uppercase; }
-.bio .sign { display: flex; align-items: center; gap: 14px; margin-top: 28px; }
-.bio .sign img { width: 46px; transform: translateY(5px); }
-.bio .sign .hand { font-size: 46px; transform: translateY(9px); }
+/* Signature: feather and name scale together, nudges are relative to the text size */
+.bio .sign { display: flex; align-items: center; gap: .3em; margin-top: 28px; font-size: 46px; }
+.bio .sign img { width: 1em; transform: translateY(.11em); }
+.bio .sign .hand { font-size: 1em; transform: translateY(.2em); }
 
 .contact { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px 40px; margin-top: clamp(56px, 7vw, 88px); padding-top: clamp(28px, 4vw, 44px); }
 .contact .label { display: block; margin-bottom: 10px; }
@@ -291,8 +292,9 @@ footer p { font-size: 14px; color: var(--ash); }
   .poster .t { font-size: 18px; }
   .gear { grid-template-columns: 1fr; }
   .gear > div, .gear > div + div { padding: 18px 0 4px; border: 0; border-image: none; }
-  .bio .sign img { width: 40px; transform: none; }
-  .bio .sign .hand { font-size: 40px; transform: translateY(5px); }
+  .bio .sign { font-size: 40px; }
+  .bio .sign img { transform: none; }
+  .bio .sign .hand { transform: translateY(.125em); }
 }
 
 @media (prefers-reduced-motion: reduce) {
