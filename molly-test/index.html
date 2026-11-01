@@ -44,14 +44,14 @@
      and cleared in the middle so the lettering sits on black between the two sides */
   .m-banner {
     position: absolute; z-index: -2; left: 50%; top: -60px; bottom: var(--banner-bottom, -60px); width: 100vw; transform: translateX(-50%); pointer-events: none;
-    background: url(../assets/molly/banner-mirror.webp) center / auto 100% repeat-x; opacity: .62;
+    background: url(../assets/molly/banner-mirror.webp) center / auto 100% repeat-x; opacity: .8; filter: brightness(1.12);
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 24%, #000 76%, transparent 100%), linear-gradient(to right, #000 0, #000 12%, transparent 31%, transparent 69%, #000 88%, #000 100%);
     -webkit-mask-composite: source-in;
     mask-image: linear-gradient(to bottom, transparent 0, #000 24%, #000 76%, transparent 100%), linear-gradient(to right, #000 0, #000 12%, transparent 31%, transparent 69%, #000 88%, #000 100%);
     mask-composite: intersect;
     animation: banner-in 1.8s ease-out .2s both;
   }
-  @keyframes banner-in { from { opacity: 0; } to { opacity: .62; } }
+  @keyframes banner-in { from { opacity: 0; } to { opacity: .8; } }
   .m-head::before {
     content: ""; position: absolute; z-index: -1; left: 50%; top: 52%; width: min(100vw, 1100px); aspect-ratio: 2.4; transform: translate(-50%, -50%);
     background: radial-gradient(closest-side, rgba(232, 52, 90, .11), rgba(180, 176, 228, .04) 55%, transparent 75%); filter: blur(20px); pointer-events: none;
