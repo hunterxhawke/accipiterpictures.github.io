@@ -93,15 +93,21 @@
 
   /* Key art marquee: every frame whole, side by side, drifting. Sideways scroll, drag or swipe moves it; vertical scrolling stays with the page.
      Hover lights a frame; click opens the gallery. */
-  .marquee { margin-top: clamp(40px, 5vw, 64px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; touch-action: pan-y; cursor: grab; -webkit-mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
-  .track { display: flex; gap: clamp(10px, 1.2vw, 16px); width: max-content; will-change: transform; }
+  .marquee { --fh: clamp(300px, 34vw, 440px); position: relative; margin-top: clamp(40px, 5vw, 64px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; touch-action: pan-y; cursor: grab; }
+  /* Edge fades as overlays: cheaper on phones than masking a moving layer */
+  .marquee::before, .marquee::after { content: ""; position: absolute; top: 0; bottom: 0; z-index: 2; width: 6%; pointer-events: none; }
+  .marquee::before { left: 0; background: linear-gradient(90deg, var(--black), transparent); }
+  .marquee::after { right: 0; background: linear-gradient(-90deg, var(--black), transparent); }
+  .track { display: flex; gap: clamp(10px, 1.2vw, 16px); width: max-content; will-change: transform; backface-visibility: hidden; }
   .marquee.dragging { cursor: grabbing; }
   .marquee.dragging .track button { pointer-events: none; }
-  .track button { position: relative; flex: none; height: clamp(300px, 34vw, 440px); aspect-ratio: 2 / 3; padding: 0; overflow: hidden; border: 0; background: var(--soot); cursor: zoom-in; }
-  .track img { width: 100%; height: 100%; object-fit: contain; transition: transform .6s var(--ease); }
-  .track button:is(:hover, :focus-visible) img { transform: scale(1.04); }
+  .track button { position: relative; flex: none; height: var(--fh); width: calc(var(--fh) * 2 / 3); padding: 0; overflow: hidden; border: 0; background: var(--soot); cursor: zoom-in; }
+  .track img { display: block; width: 100%; height: 100%; object-fit: contain; transition: transform .6s var(--ease); -webkit-user-drag: none; user-select: none; }
+  @media (hover: hover) { .track button:hover img { transform: scale(1.04); } }
+  .track button:focus-visible img { transform: scale(1.04); }
   .track button::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--neon), 0 0 0 0 rgba(232, 52, 90, 0); transition: box-shadow .25s var(--ease); pointer-events: none; }
-  .track button:is(:hover, :focus-visible)::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
+  .track button:focus-visible::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
+  @media (hover: hover) { .track button:hover::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); } }
   .track button:focus-visible { outline: none; }
 
   /* Gallery: big frames, arrows, keyboard and swipe */
@@ -126,8 +132,9 @@
   .night button { position: relative; flex: var(--r) 1 0; aspect-ratio: var(--r); min-width: 0; padding: 0; border: 0; overflow: hidden; background: var(--soot); cursor: zoom-in; }
   .night img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
   .night button::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--neon); transition: box-shadow .25s var(--ease); pointer-events: none; }
-  .night button:is(:hover, :focus-visible) img { transform: scale(1.04); }
-  .night button:is(:hover, :focus-visible)::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
+  @media (hover: hover) { .night button:hover img { transform: scale(1.04); } .night button:hover::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); } }
+  .night button:focus-visible img { transform: scale(1.04); }
+  .night button:focus-visible::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
   .night button:focus-visible { outline: none; }
 
   /* ---------- End credits ---------- */
@@ -163,7 +170,7 @@
   @media (max-width: 860px) {
   }
   @media (max-width: 600px) {
-    .track button { height: 300px; }
+    .marquee { --fh: 300px; }
     .night { overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--gut)); padding-inline: var(--gut); scrollbar-width: none; }
     .night::-webkit-scrollbar { display: none; }
     .night button { flex: none; height: 220px; scroll-snap-align: center; }
@@ -223,13 +230,13 @@
 
     <div class="marquee" role="region" aria-label="Key art. Select a frame to open the gallery.">
       <div class="track" id="track">
-        <button type="button" data-i="0"><img src="../assets/molly/poster-molly.webp" alt="Poster: Molly on the phone, neon title" width="1200" height="1800" loading="lazy"></button>
-        <button type="button" data-i="1"><img src="../assets/molly/poster-paul.webp" alt="Poster: Paul at his desk, neon title" width="1200" height="1800" loading="lazy"></button>
-        <button type="button" data-i="2"><img src="../assets/molly/still-profile.webp" alt="Molly in profile, lit by a screen" width="1200" height="1800" loading="lazy"></button>
-        <button type="button" data-i="3"><img src="../assets/molly/poster-mirror.webp" alt="Poster: mirrored collage of Molly around Paul" width="1200" height="1800" loading="lazy"></button>
-        <button type="button" data-i="4"><img src="../assets/molly/still-gym.webp" alt="Molly on a gym floor with a laptop" width="1200" height="1800" loading="lazy"></button>
-        <button type="button" data-i="5"><img src="../assets/molly/poster-one-night.webp" alt="Poster: One Night Only, Molly at a keyboard" width="1200" height="1800" loading="lazy"></button>
-        <button type="button" data-i="6"><img src="../assets/molly/still-laptop.webp" alt="Molly holding a laptop marked 09.28.26" width="1200" height="1800" loading="lazy"></button>
+        <button type="button" data-i="0" data-full="../assets/molly/poster-molly.webp"><img src="../assets/molly/thumb-poster-molly.webp" alt="Poster: Molly on the phone, neon title" width="600" height="900" draggable="false"></button>
+        <button type="button" data-i="1" data-full="../assets/molly/poster-paul.webp"><img src="../assets/molly/thumb-poster-paul.webp" alt="Poster: Paul at his desk, neon title" width="600" height="900" draggable="false"></button>
+        <button type="button" data-i="2" data-full="../assets/molly/still-profile.webp"><img src="../assets/molly/thumb-still-profile.webp" alt="Molly in profile, lit by a screen" width="600" height="900" draggable="false"></button>
+        <button type="button" data-i="3" data-full="../assets/molly/poster-mirror.webp"><img src="../assets/molly/thumb-poster-mirror.webp" alt="Poster: mirrored collage of Molly around Paul" width="600" height="900" draggable="false"></button>
+        <button type="button" data-i="4" data-full="../assets/molly/still-gym.webp"><img src="../assets/molly/thumb-still-gym.webp" alt="Molly on a gym floor with a laptop" width="600" height="900" draggable="false"></button>
+        <button type="button" data-i="5" data-full="../assets/molly/poster-one-night.webp"><img src="../assets/molly/thumb-poster-one-night.webp" alt="Poster: One Night Only, Molly at a keyboard" width="600" height="900" draggable="false"></button>
+        <button type="button" data-i="6" data-full="../assets/molly/still-laptop.webp"><img src="../assets/molly/thumb-still-laptop.webp" alt="Molly holding a laptop marked 09.28.26" width="600" height="900" draggable="false"></button>
       </div>
     </div>
 
@@ -324,42 +331,59 @@
   });
   // Position is kept in script: a slow drift, plus whatever the visitor adds by scrolling sideways, dragging or swiping.
   // Vertical scrolling is left to the page.
-  var x = 0, half = 0, kick = 0, last = performance.now(), drift = reduced ? 0 : 22; // px per second
-  function measure() { half = track.scrollWidth / 2; }
+  var x = 0, half = 0, kick = 0, last = 0, drift = reduced ? 0 : 22, running = false, onScreen = true; // drift in px per second
+  function measure() { var h = track.scrollWidth / 2; if (h > 0) half = h; }
   function wrap() { if (half) { x = x % half; if (x > 0) x -= half; } }
   function frame(now) {
-    var dt = Math.min(64, now - last) / 1000; last = now;
+    if (!running) return;
+    var dt = last ? Math.min(64, now - last) / 1000 : 0; last = now;
     if (!dragging) { x -= drift * dt + kick; kick *= 0.9; if (Math.abs(kick) < 0.05) kick = 0; }
-    wrap(); track.style.transform = 'translate3d(' + x + 'px,0,0)';
+    wrap(); track.style.transform = 'translate3d(' + x.toFixed(2) + 'px,0,0)';
     requestAnimationFrame(frame);
   }
-  window.addEventListener('load', measure); window.addEventListener('resize', measure); measure();
-  requestAnimationFrame(frame);
+  // Only animate while the strip is on screen and the tab is visible
+  function update() { var go = onScreen && !document.hidden; if (go && !running) { running = true; last = 0; requestAnimationFrame(frame); } else if (!go) running = false; }
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { onScreen = en[0].isIntersecting; update(); }).observe(marquee);
+  document.addEventListener('visibilitychange', update);
+  // Re-measure when the strip's own width changes (images, fonts, rotation), not on every phone toolbar resize
+  if ('ResizeObserver' in window) new ResizeObserver(measure).observe(track); else window.addEventListener('resize', measure);
+  window.addEventListener('load', measure); measure(); update();
   // Sideways scroll (trackpad swipe, shift + wheel) moves it directly
   marquee.addEventListener('wheel', function (e) {
     var dx = e.deltaX || (e.shiftKey ? e.deltaY : 0);
     if (Math.abs(dx) > Math.abs(e.deltaY) || e.shiftKey) { e.preventDefault(); x -= dx; }
   }, { passive: false });
-  // Drag with a mouse or swipe with a finger; a drag never counts as a click
-  var dragging = false, startX = 0, startPos = 0, moved = 0, vel = 0, prevX = 0;
+  // Drag with a mouse or swipe with a finger. A drag only starts once the motion is clearly sideways,
+  // so a vertical page scroll that begins on the strip never nudges it. A drag never counts as a click.
+  var pressed = false, dragging = false, startX = 0, startY = 0, startPos = 0, moved = 0, vel = 0, prevX = 0;
   marquee.addEventListener('pointerdown', function (e) {
-    if (e.button !== 0) return;
-    dragging = true; moved = 0; startX = prevX = e.clientX; startPos = x; vel = 0;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    pressed = true; dragging = false; moved = 0; vel = 0; startX = prevX = e.clientX; startY = e.clientY; startPos = x;
   });
   window.addEventListener('pointermove', function (e) {
-    if (!dragging) return;
-    moved = Math.max(moved, Math.abs(e.clientX - startX));
-    if (moved > 6) marquee.classList.add('dragging');
-    x = startPos + (e.clientX - startX); vel = e.clientX - prevX; prevX = e.clientX;
+    if (!pressed) return;
+    var dx = e.clientX - startX, dy = e.clientY - startY;
+    if (!dragging) {
+      if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+      if (Math.abs(dy) > Math.abs(dx)) { pressed = false; return; }   // a vertical scroll: leave it to the page
+      dragging = true; startPos = x - dx; marquee.classList.add('dragging');
+    }
+    moved = Math.max(moved, Math.abs(dx));
+    x = startPos + dx; vel = e.clientX - prevX; prevX = e.clientX;
   });
-  function endDrag() { if (!dragging) return; dragging = false; kick = -vel; setTimeout(function () { marquee.classList.remove('dragging'); }, 0); }
+  function endDrag(e) {
+    var wasDragging = dragging; pressed = false; dragging = false;
+    if (!wasDragging) return;
+    kick = e.type === 'pointercancel' ? 0 : Math.max(-40, Math.min(40, -vel));
+    setTimeout(function () { marquee.classList.remove('dragging'); }, 0);
+  }
   window.addEventListener('pointerup', endDrag); window.addEventListener('pointercancel', endDrag);
 
   // Gallery: opens on the image clicked. Key art runs in marquee order; photos from the night are their own set.
   // Arrows, keys and swipe move through it; Tab stays inside until it closes.
   var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'),
       lbCount = document.getElementById('lb-count'), at = 0, opener = null, items = [];
-  function list(nodes) { return nodes.map(function (n) { var im = n.querySelector('img'); return { src: im.getAttribute('src'), alt: im.alt }; }); }
+  function list(nodes) { return nodes.map(function (n) { var im = n.querySelector('img'); return { src: n.dataset.full || im.getAttribute('src'), alt: im.alt }; }); }
   var sets = { art: list(frames), night: list(Array.prototype.slice.call(document.querySelectorAll('#night button'))) };
   function go(i) {
     at = (i + items.length) % items.length;
@@ -368,7 +392,7 @@
   }
   function open(set, i, from) { items = sets[set]; opener = from; go(i); lb.hidden = false; document.body.classList.add('lb-open'); document.getElementById('lb-close').focus(); }
   function close() { lb.hidden = true; document.body.classList.remove('lb-open'); if (opener && opener.getAttribute('aria-hidden') !== 'true') opener.focus(); }
-  track.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && moved <= 6) open('art', +b.dataset.i, b); });
+  track.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && moved <= 8) open('art', +b.dataset.i, b); });
   document.getElementById('night').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('night', +b.dataset.i, b); });
   document.getElementById('lb-prev').addEventListener('click', function () { go(at - 1); });
   document.getElementById('lb-next').addEventListener('click', function () { go(at + 1); });
