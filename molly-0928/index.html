@@ -107,6 +107,7 @@
   /* Gallery: big frames, arrows, keyboard and swipe */
   .lb { position: fixed; inset: 0; z-index: 50; display: grid; grid-template-rows: auto minmax(0, 1fr); background: rgba(0, 0, 0, .94);
         padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+  .lb[hidden] { display: none; }  /* .lb sets display: grid, which would otherwise override the hidden attribute */
   .lb-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
   .lb-count { font: 400 18px/1 var(--mono); letter-spacing: .08em; color: var(--lav); text-shadow: 0 0 8px rgba(180, 176, 228, .5); }
   .lb-stage { position: relative; display: flex; align-items: center; justify-content: center; min-height: 0; padding-block: 12px; }
@@ -297,7 +298,7 @@
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Gallery" hidden>
   <div class="lb-top"><span class="caps lb-count" id="lb-count"></span><button type="button" class="lb-btn" id="lb-close" aria-label="Close gallery">×</button></div>
   <div class="lb-stage" id="lb-stage">
-    <img id="lb-img" src="" alt="">
+    <img id="lb-img" alt="">
     <button type="button" class="lb-btn lb-prev" id="lb-prev" aria-label="Previous">&lt;</button>
     <button type="button" class="lb-btn lb-next" id="lb-next" aria-label="Next">&gt;</button>
   </div>
