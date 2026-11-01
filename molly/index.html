@@ -26,6 +26,10 @@
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="stylesheet" href="https://use.typekit.net/nvv1dxb.css">
 <link rel="stylesheet" href="../css/site.css?v=77831a5e">
+<script>
+  // By invitation: nothing beyond the title shows until this visit's link checks out (see the gate at the end of the page script)
+  document.documentElement.classList.add('lfm-pending');
+</script>
 <style>
   /* Page-only additions. Everything else comes from the main site's stylesheet.
      One centered column like a poster: neon title lit by screen glow, logline, player, key art.
@@ -247,6 +251,28 @@
 
 
   /* Content note: one quiet line under the player links, red label inline */
+  /* ---------- The invitation gate ---------- */
+  html.lfm-pending .gated, html.lfm-locked .gated { display: none !important; }
+  .gate { display: none; width: 100%; max-width: 560px; margin-top: clamp(30px, 4vw, 42px); text-align: left; }
+  html.lfm-locked .gate { display: block; }
+  .gate-lead { font: 400 clamp(18px, 2vw, 21px)/1.45 var(--body); text-align: center; }
+  .gate-lead b { font: 400 .9em/1 var(--mono); color: var(--lav); letter-spacing: .08em; text-transform: uppercase; text-shadow: 0 0 6px rgba(180, 176, 228, .45); }
+  .gate-sub { margin-top: 10px; text-align: center; color: var(--ash); font-size: 15px; }
+  .gate form { display: grid; gap: 12px; margin-top: 26px; padding: clamp(16px, 2.4vw, 24px); border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
+  .gate label { display: grid; gap: 6px; }
+  .gate input, .gate textarea { width: 100%; padding: 12px 14px; border: 1px solid #2c2a28; background: var(--soot); color: var(--white); font: 400 16px/1.4 var(--body); border-radius: 0; }
+  .gate textarea { min-height: 84px; resize: vertical; }
+  .gate input:focus, .gate textarea:focus { outline: none; border-color: var(--neon); box-shadow: 0 0 0 1px var(--neon), 0 0 16px rgba(232, 52, 90, .25); }
+  .gate .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .gate .btn { justify-self: start; margin-top: 4px; }
+  .gate-msg { min-height: 1.4em; font-size: 15px; }
+  .gate-msg.err { color: #ff6b84; }
+  .gate-done { display: none; padding: 22px 0 6px; text-align: center; }
+  .gate.sent form { display: none; }
+  .gate.sent .gate-done { display: block; }
+  .gate-done .t { font: 600 clamp(26px, 3.4vw, 36px)/.9 var(--molly); text-transform: uppercase; background: linear-gradient(90deg, #ff2b2b, var(--neon) 45%, #c4508c); -webkit-background-clip: text; background-clip: text; color: transparent;
+                  filter: drop-shadow(0 0 5px rgba(240, 50, 85, .6)) drop-shadow(0 0 16px rgba(232, 52, 90, .28)); }
+  .gate-done p { margin-top: 10px; color: var(--ash); }
   .note { margin-top: 14px; padding-top: 12px; text-align: left; font-size: 13px; line-height: 1.5; color: var(--ash); border-top: 3px solid transparent; border-image: var(--rule-dim) 100% 0 0 0 / 3px 0 0 0 stretch; }
   .note .label { margin-right: 10px; font-size: 10px; color: var(--rec); }
 
@@ -316,10 +342,24 @@
         <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a NEET pornsick twenty-something’s world unravels the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</p>
         <div class="meta caps"><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>45 in the audience</span></div>
 
-        <div class="m-play">
+        <div class="gate" id="gate" aria-live="polite">
+          <p class="gate-lead" id="gate-lead"><b>By invitation</b><br>This reading is shared one link at a time.</p>
+          <p class="gate-sub" id="gate-sub">If someone sent you a link, open it from their original message. Otherwise, ask below and I’ll send you yours.</p>
+          <form id="gate-form" novalidate>
+            <label><span class="label">Your name</span><input id="g-name" name="name" autocomplete="name" required></label>
+            <label><span class="label">Email</span><input id="g-email" name="email" type="email" autocomplete="email" required></label>
+            <label><span class="label">How did you hear about it? <span style="text-transform:none;letter-spacing:0">(optional)</span></span><textarea id="g-note" name="note"></textarea></label>
+            <label class="hp" aria-hidden="true">Website<input id="g-website" name="website" tabindex="-1" autocomplete="off"></label>
+            <button class="btn btn-solid" type="submit">Request access</button>
+            <p class="gate-msg" id="gate-msg" role="alert"></p>
+          </form>
+          <div class="gate-done"><div class="t">Request received</div><p>Thank you. I’ll send your personal link to the email you gave.</p></div>
+        </div>
+
+        <div class="m-play gated">
           <span class="sound-rec"><i class="dot"></i>Full-length reading</span>
           <div class="player" id="player">
-            <audio id="audio" preload="metadata" src="../assets/molly/lfm-reading.m4a"></audio>
+            <audio id="audio" preload="metadata" data-src="../assets/molly/lfm-reading.m4a"></audio>
             <div class="p-top">
               <button type="button" class="p-play" id="p-play" aria-label="Play the reading">
                 <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
@@ -360,7 +400,7 @@
       </div>
     </div>
 
-    <div class="marquee" role="region" aria-label="Key art. Select a frame to open the gallery.">
+    <div class="marquee gated" role="region" aria-label="Key art. Select a frame to open the gallery.">
       <div class="track" id="track">
         <button type="button" data-i="0" data-full="../assets/molly/poster-molly.webp"><img src="../assets/molly/thumb-poster-molly.webp" alt="Poster: Molly on the phone, neon title" width="600" height="900" draggable="false"></button>
         <button type="button" data-i="1" data-full="../assets/molly/poster-paul.webp"><img src="../assets/molly/thumb-poster-paul.webp" alt="Poster: Paul at his desk, neon title" width="600" height="900" draggable="false"></button>
@@ -378,7 +418,7 @@
   </section>
 
   <!-- ===== END CREDITS ===== -->
-  <section class="credits-roll" id="credits">
+  <section class="credits-roll gated" id="credits">
     <div class="wrap">
       <span class="label night-label">The night</span>
       <div class="night" id="night" role="region" aria-label="Photos from the reading, in the order of the evening. Select one to open it larger.">
@@ -423,7 +463,7 @@
   </section>
 
   <!-- ===== CLOSING ===== -->
-  <section class="closing rule-top" id="next">
+  <section class="closing rule-top gated" id="next">
     <div class="wrap">
       <p>Thank you to everyone who generously contributed their time and talent to bring this reading to life!</p>
       <p>I’m very open to your thoughts on the script, the performances, and ideas for next steps. If you want to help get <em>Molly</em> made, write to me directly.</p>
@@ -453,7 +493,7 @@
   </div>
 </div>
 
-<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Gallery" hidden>
+<div class="lb gated" id="lb" role="dialog" aria-modal="true" aria-label="Gallery" hidden>
   <div class="lb-top"><span class="caps lb-count" id="lb-count"></span><button type="button" class="lb-btn" id="lb-close" aria-label="Close gallery">×</button></div>
   <div class="lb-stage" id="lb-stage">
     <img id="lb-img" alt="">
@@ -807,6 +847,49 @@
   logEvent('visit', { hash: location.hash.slice(1) });
   flush();
   setInterval(function () { flush(); }, 15000);
+
+  // ---------- The gate: the page opens only for a valid personal link ----------
+  // The Listener Room answers yes or no for the code. No code, a made-up code or a revoked link gets the request form.
+  // If the Listener Room can't be reached at all, valid-looking links are let through rather than locking people out.
+  var root = document.documentElement, BASE = ENDPOINT.replace(/\/collect$/, '');
+  function unlock() {
+    root.classList.remove('lfm-pending', 'lfm-locked');
+    if (!audio.getAttribute('src')) { audio.src = audio.dataset.src; audio.load(); fromHash(); }
+  }
+  function lock(why) {
+    root.classList.remove('lfm-pending'); root.classList.add('lfm-locked');
+    if (why !== 'no-code') {
+      document.getElementById('gate-lead').innerHTML = '<b>This link isn’t active</b><br>It may have been mistyped or switched off.';
+      try { localStorage.removeItem('lfm-r'); } catch (err) {}
+    }
+    logEvent('locked', { why: why }); flush();
+  }
+  if (!BASE) unlock();
+  else if (!code) lock('no-code');
+  else {
+    var settled = false, timer = setTimeout(function () { if (!settled) { settled = true; unlock(); } }, 6000);
+    fetch(BASE + '/check?r=' + encodeURIComponent(code), { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (settled) return; settled = true; clearTimeout(timer); j && j.ok ? unlock() : lock('inactive'); })
+      .catch(function () { if (settled) return; settled = true; clearTimeout(timer); unlock(); });
+  }
+
+  // Request-access form
+  var gate = document.getElementById('gate'), gform = document.getElementById('gate-form'), gmsg = document.getElementById('gate-msg');
+  gform.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.getElementById('g-name').value.trim(), email = document.getElementById('g-email').value.trim();
+    gmsg.className = 'gate-msg';
+    if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { gmsg.className = 'gate-msg err'; gmsg.textContent = 'Please add your name and a valid email.'; return; }
+    var btn = gform.querySelector('button'); btn.disabled = true; gmsg.textContent = 'Sending…';
+    fetch(BASE + '/request-access', { method: 'POST', body: JSON.stringify({ name: name, email: email, note: document.getElementById('g-note').value.trim(), website: document.getElementById('g-website').value, r: code }) })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok || r.status === 429, j: j }; }); })
+      .then(function (res) {
+        if (res.ok) { gate.classList.add('sent'); gmsg.textContent = ''; }
+        else { btn.disabled = false; gmsg.className = 'gate-msg err'; gmsg.textContent = (res.j && res.j.error) || 'That didn’t go through. Please try again.'; }
+      })
+      .catch(function () { btn.disabled = false; gmsg.className = 'gate-msg err'; gmsg.textContent = 'Couldn’t send just now. You can also email hunter@accipiterpictures.com.'; });
+  });
   document.addEventListener('visibilitychange', function () { if (document.hidden) flush(true); });
   window.addEventListener('pagehide', function () { flush(true); });
   })();
