@@ -116,6 +116,7 @@ img { max-width: 100%; height: auto; display: block; }
 .head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; margin-bottom: clamp(36px, 5vw, 56px); }
 .head h2 { font-size: clamp(52px, 8vw, 104px); }
 .head .hand { font-size: clamp(26px, 3vw, 36px); color: var(--ash); }
+.head h2.pictures { font-size: clamp(56px, 8.4vw, 112px); line-height: 1.05; color: var(--white); }
 .sub { margin-top: clamp(56px, 7vw, 88px); }
 .sub > .label { display: block; margin-bottom: 20px; }
 
@@ -152,8 +153,8 @@ img { max-width: 100%; height: auto; display: block; }
   -webkit-mask: url(../assets/border-16x9-b.png) center / 100% 100% no-repeat; mask: url(../assets/border-16x9-b.png) center / 100% 100% no-repeat;
 }
 .film-meta { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
-.film-title { font-size: clamp(34px, 4vw, 48px); line-height: .95; transition: color .2s; }
-.film:first-child .film-title { font-size: clamp(44px, 6vw, 76px); }
+.film-title { font: 600 clamp(26px, 2.8vw, 34px)/1.1 var(--body); letter-spacing: -.01em; text-wrap: balance; transition: color .2s; }
+.film:first-child .film-title { font-size: clamp(34px, 4.4vw, 54px); }
 .film-sub { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 8px; }
 .film a:is(:hover, :focus-visible) img { transform: scale(1.03); }
 .film a:is(:hover, :focus-visible) .film-title { color: var(--fhi, var(--white)); }
