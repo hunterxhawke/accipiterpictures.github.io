@@ -237,7 +237,7 @@ img { max-width: 100%; height: auto; display: block; }
 .bio .first { max-width: 20ch; font: 800 clamp(30px, 3.6vw, 44px)/1 var(--display); text-transform: uppercase; }
 .bio .sign { display: flex; align-items: center; gap: 14px; margin-top: 28px; }
 .bio .sign img { width: 46px; transform: translateY(5px); }
-.bio .sign .hand { font-size: 36px; }
+.bio .sign .hand { font-size: 46px; transform: translateY(9px); }
 
 .contact { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px 40px; margin-top: clamp(56px, 7vw, 88px); padding-top: clamp(28px, 4vw, 44px); }
 .contact .label { display: block; margin-bottom: 10px; }
@@ -292,6 +292,7 @@ footer p { font-size: 14px; color: var(--ash); }
   .gear { grid-template-columns: 1fr; }
   .gear > div, .gear > div + div { padding: 18px 0 4px; border: 0; border-image: none; }
   .bio .sign img { width: 40px; transform: none; }
+  .bio .sign .hand { font-size: 40px; transform: translateY(5px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
