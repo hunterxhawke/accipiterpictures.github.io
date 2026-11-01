@@ -75,7 +75,6 @@
 
   .m-body { display: flex; flex-direction: column; align-items: center; max-width: 720px; margin: clamp(30px, 4vw, 44px) auto 0; text-align: center; }
   .logline { max-width: 52ch; font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; text-wrap: pretty; }
-  .advisory { margin-top: 12px; font-size: 14px; font-style: italic; color: var(--ash); }
   .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 0; margin-top: 20px; }
   .meta span + span::before { content: "·"; margin-inline: 10px; color: var(--ash); }
 
@@ -129,6 +128,10 @@
   .crew dt { font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
   .crew dd { margin-top: 5px; font-size: 16px; line-height: 1.4; }
 
+  /* Content note: framed, red label, closing the credits as in the first draft */
+  .note { display: flex; gap: 14px; align-items: flex-start; max-width: 62ch; margin: 44px auto 0; padding: 18px 22px; text-align: left; font-size: 15px; color: var(--ash); border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
+  .note .label { flex: none; color: var(--rec); padding-top: 2px; }
+
   /* ---------- Closing ---------- */
   .closing { padding-block: clamp(48px, 6vw, 80px); text-align: center; }
   .closing p { max-width: 50ch; margin: 0 auto; font-size: clamp(18px, 1.8vw, 22px); line-height: 1.5; text-wrap: balance; }
@@ -179,7 +182,6 @@
 
       <div class="m-body">
         <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a NEET pornsick twenty-something’s world unravels the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</p>
-        <p class="advisory">The material is intentionally challenging and provocative. Audience discretion is advised.</p>
         <div class="meta caps"><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>45 in the audience</span></div>
 
         <div class="m-play">
@@ -241,6 +243,8 @@
         <div><dt>Dialogue editing and post mix</dt><dd>Lucas Pumarejo</dd></div>
         <div><dt>Reference visuals</dt><dd>James Kolsby</dd></div>
       </dl>
+
+      <div class="note"><span class="label">Content note</span><span>The material is intentionally challenging and provocative. Audience discretion is advised.</span></div>
     </div>
   </section>
 
