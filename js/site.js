@@ -43,7 +43,8 @@
 
   // Running timecode in the hero at 24 fps; only touches the page when the frame changes.
   var tc = document.getElementById('tc');
-  if (tc && !reduced) {
+  // Skipped when hidden (phones) or when reduced motion is on.
+  if (tc && !reduced && tc.offsetParent !== null) {
     var t0 = performance.now(), last = -1;
     var pad = function (v) { return (v < 10 ? '0' : '') + v; };
     (function tick(now) {
