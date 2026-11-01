@@ -113,6 +113,8 @@
   /* Player */
   .m-play { width: 100%; margin-top: clamp(30px, 4vw, 42px); }
   .m-play .sound-rec { justify-content: center; }
+  .lbl-phone-inline { display: none; }
+  @media (hover: none) and (pointer: coarse) { .lbl-desk-inline { display: none; } .lbl-phone-inline { display: inline; } }
   /* Label above the player. On phones it answers the first worry: yes, it plays in the background. */
   .p-label .lbl-desk { display: inline-flex; align-items: center; gap: 8px; }
   .p-label .lbl-phone { display: none; align-items: center; gap: 9px; text-align: left; text-wrap: balance; color: var(--lav); text-shadow: 0 0 8px rgba(180, 176, 228, .5); }
@@ -320,13 +322,13 @@
     .m-banner { top: -24px; bottom: auto !important; height: 190px; background-size: auto 100%;
                 -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 30%, #000 62%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 30%, #000 62%, transparent 100%); }
     .marquee { --fh: 250px; }
-    /* Phones: all six photos at once in a two-column mosaic, nothing hidden off to the side */
-    .night-set { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 48px; }
+    /* Phones: all six photos as three even pairs, in the order of the evening, each at its true shape.
+       The producers, then Hunter, then the Polaroid beside the cast reading, sized so each pair shares one height. */
+    .night-set { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
     .night, .night-2 { display: contents; }
-    .night-set button { aspect-ratio: 4 / 3; flex: none; }
-    .night-set button[data-i="0"] { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
-    .night-set button[data-i="4"] { grid-row: span 2; aspect-ratio: .8223; }
-    .night-set button[data-i="3"], .night-set button[data-i="5"] { aspect-ratio: auto; height: 100%; min-height: 0; }
+    .night-set button { flex: none; width: calc((100% - 8px) / 2); aspect-ratio: var(--r); }
+    .night-set button[data-i="4"] { width: calc((100% - 8px) * .3815); }
+    .night-set button[data-i="5"] { width: calc((100% - 8px) * .6185); }
     .nav ul { gap: 14px; }
     .lb-prev, .lb-next { top: auto; bottom: 0; transform: none; }
     .cast { grid-template-columns: 1fr; }
@@ -420,14 +422,14 @@
               <div class="p-end-title">Thank you for listening</div>
               <p>If <em>Molly</em> stayed with you, the script is yours to read, and I’d love to hear what you think.</p>
               <div class="cta">
-                <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script-3">Download the script</a>
+                <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script-3" data-script><span class="lbl-desk-inline">Download the script</span><span class="lbl-phone-inline">Read the script</span></a>
                 <a class="btn btn-line" href="#next">Get in touch</a>
               </div>
               <button type="button" class="again" id="p-again">↺ Listen again</button>
             </div>
           </div>
           <div class="play-notes caps">
-            <a href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script">Read the script · PDF ↓</a>
+            <a href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script" data-script><span class="lbl-desk-inline">Read the script · PDF ↓</span><span class="lbl-phone-inline">Read the script</span></a>
           </div>
           <p class="note"><span class="label">Content note</span><span>The material is intentionally challenging and provocative. Audience discretion is advised.</span></p>
         </div>
@@ -506,7 +508,7 @@
       <p>I’m very open to your thoughts on the script, the performances, and ideas for next steps. If you want to help get <em>Molly</em> made, write to me directly.</p>
       <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       <div class="cta">
-        <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script-2">Download the script</a>
+        <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script-2" data-script><span class="lbl-desk-inline">Download the script</span><span class="lbl-phone-inline">Read the script</span></a>
         <a class="btn btn-line" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly">Get in touch</a>
       </div>
       <div class="mail"><span class="addr" id="email">hunter@accipiterpictures.com</span><button type="button" class="caps" id="copy">Copy email</button></div>
@@ -947,6 +949,14 @@
   document.addEventListener('visibilitychange', function () { if (document.hidden) flush(true); });
   window.addEventListener('pagehide', function () { flush(true); });
   })();
+
+  // Phones and tablets read the script in Google Drive (no download step); computers download the PDF
+  if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+    document.querySelectorAll('a[data-script]').forEach(function (a) {
+      a.href = 'https://drive.google.com/file/d/1d3CNVScYC57wao-pdd8FhvwFXPna5s7c/view?usp=sharing';
+      a.removeAttribute('download'); a.target = '_blank'; a.rel = 'noopener';
+    });
+  }
 
   // Woodcut waveform, same recipe as the main site (js/site.js), with paths for this folder.
   var edges = [1, 2, 3, 4].map(function (k) { return new URL('../assets/wave-edge-' + k + '.png', document.baseURI).href; });
