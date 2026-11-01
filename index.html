@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <title>Accipiter Pictures</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Accipiter Pictures is the film label of Hunter Hawke, a New York City writer, director, producer and sound professional. Hunter Hawke Sound offers location sound, post-sound and kit rental.">
@@ -17,9 +16,31 @@
 <!-- Baka Too, from Hunter's Adobe Fonts web project. Nanum Brush Script is the fallback. -->
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="stylesheet" href="https://use.typekit.net/nvv1dxb.css">
-<link rel="stylesheet" href="css/site.css?v=77831a5e">
+<!-- First visit from outside the site (once per browser session): play the intro in js/site.js.
+     Set before first paint so the page never flashes. -->
+<script>
+(function () {
+  var seen = false, internal = false;
+  try { internal = !!document.referrer && new URL(document.referrer).host === location.host; } catch (e) {}
+  try { seen = !!sessionStorage.getItem('ap-intro'); sessionStorage.setItem('ap-intro', '1'); } catch (e) {}
+  var forced = /[?&]intro\b/.test(location.search);   /* add ?intro to the address to replay it */
+  if (forced || (!internal && !seen && !matchMedia('(prefers-reduced-motion: reduce)').matches))
+    document.documentElement.classList.add('splash-on');
+})();
+</script>
+<link rel="stylesheet" href="css/site.css?v=41f021ca">
 </head>
 <body>
+
+<!-- Intro: the bird arrives, winks, waves you in with a wing, then settles into the logo -->
+<div class="splash" aria-hidden="true">
+  <div class="splash-bird"><div class="splash-rig">
+    <img src="assets/intro/body.png" alt="" width="423" height="243">
+    <img class="splash-wing" src="assets/intro/wing.png" alt="" width="423" height="243">
+    <img class="splash-eye" src="assets/intro/eye.png" alt="" width="423" height="243">
+  </div></div>
+  <button class="splash-skip caps" type="button" tabindex="-1">Skip</button>
+</div>
 
 <header class="nav rule-bottom">
   <div class="wrap">
@@ -276,6 +297,6 @@
   </div>
 </footer>
 
-<script src="js/site.js?v=2245fcd4" defer></script>
+<script src="js/site.js?v=0d38ebea" defer></script>
 </body>
 </html>
