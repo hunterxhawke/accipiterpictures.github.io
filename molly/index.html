@@ -33,23 +33,42 @@
   /* ---------- Opening screen ---------- */
   .m-hero { padding-block: clamp(44px, 6.5vw, 84px) 0; }
   .m-head { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; isolation: isolate; }
-  /* Screen glow: the posters light every face with a laptop or phone; this lights the title the same way */
+  /* The sign. Before it lights, the tubes read as unlit glass. LOOKING, FOR and MOLLY strike one after another,
+     each with a stutter; the wall glow behind rises with them; the date tube comes on last. Afterwards the O in MOLLY
+     buzzes now and then, the way a real sign with one tired tube does. */
   .m-head::before {
-    content: ""; position: absolute; z-index: -1; left: 50%; top: 46%; width: min(120%, 1100px); aspect-ratio: 2.4; transform: translate(-50%, -50%);
-    background: radial-gradient(closest-side, rgba(232, 52, 90, .20), rgba(180, 176, 228, .08) 55%, transparent 78%); filter: blur(24px); pointer-events: none;
-    animation: glow 7s ease-in-out infinite alternate;
+    content: ""; position: absolute; z-index: -1; left: 50%; top: 52%; width: min(120%, 1100px); aspect-ratio: 2.4; transform: translate(-50%, -50%);
+    background: radial-gradient(closest-side, rgba(232, 52, 90, .22), rgba(180, 176, 228, .08) 55%, transparent 78%); filter: blur(24px); pointer-events: none;
+    animation: wall 2.2s ease-out .3s both, breathe 7s ease-in-out 2.5s infinite alternate;
   }
-  @keyframes glow { from { opacity: .75; } to { opacity: 1; } }
-  /* The poster lettering, set straight: lavender date, neon red-to-pink title */
-  .m-date { display: block; font: 400 clamp(25px, 3vw, 40px)/1 var(--mono); letter-spacing: .04em; color: var(--lav); text-shadow: 0 0 10px rgba(169, 166, 216, .55); }
-  .m-title {
-    margin-top: 6px; font: 600 clamp(60px, 12vw, 164px)/.82 var(--molly); letter-spacing: .01em; text-transform: uppercase; text-wrap: balance;
-    background: linear-gradient(90deg, #ff2b2b 0%, var(--neon) 45%, #c4508c 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
-    filter: drop-shadow(0 0 14px rgba(232, 52, 90, .45));
-    animation: warm 1.6s steps(1) .25s both;
+  @keyframes wall { from { opacity: 0; } 30% { opacity: .35; } 55% { opacity: .5; } to { opacity: .85; } }
+  @keyframes breathe { from { opacity: .85; } to { opacity: 1; } }
+
+  .m-title { margin-top: 8px; font: 600 clamp(60px, 12vw, 164px)/.82 var(--molly); letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; }
+  /* Each tube carries its own slice of the poster's red-to-pink gradient */
+  .tube { display: inline-block; -webkit-background-clip: text; background-clip: text; color: transparent;
+          filter: drop-shadow(0 0 2px rgba(255, 190, 200, .9)) drop-shadow(0 0 10px rgba(240, 50, 85, .75)) drop-shadow(0 0 34px rgba(232, 52, 90, .45));
+          animation: strike .9s steps(1) both; }
+  .t1 { background-image: linear-gradient(90deg, #ff2b2b, #f02f47); animation-delay: .35s; }
+  .t2 { background-image: linear-gradient(90deg, #ee3050, #e8345a); animation-delay: .95s; }
+  .t3 { background-image: linear-gradient(90deg, #e5365e, #df3a66); animation-delay: 1.45s; }
+  .t4 { background-image: linear-gradient(90deg, #da3e6e, #d4437a); animation: strike .9s steps(1) 1.45s both, buzz 9s steps(1) 4.5s infinite; }
+  .t5 { background-image: linear-gradient(90deg, #cf467f, #c4508c); animation-delay: 1.45s; }
+  /* Unlit: dim glass, no glow. Then two false starts and on. */
+  @keyframes strike {
+    0%       { opacity: .13; filter: none; }
+    14%      { opacity: .9; filter: drop-shadow(0 0 2px rgba(255, 190, 200, .9)) drop-shadow(0 0 10px rgba(240, 50, 85, .75)); }
+    22%      { opacity: .13; filter: none; }
+    40%      { opacity: .75; filter: drop-shadow(0 0 10px rgba(240, 50, 85, .6)); }
+    46%      { opacity: .2; filter: none; }
+    58%, 100% { opacity: 1; filter: drop-shadow(0 0 2px rgba(255, 190, 200, .9)) drop-shadow(0 0 10px rgba(240, 50, 85, .75)) drop-shadow(0 0 34px rgba(232, 52, 90, .45)); }
   }
-  /* A neon sign warming up: a few uneven flickers, then on for good */
-  @keyframes warm { 0% { opacity: .15; } 8% { opacity: .9; } 12% { opacity: .2; } 22% { opacity: 1; } 26% { opacity: .35; } 34%, 100% { opacity: 1; } }
+  /* The tired tube: a quick double flicker every nine seconds */
+  @keyframes buzz { 0%, 3.4%, 100% { opacity: 1; } 1% { opacity: .3; } 1.8% { opacity: .9; } 2.4% { opacity: .22; } }
+
+  .m-date { display: block; font: 400 clamp(25px, 3vw, 40px)/1 var(--mono); letter-spacing: .04em; color: var(--lav);
+            text-shadow: 0 0 2px rgba(235, 232, 255, .9), 0 0 10px rgba(180, 176, 228, .6), 0 0 26px rgba(180, 176, 228, .3); animation: tube-lav .7s steps(1) 2.1s both; }
+  @keyframes tube-lav { 0% { opacity: .14; text-shadow: none; } 25% { opacity: .8; } 40% { opacity: .2; text-shadow: none; } 60%, 100% { opacity: 1; } }
   .m-by { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 14px; margin-top: clamp(16px, 2.3vw, 26px); }
   .m-by .label { font-size: 13px; }
   .m-by .hand { font-size: clamp(32px, 3.7vw, 44px); }
@@ -69,9 +88,12 @@
   .play-notes a { color: var(--ash); text-decoration: none; transition: color .2s; }
   .play-notes a:hover { color: var(--white); }
 
-  /* Key art marquee: every frame whole, side by side, always drifting. Hover lights a frame; click opens the gallery. */
-  .marquee { margin-top: clamp(40px, 5vw, 64px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
-  .track { display: flex; gap: clamp(10px, 1.2vw, 16px); width: max-content; animation: drift 70s linear infinite; }
+  /* Key art marquee: every frame whole, side by side, drifting. Sideways scroll, drag or swipe moves it; scrolling the page speeds it along.
+     Hover lights a frame; click opens the gallery. */
+  .marquee { margin-top: clamp(40px, 5vw, 64px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; touch-action: pan-y; cursor: grab; -webkit-mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  .track { display: flex; gap: clamp(10px, 1.2vw, 16px); width: max-content; will-change: transform; }
+  .marquee.dragging { cursor: grabbing; }
+  .marquee.dragging .track button { pointer-events: none; }
   .track button { position: relative; flex: none; height: clamp(300px, 34vw, 440px); aspect-ratio: 2 / 3; padding: 0; overflow: hidden; border: 0; background: var(--soot); cursor: zoom-in; }
   .track img { width: 100%; height: 100%; object-fit: contain; transition: transform .6s var(--ease); }
   .track button:is(:hover, :focus-visible) img { transform: scale(1.04); }
@@ -93,7 +115,6 @@
   .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); }
   .lb-prev { left: 0; } .lb-next { right: 0; }
   body.lb-open { overflow: hidden; }
-  @keyframes drift { to { transform: translateX(-50%); } }
 
   /* ---------- End credits: set like a screenplay title page ---------- */
   .credits-roll { padding-block: clamp(36px, 4.5vw, 60px) clamp(56px, 7vw, 96px); text-align: center; font-family: var(--script); }
@@ -126,8 +147,8 @@
     .cast { grid-template-columns: 1fr; }
     .player iframe { height: 220px; }
   }
-  /* Reduced motion: no drift, swipe the strip instead */
-  @media (prefers-reduced-motion: reduce) { .marquee { overflow-x: auto; } .track, .m-title, .m-head::before { animation: none; } }
+  /* Reduced motion: the sign is simply on, and the marquee only moves when the visitor moves it */
+  @media (prefers-reduced-motion: reduce) { .tube, .m-date, .m-head::before { animation: none !important; } }
 </style>
 </head>
 <body>
@@ -152,7 +173,7 @@
     <div class="wrap">
       <div class="m-head">
         <span class="m-date">09.28.26</span>
-        <h1 class="m-title">Looking for Molly</h1>
+        <h1 class="m-title" aria-label="Looking for Molly"><span class="tube t1" aria-hidden="true">Looking</span> <span class="tube t2" aria-hidden="true">for</span> <span aria-hidden="true" style="white-space:nowrap"><span class="tube t3">M</span><span class="tube t4">O</span><span class="tube t5">lly</span></span></h1>
         <div class="m-by"><span class="label">A screenplay by</span><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       </div>
 
@@ -248,6 +269,7 @@
 
 <footer class="rule-top">
   <div class="wrap">
+    <a class="foot-mark" href="../" aria-label="Accipiter Pictures home"><img src="../assets/icon-hand-bird.png" alt="" width="565" height="600" loading="lazy"></a>
     <p>© <span id="yr">2026</span> Accipiter Pictures · Hunter Hawke Sound · NYC and Beyond</p>
   </div>
 </footer>
@@ -258,11 +280,45 @@
   document.getElementById('yr').textContent = new Date().getFullYear();
 
   // Key art marquee: a second, hidden copy of the frames makes the loop seamless.
-  var track = document.getElementById('track');
+  var marquee = document.querySelector('.marquee'), track = document.getElementById('track');
   var frames = Array.prototype.slice.call(track.querySelectorAll('button'));
-  if (!reduced) frames.forEach(function (f) {
+  frames.forEach(function (f) {
     var c = f.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; track.appendChild(c);
   });
+  // Position is kept in script: a slow drift, plus whatever the visitor adds by scrolling sideways, dragging or swiping.
+  // Scrolling the page up or down also pushes it along, so it never traps the page scroll.
+  var x = 0, half = 0, kick = 0, last = performance.now(), lastY = window.scrollY, drift = reduced ? 0 : 22; // px per second
+  function measure() { half = track.scrollWidth / 2; }
+  function wrap() { if (half) { x = x % half; if (x > 0) x -= half; } }
+  function frame(now) {
+    var dt = Math.min(64, now - last) / 1000; last = now;
+    if (!dragging) { x -= drift * dt + kick; kick *= 0.9; if (Math.abs(kick) < 0.05) kick = 0; }
+    wrap(); track.style.transform = 'translate3d(' + x + 'px,0,0)';
+    requestAnimationFrame(frame);
+  }
+  window.addEventListener('load', measure); window.addEventListener('resize', measure); measure();
+  requestAnimationFrame(frame);
+  // Sideways scroll (trackpad swipe, shift + wheel) moves it directly
+  marquee.addEventListener('wheel', function (e) {
+    var dx = e.deltaX || (e.shiftKey ? e.deltaY : 0);
+    if (Math.abs(dx) > Math.abs(e.deltaY) || e.shiftKey) { e.preventDefault(); x -= dx; }
+  }, { passive: false });
+  // Page scroll nudges it in the same direction
+  window.addEventListener('scroll', function () { var dy = window.scrollY - lastY; lastY = window.scrollY; kick += dy * 0.06; }, { passive: true });
+  // Drag with a mouse or swipe with a finger; a drag never counts as a click
+  var dragging = false, startX = 0, startPos = 0, moved = 0, vel = 0, prevX = 0;
+  marquee.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0) return;
+    dragging = true; moved = 0; startX = prevX = e.clientX; startPos = x; vel = 0;
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (!dragging) return;
+    moved = Math.max(moved, Math.abs(e.clientX - startX));
+    if (moved > 6) marquee.classList.add('dragging');
+    x = startPos + (e.clientX - startX); vel = e.clientX - prevX; prevX = e.clientX;
+  });
+  function endDrag() { if (!dragging) return; dragging = false; kick = -vel; setTimeout(function () { marquee.classList.remove('dragging'); }, 0); }
+  window.addEventListener('pointerup', endDrag); window.addEventListener('pointercancel', endDrag);
 
   // Gallery: opens on the frame clicked, same order as the marquee. Arrows, keys and swipe move through it.
   var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'),
@@ -275,7 +331,7 @@
   }
   function open(i, from) { opener = from; go(i); lb.hidden = false; document.body.classList.add('lb-open'); document.getElementById('lb-close').focus(); }
   function close() { lb.hidden = true; document.body.classList.remove('lb-open'); if (opener && opener.getAttribute('aria-hidden') !== 'true') opener.focus(); }
-  track.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open(+b.dataset.i, b); });
+  track.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && moved <= 6) open(+b.dataset.i, b); });
   document.getElementById('lb-prev').addEventListener('click', function () { go(at - 1); });
   document.getElementById('lb-next').addEventListener('click', function () { go(at + 1); });
   document.getElementById('lb-close').addEventListener('click', close);
