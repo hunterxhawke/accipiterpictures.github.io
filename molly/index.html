@@ -89,8 +89,41 @@
   /* Player */
   .m-play { width: 100%; margin-top: clamp(30px, 4vw, 42px); }
   .m-play .sound-rec { justify-content: center; }
-  .player { margin-top: 10px; padding: 12px; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
-  .player iframe { display: block; width: 100%; height: 200px; border: 0; }
+  /* The reading player, in the sign's lettering: neon for what you've heard, lavender for the chapters */
+  .player { margin-top: 10px; padding: clamp(14px, 2vw, 20px); text-align: left; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
+  .p-top { display: flex; align-items: center; gap: 14px 18px; flex-wrap: wrap; }
+  .p-play { flex: none; display: grid; place-items: center; width: 64px; height: 64px; border: 0; border-radius: 50%; background: none; cursor: pointer;
+            color: var(--neon); box-shadow: inset 0 0 0 2px var(--neon), 0 0 14px rgba(232, 52, 90, .35); transition: box-shadow .2s, color .2s; }
+  .p-play:hover, .p-play:focus-visible { outline: none; color: #ff5a78; box-shadow: inset 0 0 0 2px #ff5a78, 0 0 22px rgba(232, 52, 90, .6); }
+  .p-play svg { width: 24px; height: 24px; fill: currentColor; filter: drop-shadow(0 0 4px rgba(232, 52, 90, .6)); }
+  .p-play .i-pause { display: none; }
+  .player.playing .p-play .i-play { display: none; }
+  .player.playing .p-play .i-pause { display: block; }
+  .p-info { flex: 1 1 180px; min-width: 0; }
+  .p-time { font: 400 clamp(18px, 2vw, 22px)/1 var(--mono); color: var(--lav); letter-spacing: .04em; font-variant-numeric: tabular-nums; text-shadow: 0 0 6px rgba(180, 176, 228, .45); }
+  .p-time span { color: var(--ash); text-shadow: none; }
+  .p-now { margin-top: 6px; font-weight: 600; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ash); }
+  .p-now b { font-weight: 600; color: var(--white); }
+  .p-ctrls { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+  .p-btn { min-width: 44px; height: 36px; padding: 0 8px; border: 0; background: none; color: var(--ash); font: 400 15px/1 var(--mono); letter-spacing: .04em; cursor: pointer; transition: color .2s, text-shadow .2s; }
+  .p-btn:hover, .p-btn:focus-visible { outline: none; color: var(--white); text-shadow: 0 0 8px rgba(232, 52, 90, .7); }
+  .p-jump { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 0; border: 0; background: none; cursor: pointer;
+            font: 400 15px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--neon); text-shadow: 0 0 8px rgba(232, 52, 90, .55); transition: color .2s; }
+  .p-jump:hover, .p-jump:focus-visible { outline: none; color: #ff5a78; }
+  .p-wave { position: relative; height: 78px; margin-top: 16px; cursor: pointer; touch-action: none; outline: none; }
+  .p-wave canvas { display: block; width: 100%; height: 100%; }
+  .p-wave:focus-visible { box-shadow: 0 0 0 2px var(--lav); }
+  .p-tip { position: absolute; bottom: calc(100% + 6px); transform: translateX(-50%); padding: 4px 8px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .15s;
+           background: var(--soot); font: 400 12px/1 var(--mono); color: var(--lav); }
+  .p-wave:hover .p-tip { opacity: 1; }
+  .p-chapters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 12px; list-style: none; }
+  .p-chapters button { width: 100%; padding: 10px 4px 8px; border: 0; background: none; text-align: left; cursor: pointer; color: var(--ash); border-top: 2px solid rgba(180, 176, 228, .18); transition: color .2s, border-color .2s; }
+  .p-chapters button:hover, .p-chapters button:focus-visible { outline: none; color: var(--white); border-color: rgba(180, 176, 228, .5); }
+  .p-chapters button[aria-current="true"] { color: var(--white); border-color: var(--neon); }
+  .p-chapters .ct { display: block; font: 400 13px/1 var(--mono); color: var(--lav); font-variant-numeric: tabular-nums; }
+  .p-chapters .cn { display: block; margin-top: 5px; font-size: 14px; line-height: 1.3; }
+  .p-resume { margin-top: 10px; font-size: 13px; color: var(--ash); }
+  .p-resume button { padding: 0; border: 0; background: none; color: var(--lav); font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
   .play-notes { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; margin-top: 12px; }
   .play-notes a { color: var(--ash); text-decoration: none; transition: color .2s; }
   .play-notes a:hover { color: var(--white); }
@@ -181,7 +214,8 @@
     .nav ul { gap: 14px; }
     .lb-prev, .lb-next { top: auto; bottom: 0; transform: none; }
     .cast { grid-template-columns: 1fr; }
-    .player iframe { height: 220px; }
+    .p-ctrls { width: 100%; justify-content: space-between; margin-left: 0; }
+    .p-chapters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   /* Reduced motion: the sign is simply on, and the marquee only moves when the visitor moves it */
   @media (prefers-reduced-motion: reduce) { .tube, .m-date, .m-alt, .m-head::before { animation: none !important; } }
@@ -220,12 +254,33 @@
 
         <div class="m-play">
           <span class="sound-rec"><i class="dot"></i>Full-length reading</span>
-          <div class="player">
-            <iframe src="https://whyp.it/embeds/track/6oR93ZQILqtr" title="Looking for Molly, full live reading" scrolling="no" allow="autoplay" loading="lazy"></iframe>
+          <div class="player" id="player">
+            <audio id="audio" preload="metadata" src="../assets/molly/lfm-reading.m4a"></audio>
+            <div class="p-top">
+              <button type="button" class="p-play" id="p-play" aria-label="Play the reading">
+                <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+                <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
+              </button>
+              <div class="p-info">
+                <div class="p-time"><span id="p-cur">0:00:00</span> <span>/</span> <span id="p-dur">1:31:11</span></div>
+                <div class="p-now">Now · <b id="p-ch">Introduction</b></div>
+              </div>
+              <div class="p-ctrls">
+                <button type="button" class="p-btn" id="p-back" aria-label="Back 15 seconds">−15</button>
+                <button type="button" class="p-btn" id="p-fwd" aria-label="Forward 30 seconds">+30</button>
+                <button type="button" class="p-btn" id="p-rate" aria-label="Playback speed">1×</button>
+              </div>
+            </div>
+            <button type="button" class="p-jump" id="p-jump">Jump to start of reading →</button>
+            <div class="p-wave" id="p-wave" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="5471" aria-valuenow="0" aria-valuetext="0:00:00">
+              <canvas id="p-canvas"></canvas>
+              <span class="p-tip" id="p-tip"></span>
+            </div>
+            <ul class="p-chapters" id="p-chapters"></ul>
+            <p class="p-resume" id="p-resume" hidden>You left off at <span id="p-resume-t"></span>. <button type="button" id="p-resume-go">Pick up there</button></p>
           </div>
           <div class="play-notes caps">
-            <a href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download>Read the script · PDF ↓</a>
-            <a href="https://whyp.it/tracks/looking-for-molly-screenplay-reading-at-rpc-septem-PVwQrB7VCaip" target="_blank" rel="noopener">Open on Whyp ↗</a>
+            <a href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script">Read the script · PDF ↓</a>
           </div>
           <p class="note"><span class="label">Content note</span><span>The material is intentionally challenging and provocative. Audience discretion is advised.</span></p>
         </div>
@@ -297,7 +352,7 @@
       <p>I’m very open to your thoughts on the script, the performances, and ideas for next steps. If you want to help get <em>Molly</em> made, write to me directly.</p>
       <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       <div class="cta">
-        <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download>Download the script</a>
+        <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script-2">Download the script</a>
         <a class="btn btn-line" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly">Get in touch</a>
       </div>
       <div class="mail"><span class="addr" id="email">hunter@accipiterpictures.com</span><button type="button" class="caps" id="copy">Copy email</button></div>
@@ -432,6 +487,187 @@
     if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null;
     if (Math.abs(dx) > 40) go(at + (dx < 0 ? 1 : -1));
   });
+
+  // ---------- The reading player ----------
+  var CHAPTERS = [
+    { id: 'introduction', name: 'Introduction', t: 0 },
+    { id: 'statement', name: 'Artist’s Statement', t: 47 },
+    { id: 'reading', name: 'Screenplay Reading', t: 166 },
+    { id: 'credits', name: 'Credits', t: 5354 }
+  ];
+  var PEAKS = [90,88,91,94,92,86,96,92,97,88,87,89,88,83,81,84,84,84,83,88,86,89,86,83,81,88,87,92,86,92,91,83,89,90,85,85,84,78,67,81,88,95,87,83,90,81,88,93,89,96,97,85,91,87,83,90,76,85,79,84,80,85,87,82,78,80,83,75,80,77,84,81,72,84,76,73,70,75,74,78,95,77,92,75,86,83,71,76,82,88,85,81,74,78,82,79,81,69,73,77,82,87,71,81,72,72,67,81,72,76,78,63,73,72,76,67,72,66,73,75,65,64,64,69,65,77,73,69,83,76,80,83,81,83,86,85,87,83,82,72,79,74,87,85,80,81,70,78,71,65,68,71,79,77,80,74,74,76,74,76,79,80,82,81,68,75,75,83,80,78,82,89,77,67,73,72,56,74,67,77,86,75,72,66,73,57,86,79,67,77,74,79,75,78,69,79,78,86,75,78,70,69,67,69,74,65,66,75,80,75,73,78,85,80,82,82,83,86,76,81,66,68,81,74,88,90,89,85,87,86,91,66,83,80,86,91,89,85,86,95,89,83,87,89,94,86,82,82,74,78,62,85,79,75,80,72,71,62,72,71,69,90,86,94,95,76,92,81,75,68,75,78,73,82,86,77,78,74,67,70,67,79,82,84,86,89,91,75,80,80,79,87,76,74,79,77,75,78,73,86,82,88,75,72,76,75,78,74,71,72,76,86,77,75,91,80,83,85,74,84,71,67,77,72,70,73,66,77,86,69,72,73,86,83,72,59,83,68,72,82,84,83,77,81,73,82,72,75,81,83,73,82,68,83,84,76,77,64,75,64,74,72,73,73,71,84,81,84,83,82,86,80,82,81,73,75,65,68,74,85,88,90,87,82,82,93,97,88,86,82,87,81,80,75,77,68,79,76,69,71,72,74,79,77,87,81,88,87,81,89,88,82,71,77,69,63,83,88,88,81,94,87,87,95,97,82,82,82,78,83,95,94,78,77,78,79,76,71,82,77,86,98,82,71,82,80,72,76,72,68,72,63,65,89,70,78,80,81,67,79,89,73,62,71,78,74,74,84,85,83,88,81,84,86,70,77,71,78,73,81,74,73,78,89,83,67,67,78,64,79,76,67,69,80,77,76,87,79,85,82,87,74,77,70,78,79,79,82,86,84,70,73,68,74,84,82,96,88,75,77,70,70,77,78,76,77,81,85,89,84,79,90,89,76,87,80,75,70,82,90,79,76,89,85,88,96,82,83,72,77,86,68,73,87,72,73,77,83,87,83,75,78,73,62,72,78,81,83,72,77,69,79,67,62,75,77,65,69,74,69,80,95,78,90,80,76,91,92,82,92,89,93,83,97,85,78,79,81,89,91,88,94,94,95,89,88,84,79,78,86,81,81,76,85,76,80,68,73,78,75,82,88,77,72,77,76,70,75,71,71,71,70,77,75,78,81,73,79,82,86,78,68,59,54,56,59,59,70,77,60,54,58,71,69,72,89,74,78,76,84,81,73,71,71,59,78,69,74,60,63,69,73,74,74,79,90,78,74,89,92,82,89,79,83,70,69,74,78,77,74,83,74,88,92,83,79,69,82,89,92,89,88,88,99,95,84,82,83,90,92,83,86,79,83,83,79,77,78,76,73,76,76,63,68,67,62,69,65,75,70,63,70,70,72,70,73,71,73,70,71,57,72,73,83,67,66,65,78,62,81,58,72,83,96,80,79,64,75,75,71,85,86,68,72,77,76,78,72,81,87,87,95,90,90,75,77,74,80,66,79,81,74,82,78,81,77,76,75,70,67,79,83,79,64,74,77,87,74,66,78,62,99,92,76,75,77,74,93,81,95,91,86,83,73,75,80,80,77,70,72,80,91,78,86,91,99,77,75,81,75,72,76,74,71,80,79,89,81,91,78,75,76,87,83,82,95,75,79,82,77,76,74,73,82,81,82,76,72,74,79,76,66,89,75,84,80,66,81,91,70,79,68,74,71,70,77,79,73,80,73,70,66,77,87,81,83,79,63,63,64,76,83,76,82,89,77,70,80,80,81,87,84,82,75,77,72,63,59,78,68,60,70,73,64,69,62,57,64,64,69,68,82,73,87,76,76,62,67,81,73,74,79,74,69,68,68,64,66,77,77,74,79,63,62,69,85,94,85,91,79,69,82,82,81,64,65,79,80,81,82,98,91,72,62,81,76,76,79,62,85,78,74,74,77,77,71,65,70,61,64,75,74,80,79,76,78,72,66,66,74,89,71,77,55,71,61,69,62,74,71,73,58,57,76,77,68,68,61,75,74,75,78,73,76,81,82,74,75,69,69,66,78,63,45,57,50,63,64,60,65,70,66,72,63,71,73,80,84,73,76,77,72,76,71,70,67,75,73,73,74,79,94,99,82,84,95,94,91,87,89,93,72,94,91,79,77,82,91,92,97,94,92,99,94,80,93,81,67,65,62,77,71,70,57,65,72,71,70,77,72,80,66,73,64,62,69,65,64,73,71,71,64,73,70,73,51,90,90,76,65,64,89,93,89,89,82,88,87,78,71,60,66,73,73,74,73,69,67,81,75,71,79,80,62,71,76,78,70,74,77,70,72,81,76,83,80,82,86,84,71,80,69,80,74,67,87,86,75,72,83,70,74,60,78,80,76,72,78,79,69,81,75,61,52,86,97,97,93,94,99,95,90,99,94,91,97,99,94,94,99,91,97,94,90,87,89,95,86,6,2];
+  var audio = document.getElementById('audio'), player = document.getElementById('player');
+  var DUR = 5471.15, KEY = 'lfm-position';
+  function dur() { return isFinite(audio.duration) && audio.duration > 0 ? audio.duration : DUR; }
+  function fmt(t) { t = Math.max(0, Math.floor(t)); var h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), sec = t % 60; return h + ':' + ('0' + m).slice(-2) + ':' + ('0' + sec).slice(-2); }
+  function chapterAt(t) { var c = CHAPTERS[0]; CHAPTERS.forEach(function (x) { if (t >= x.t) c = x; }); return c; }
+  var elCur = document.getElementById('p-cur'), elDur = document.getElementById('p-dur'), elCh = document.getElementById('p-ch'),
+      elJump = document.getElementById('p-jump'), wave = document.getElementById('p-wave'), canvas = document.getElementById('p-canvas'),
+      tip = document.getElementById('p-tip'), list = document.getElementById('p-chapters'), rateBtn = document.getElementById('p-rate');
+
+  // Chapter buttons
+  CHAPTERS.forEach(function (c) {
+    var li = document.createElement('li'), b = document.createElement('button');
+    b.type = 'button'; b.dataset.t = c.t; b.dataset.id = c.id;
+    b.innerHTML = '<span class="ct">' + fmt(c.t) + '</span><span class="cn">' + c.name + '</span>';
+    b.addEventListener('click', function () { seek(c.t, true); track('chapter', { ch: c.id }); history.replaceState(null, '', '#' + c.id); });
+    li.appendChild(b); list.appendChild(li);
+  });
+
+  // Waveform: neon for what's been played, dim for the rest, lavender ticks at each chapter
+  var ctx = canvas.getContext('2d'), hoverX = -1;
+  function draw() {
+    var r = window.devicePixelRatio || 1, w = wave.clientWidth, h = wave.clientHeight;
+    if (canvas.width !== Math.round(w * r) || canvas.height !== Math.round(h * r)) { canvas.width = Math.round(w * r); canvas.height = Math.round(h * r); }
+    ctx.setTransform(r, 0, 0, r, 0, 0); ctx.clearRect(0, 0, w, h);
+    var step = 3, n = Math.floor(w / step), played = audio.currentTime / dur() * w, mid = h / 2;
+    var grad = ctx.createLinearGradient(0, 0, w, 0);
+    grad.addColorStop(0, '#ff2b2b'); grad.addColorStop(.45, '#e8345a'); grad.addColorStop(1, '#c4508c');
+    for (var i = 0; i < n; i++) {
+      var v = PEAKS[Math.min(PEAKS.length - 1, Math.floor(i / n * PEAKS.length))] / 99;
+      var bh = Math.max(2, v * (h - 6)), x = i * step;
+      ctx.fillStyle = x < played ? grad : (hoverX >= 0 && x < hoverX ? 'rgba(180,176,228,.45)' : 'rgba(143,138,132,.38)');
+      ctx.fillRect(x, mid - bh / 2, 2, bh);
+    }
+    ctx.fillStyle = '#b4b0e4';
+    CHAPTERS.forEach(function (c) { if (c.t > 0) ctx.fillRect(Math.round(c.t / dur() * w), 0, 1, h); });
+    if (played > 0) { ctx.fillStyle = '#ffd6de'; ctx.shadowColor = '#e8345a'; ctx.shadowBlur = 8; ctx.fillRect(Math.round(played) - 1, 2, 2, h - 4); ctx.shadowBlur = 0; }
+  }
+
+  function update() {
+    var t = audio.currentTime, c = chapterAt(t);
+    elCur.textContent = fmt(t); elCh.textContent = c.name;
+    elJump.hidden = t >= 165;                       // only offered before the reading begins
+    list.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-current', b.dataset.id === c.id ? 'true' : 'false'); });
+    wave.setAttribute('aria-valuenow', Math.floor(t)); wave.setAttribute('aria-valuetext', fmt(t) + ', ' + c.name);
+    draw();
+  }
+  function seek(t, play) {
+    t = Math.max(0, Math.min(dur() - 0.5, t));
+    if (audio.readyState < 1) { audio.addEventListener('loadedmetadata', function once() { audio.removeEventListener('loadedmetadata', once); audio.currentTime = t; update(); }); audio.load(); }
+    else audio.currentTime = t;
+    update();
+    if (play) audio.play().catch(function () {});
+  }
+
+  document.getElementById('p-play').addEventListener('click', function () { audio.paused ? audio.play().catch(function () {}) : audio.pause(); });
+  document.getElementById('p-back').addEventListener('click', function () { seek(audio.currentTime - 15); });
+  document.getElementById('p-fwd').addEventListener('click', function () { seek(audio.currentTime + 30); });
+  elJump.addEventListener('click', function () { seek(166, true); track('chapter', { ch: 'reading' }); });
+  var RATES = [1, 1.25, 1.5, 0.85], ri = 0;
+  rateBtn.addEventListener('click', function () { ri = (ri + 1) % RATES.length; audio.playbackRate = RATES[ri]; rateBtn.textContent = RATES[ri] + '×'; });
+  audio.addEventListener('play', function () { player.classList.add('playing'); document.getElementById('p-play').setAttribute('aria-label', 'Pause'); });
+  audio.addEventListener('pause', function () { player.classList.remove('playing'); document.getElementById('p-play').setAttribute('aria-label', 'Play the reading'); });
+  audio.addEventListener('loadedmetadata', function () { elDur.textContent = fmt(dur()); update(); });
+  audio.addEventListener('timeupdate', update);
+  window.addEventListener('resize', draw);
+
+  // Scrub on the waveform with mouse, finger or keyboard
+  function tAt(e) { var b = wave.getBoundingClientRect(); return Math.max(0, Math.min(1, (e.clientX - b.left) / b.width)) * dur(); }
+  var scrubbing = false;
+  wave.addEventListener('pointerdown', function (e) { scrubbing = true; wave.setPointerCapture(e.pointerId); seek(tAt(e)); });
+  wave.addEventListener('pointermove', function (e) {
+    var b = wave.getBoundingClientRect(), t = tAt(e);
+    hoverX = e.clientX - b.left; tip.style.left = hoverX + 'px'; tip.textContent = fmt(t) + ' · ' + chapterAt(t).name;
+    if (scrubbing) seek(t); else draw();
+  });
+  wave.addEventListener('pointerup', function () { scrubbing = false; });
+  wave.addEventListener('pointerleave', function () { hoverX = -1; draw(); });
+  wave.addEventListener('keydown', function (e) {
+    var k = { ArrowLeft: -10, ArrowRight: 10, PageDown: -60, PageUp: 60 }[e.key];
+    if (k) { e.preventDefault(); seek(audio.currentTime + k); }
+    else if (e.key === 'Home') { e.preventDefault(); seek(0); }
+    else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); audio.paused ? audio.play().catch(function () {}) : audio.pause(); }
+  });
+
+  // Shareable chapter links: /molly/#statement, #reading, #credits open at that point
+  function fromHash() { var c = CHAPTERS.filter(function (x) { return '#' + x.id === location.hash; })[0]; if (c) { seek(c.t); return true; } return false; }
+  window.addEventListener('hashchange', fromHash);
+  var startedFromHash = fromHash();
+
+  // Remember where this listener left off, on this device only
+  var resumeEl = document.getElementById('p-resume');
+  try {
+    var saved = parseFloat(localStorage.getItem(KEY));
+    if (!startedFromHash && saved > 60 && saved < DUR - 120) {
+      document.getElementById('p-resume-t').textContent = fmt(saved);
+      resumeEl.hidden = false;
+      document.getElementById('p-resume-go').addEventListener('click', function () { seek(saved, true); resumeEl.hidden = true; });
+    }
+  } catch (err) {}
+  var lastSave = 0;
+  audio.addEventListener('timeupdate', function () {
+    if (Date.now() - lastSave < 5000) return; lastSave = Date.now();
+    try { localStorage.setItem(KEY, String(audio.currentTime)); } catch (err) {}
+  });
+  audio.addEventListener('play', function () { resumeEl.hidden = true; });
+
+  // Lock-screen and headphone controls
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: 'Looking for Molly · Live Reading', artist: 'Hunter Hawke', album: 'Rutgers Presbyterian Church · 09.28.26',
+      artwork: [{ src: new URL('../assets/molly/og.jpg', document.baseURI).href, sizes: '1200x1200', type: 'image/jpeg' }]
+    });
+    var ms = navigator.mediaSession;
+    ms.setActionHandler('play', function () { audio.play(); });
+    ms.setActionHandler('pause', function () { audio.pause(); });
+    ms.setActionHandler('seekbackward', function () { seek(audio.currentTime - 15); });
+    ms.setActionHandler('seekforward', function () { seek(audio.currentTime + 30); });
+    try { ms.setActionHandler('seekto', function (d) { seek(d.seekTime); }); } catch (err) {}
+    ms.setActionHandler('previoustrack', function () { var c = chapterAt(audio.currentTime - 3); seek(audio.currentTime - c.t > 3 ? c.t : (CHAPTERS[CHAPTERS.indexOf(c) - 1] || c).t); });
+    ms.setActionHandler('nexttrack', function () { var c = CHAPTERS[CHAPTERS.indexOf(chapterAt(audio.currentTime)) + 1]; if (c) seek(c.t); });
+  }
+  update();
+
+  // ---------- Listener stats ----------
+  // Each recipient's link carries a short code (?r=k7q2). The page sends the code, never a name; the private
+  // Google Sheet matches codes to people. It logs visits, play and pause, chapter jumps, downloads, email copies,
+  // and which stretches of the recording were actually heard. Nothing is sent until ENDPOINT is set.
+  var ENDPOINT = '';
+  var code = '';
+  try {
+    code = (new URLSearchParams(location.search).get('r') || '').replace(/[^a-z0-9-]/gi, '').slice(0, 24);
+    if (code) localStorage.setItem('lfm-r', code); else code = localStorage.getItem('lfm-r') || '';
+  } catch (err) {}
+  var session = Math.random().toString(36).slice(2, 10), queue = [];
+  var device = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'phone' : 'computer';
+  function track(type, data) {
+    if (!ENDPOINT) return;
+    var ev = { type: type, at: new Date().toISOString() };
+    for (var k in data) ev[k] = data[k];
+    queue.push(ev);
+  }
+  function flush(final) {
+    if (!ENDPOINT) return;
+    closeSpan();
+    if (!queue.length) return;
+    var body = JSON.stringify({ r: code, s: session, d: device, events: queue.splice(0) });
+    var blob = new Blob([body], { type: 'text/plain;charset=UTF-8' });
+    if (final && navigator.sendBeacon) navigator.sendBeacon(ENDPOINT, blob);
+    else fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', keepalive: true, body: blob }).catch(function () {});
+  }
+  // Heard time: contiguous stretches of normal playback; a jump or pause closes the stretch
+  var spanA = null, lastT = 0;
+  function closeSpan() { if (spanA !== null && lastT - spanA >= 1) track('heard', { a: Math.round(spanA), b: Math.round(lastT) }); spanA = null; }
+  audio.addEventListener('timeupdate', function () {
+    if (audio.paused) return;
+    var t = audio.currentTime;
+    if (spanA === null) { spanA = t; lastT = t; return; }
+    var d = t - lastT;
+    if (d < 0 || d > 3) { closeSpan(); spanA = t; }
+    lastT = t;
+  });
+  audio.addEventListener('play', function () { track('play', { t: Math.round(audio.currentTime) }); });
+  audio.addEventListener('pause', function () { track('pause', { t: Math.round(audio.currentTime) }); closeSpan(); });
+  audio.addEventListener('seeking', function () { closeSpan(); });
+  audio.addEventListener('ended', function () { closeSpan(); track('ended', {}); });
+  ['dl-script', 'dl-script-2'].forEach(function (id) { var a = document.getElementById(id); if (a) a.addEventListener('click', function () { track('download', {}); flush(); }); });
+  document.getElementById('copy').addEventListener('click', function () { track('copy-email', {}); });
+  track('visit', { hash: location.hash.slice(1) });
+  flush();
+  setInterval(function () { flush(); }, 15000);
+  document.addEventListener('visibilitychange', function () { if (document.hidden) flush(true); });
+  window.addEventListener('pagehide', function () { flush(true); });
 
   // Woodcut waveform, same recipe as the main site (js/site.js), with paths for this folder.
   var edges = [1, 2, 3, 4].map(function (k) { return new URL('../assets/wave-edge-' + k + '.png', document.baseURI).href; });
