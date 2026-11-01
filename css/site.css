@@ -111,6 +111,19 @@ img { max-width: 100%; height: auto; display: block; }
 .wave.small i.red { background: var(--white); }
 @keyframes wave { 0%, 100% { height: 24%; } 50% { height: var(--h, 70%); } }
 
+/* ---------- Intro: first visit only (html.splash-on is set in the page head, the motion lives in js/site.js) ---------- */
+.splash { display: none; }
+/* The hero logo waits for the bird to land in it. Safety net: if the script never runs, all is revealed at 7s. */
+.splash-on .splash { display: grid; place-items: center; position: fixed; inset: 0; z-index: 100; background: var(--black); animation: splash-lift .4s 7s forwards; }
+.splash-on .hero-mark { opacity: 0; animation: splash-reveal .4s 7s forwards; }
+@keyframes splash-lift { to { opacity: 0; visibility: hidden; } }
+@keyframes splash-reveal { to { opacity: 1; } }
+.splash-bird { width: clamp(190px, 46vw, 360px); aspect-ratio: 423 / 243; transform-origin: 0 0; opacity: 0; }
+.splash-rig { position: relative; width: 100%; height: 100%; }
+.splash-rig img, .splash-head { position: absolute; inset: 0; width: 100%; height: 100%; }
+.splash-head { transform-origin: 20.3% 81.9%; }   /* the back of the neck: the head tilts inside the still hood */
+.splash-eye { transform-origin: 49.3% 52.9%; }    /* center of the eye */
+
 /* ---------- Sections ---------- */
 .block { padding-block: clamp(64px, 9vw, 120px); }
 .head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; margin-bottom: clamp(36px, 5vw, 56px); }
@@ -152,9 +165,10 @@ img { max-width: 100%; height: auto; display: block; }
 .tile { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: var(--soot); }
 .tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
 .tile::after {
-  content: ""; position: absolute; inset: 3.5%; background: var(--white); opacity: .85;
+  content: ""; position: absolute; inset: 3.5%; background: var(--frame, var(--white)); opacity: .85;
   -webkit-mask: url(../assets/border-16x9-b.png) center / 100% 100% no-repeat; mask: url(../assets/border-16x9-b.png) center / 100% 100% no-repeat;
 }
+.tile.ink { --frame: var(--black); }   /* black woodcut frame for bright stills */
 .film-meta { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
 .film-title { font: 600 clamp(26px, 2.8vw, 34px)/1.1 var(--body); letter-spacing: -.01em; text-wrap: balance; transition: color .2s; }
 .film:first-child .film-title { font-size: clamp(34px, 4.4vw, 54px); }

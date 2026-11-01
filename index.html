@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <title>Accipiter Pictures</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Accipiter Pictures is the film label of Hunter Hawke, a New York City writer, director, producer and sound professional. Hunter Hawke Sound offers location sound, post-sound and kit rental.">
@@ -17,9 +16,32 @@
 <!-- Baka Too, from Hunter's Adobe Fonts web project. Nanum Brush Script is the fallback. -->
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="stylesheet" href="https://use.typekit.net/nvv1dxb.css">
-<link rel="stylesheet" href="css/site.css?v=77831a5e">
+<!-- First visit from outside the site (once per browser session): play the intro in js/site.js.
+     Set before first paint so the page never flashes. -->
+<script>
+(function () {
+  var seen = false, internal = false;
+  try { internal = !!document.referrer && new URL(document.referrer).host === location.host; } catch (e) {}
+  try { seen = !!sessionStorage.getItem('ap-intro'); sessionStorage.setItem('ap-intro', '1'); } catch (e) {}
+  var forced = /[?&]intro\b/.test(location.search);   /* add ?intro to the address to replay it */
+  if (forced || (!internal && !seen && !matchMedia('(prefers-reduced-motion: reduce)').matches))
+    document.documentElement.classList.add('splash-on');
+})();
+</script>
+<link rel="stylesheet" href="css/site.css?v=2f8c231e">
 </head>
 <body>
+
+<!-- Intro: the bird arrives, winks, then settles into the logo -->
+<div class="splash" aria-hidden="true">
+  <div class="splash-bird"><div class="splash-rig">
+    <img src="assets/intro/hood.png?v=447dbe" alt="" width="423" height="243">
+    <div class="splash-head">
+      <img src="assets/intro/head.png?v=447dbe" alt="" width="423" height="243">
+      <img class="splash-eye" src="assets/intro/eye.png?v=447dbe" alt="" width="423" height="243">
+    </div>
+  </div></div>
+</div>
 
 <header class="nav rule-bottom">
   <div class="wrap">
@@ -92,7 +114,7 @@
            TODO: set each href to its Vimeo/YouTube link and fill in role + year. -->
       <div class="films">
         <article class="film" style="--fhi:#e5483a">
-          <a><div class="tile"><img src="assets/stills/big-slop-sap.webp" alt="Still from Big Slop Sap" width="1600" height="900" loading="lazy"></div>
+          <a href="https://vimeo.com/1055764935/4d7d18f487" target="_blank" rel="noopener" aria-label="Watch Big Slop Sap"><div class="tile"><img src="assets/stills/big-slop-sap.webp?v=3" alt="Still from Big Slop Sap" width="1600" height="900" loading="lazy"></div>
           <div class="film-meta"><span class="film-title">Big Slop Sap</span><span class="film-sub rule-top"><span class="caps">Writer/Director</span><span class="year">2025</span></span></div></a>
         </article>
         <article class="film" style="--fhi:#f2cf63">
@@ -100,7 +122,7 @@
           <div class="film-meta"><span class="film-title">Lemon Fresh</span><span class="film-sub rule-top"><span class="caps">Writer/Director</span><span class="year">2018</span></span></div></a>
         </article>
         <article class="film" style="--fhi:#e8834f">
-          <a><div class="tile"><img src="assets/stills/intimacy.webp" alt="Still from intimacy." width="1280" height="720" loading="lazy"></div>
+          <a href="https://vimeo.com/973535166/12983e5b32" target="_blank" rel="noopener" aria-label="Watch intimacy."><div class="tile"><img src="assets/stills/intimacy.webp?v=2" alt="Still from intimacy." width="1600" height="900" loading="lazy"></div>
           <div class="film-meta"><span class="film-title">intimacy.</span><span class="film-sub rule-top"><span class="caps">Writer/Director</span><span class="year">2024</span></span></div></a>
         </article>
         <article class="film" style="--fhi:#6ea3cf">
@@ -112,7 +134,7 @@
           <div class="film-meta"><span class="film-title"><em>KEN?</em></span><span class="film-sub rule-top"><span class="caps">Writer/Director</span><span class="year">2020</span></span></div></a>
         </article>
         <article class="film" style="--fhi:#ec9aa4">
-          <a href="https://www.youtube.com/watch?v=iqhedGzMvAc" target="_blank" rel="noopener" aria-label="Watch Ode to Cats"><div class="tile"><img src="assets/stills/ode-to-cats.webp" alt="Still from Ode to Cats" width="1280" height="720" loading="lazy"></div>
+          <a href="https://www.youtube.com/watch?v=iqhedGzMvAc" target="_blank" rel="noopener" aria-label="Watch Ode to Cats"><div class="tile ink"><img src="assets/stills/ode-to-cats.webp" alt="Still from Ode to Cats" width="1280" height="720" loading="lazy"></div>
           <div class="film-meta"><span class="film-title">Ode to Cats</span><span class="film-sub rule-top"><span class="caps">Writer/Director · Teaser</span><span class="year">2021</span></span></div></a>
         </article>
         <article class="film" style="--fhi:#d4553e">
@@ -276,6 +298,6 @@
   </div>
 </footer>
 
-<script src="js/site.js?v=2245fcd4" defer></script>
+<script src="js/site.js?v=4c871fe4" defer></script>
 </body>
 </html>
