@@ -24,7 +24,7 @@
   try {
     var ref = document.referrer && new URL(document.referrer);
     /* the /sound/ and /about/ short links (where other domains forward) count as arriving from outside */
-    internal = !!ref && ref.host === location.host && !/^\/(sound|about)\/?$/.test(ref.pathname);
+    internal = !!ref && ref.host === location.host && !/\/(sound|about)\/?$/.test(ref.pathname);
   } catch (e) {}
   try { seen = !!sessionStorage.getItem('ap-intro'); sessionStorage.setItem('ap-intro', '1'); } catch (e) {}
   var forced = /[?&]intro\b/.test(location.search);   /* add ?intro to the address to replay it */
