@@ -21,7 +21,11 @@
 <script>
 (function () {
   var seen = false, internal = false;
-  try { internal = !!document.referrer && new URL(document.referrer).host === location.host; } catch (e) {}
+  try {
+    var ref = document.referrer && new URL(document.referrer);
+    /* the /sound/ and /about/ short links (where other domains forward) count as arriving from outside */
+    internal = !!ref && ref.host === location.host && !/^\/(sound|about)\/?$/.test(ref.pathname);
+  } catch (e) {}
   try { seen = !!sessionStorage.getItem('ap-intro'); sessionStorage.setItem('ap-intro', '1'); } catch (e) {}
   var forced = /[?&]intro\b/.test(location.search);   /* add ?intro to the address to replay it */
   if (forced || (!internal && !seen && !matchMedia('(prefers-reduced-motion: reduce)').matches))
@@ -196,7 +200,7 @@
           <figure class="photo" tabindex="0"><img src="assets/photos/bts-backyard.webp" alt="Hunter on an outdoor set in headphones, holding a boom with a recorder clipped to the pole" width="900" height="1200" loading="lazy"><figcaption class="cap"><em>Between the Veil</em><span class="sep" aria-hidden="true">|</span>Short Film</figcaption></figure>
           <figure class="photo" tabindex="0"><img src="assets/photos/bts-orange-room.webp" alt="Hunter smiling with a boom pole in an orange-lit set, a crew member at the sound cart behind him" width="900" height="1200" loading="lazy"><figcaption class="cap"><em>Old Soul</em><span class="sep" aria-hidden="true">|</span>Feature Film</figcaption></figure>
           <figure class="photo wide framed" tabindex="0"><img src="assets/photos/bts-lav.webp" alt="Hunter preparing a lavalier mic and transmitter for an actor" width="1600" height="932" loading="lazy"><figcaption class="cap"><em>The Call</em><span class="sep" aria-hidden="true">|</span>Short Film</figcaption></figure>
-          <figure class="photo fill" tabindex="0"><img src="assets/photos/bts-screening.webp" alt="Hunter laughing beside a projection screen at a screening" width="1000" height="1000" loading="lazy"><figcaption class="cap"><em>intimacy.</em><span class="sep" aria-hidden="true">|</span>Hosted at DarkRoom</figcaption></figure>
+          <figure class="photo fill" tabindex="0"><img src="assets/photos/bts-screening.webp?v=2" alt="Hunter laughing beside a projection screen at a screening" width="1000" height="1000" loading="lazy"><figcaption class="cap"><em>intimacy.</em><span class="sep" aria-hidden="true">|</span>Hosted at DarkRoom</figcaption></figure>
         </div>
       </div>
 
@@ -301,6 +305,6 @@
   </div>
 </footer>
 
-<script src="js/site.js?v=4c871fe4" defer></script>
+<script src="js/site.js?v=aa819566" defer></script>
 </body>
 </html>

@@ -4,6 +4,24 @@
 
   document.getElementById('yr').textContent = new Date().getFullYear();
 
+  // Short links (/sound/, /about/) arrive as /?to=sound: start the page already at that section,
+  // with no scroll animation, and tidy the address to /#sound. Re-pinned once images settle, unless the visitor has moved.
+  var to = /[?&]to=([\w-]+)/.exec(location.search), target = to && document.getElementById(to[1]), pin = null;
+  if (target) {
+    history.replaceState(null, '', location.pathname + '#' + to[1]);
+    var moved = false;
+    ['wheel', 'touchstart', 'keydown'].forEach(function (t) { addEventListener(t, function () { moved = true; }, { passive: true, once: true }); });
+    pin = function () {
+      if (moved) return;
+      var r = document.documentElement, b = r.style.scrollBehavior;
+      r.style.scrollBehavior = 'auto';
+      target.scrollIntoView();
+      r.style.scrollBehavior = b;
+    };
+    pin();
+    addEventListener('load', pin, { once: true });
+  }
+
   // Intro (first visit from outside the site; see the script in the page head).
   // The bird rises in, winks, then glides into its place in the hero logo.
   var intro = document.querySelector('.splash');
@@ -36,6 +54,7 @@
         intro.remove();
         root.classList.remove('splash-on');
         root.style.overflow = '';
+        if (pin) pin();
         if (shown) shown.cancel();
       };
       (fast ? intro.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, easing: 'ease', fill: 'forwards' }).finished : wait(400)).then(done);
