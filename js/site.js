@@ -168,6 +168,47 @@
     })(t0);
   }
 
+  // Films play right in their tile. The link stays as the fallback (no script, or a new-tab click).
+  var embedUrl = function (href) {
+    var m = /vimeo\.com\/(\d+)(?:\/([0-9a-f]+))?/.exec(href);
+    if (m) return 'https://player.vimeo.com/video/' + m[1] + '?autoplay=1&dnt=1&title=0&byline=0&portrait=0' + (m[2] ? '&h=' + m[2] : '');
+    m = /youtube\.com\/watch\?v=([\w-]+)/.exec(href) || /youtu\.be\/([\w-]+)/.exec(href);
+    if (m) return 'https://www.youtube-nocookie.com/embed/' + m[1] + '?autoplay=1&rel=0&playsinline=1';
+    return null;
+  };
+  var playing = null;
+  var stop = function () {
+    if (!playing) return;
+    var f = playing.querySelector('iframe');
+    if (f) f.remove();
+    playing.querySelector('.tile').classList.remove('playing');
+    playing.classList.remove('playing');
+    playing.setAttribute('href', playing.dataset.href);
+    playing = null;
+  };
+  document.querySelectorAll('.film a[href]').forEach(function (a) {
+    var src = embedUrl(a.href);
+    if (!src) return;
+    a.addEventListener('click', function (e) {
+      if (a === playing) return;                                                  // already playing here
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;   // let new-tab clicks through
+      e.preventDefault();
+      stop();
+      var tile = a.querySelector('.tile'), f = document.createElement('iframe');
+      f.src = src;
+      f.title = a.getAttribute('aria-label').replace(/^Watch /, '');
+      f.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+      f.allowFullscreen = true;
+      tile.appendChild(f);
+      tile.classList.add('playing');
+      a.dataset.href = a.getAttribute('href');
+      a.removeAttribute('href');                      // the title below no longer jumps away mid-film
+      a.classList.add('playing');
+      playing = a;
+      f.focus();
+    });
+  });
+
   // Copy email, with a select-the-text fallback where the clipboard isn't available.
   var btn = document.getElementById('copy'), email = document.getElementById('email');
   if (btn && email) {
