@@ -315,7 +315,14 @@
   .letter .from { display: block; margin-top: 8px; color: var(--ash); font-size: 15px; }
   /* Trailer: what people hear first; the full player takes its place when they choose */
   .trailer { width: 100%; padding: clamp(18px, 2.4vw, 26px); border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; text-align: left; }
-  .trailer[hidden], .m-play.on-trailer .player, .m-play.on-trailer .p-label { display: none; }
+  /* Everyone without a link can hear the trailer; the sign-in form appears only when they ask for the full reading.
+     First-time listeners with a link hear it first too, then it gives way to the full player. */
+  .trailer { display: none; margin-top: clamp(28px, 3.6vw, 40px); }
+  html.on-trailer .trailer, html.lfm-locked.has-trailer .trailer { display: block; }
+  html.lfm-pending .trailer { display: none; }
+  html.on-trailer .m-play .player, html.on-trailer .m-play .p-label { display: none; }
+  html.lfm-locked.has-trailer .gate { display: none; }
+  html.lfm-locked.has-trailer.gate-open .gate { display: block; }
   .t-top { display: flex; align-items: center; gap: clamp(14px, 2vw, 20px); }
   .t-info { flex: 1; min-width: 0; }
   .t-title { font: 600 clamp(26px, 3.2vw, 36px)/.9 var(--molly); text-transform: uppercase; letter-spacing: .01em; }
@@ -425,6 +432,19 @@
         <p class="comps"><span class="label">In the spirit of</span><i>American Beauty</i><i>Happiness</i><i>Me and You and Everyone We Know</i></p>
         <div class="meta caps"><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>45 in the audience</span></div>
 
+        <div class="trailer" id="trailer">
+          <audio id="t-audio" preload="none" data-src="../assets/molly/lfm-trailer.m4a"></audio>
+          <div class="t-top">
+            <button type="button" class="p-play" id="t-play" aria-label="Play the trailer">
+              <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+              <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
+            </button>
+            <div class="t-info"><div class="t-title">Start with the trailer</div><div class="t-sub" id="t-sub">90 seconds · moments from the live reading</div></div>
+          </div>
+          <div class="t-bar" id="t-bar" role="slider" tabindex="0" aria-label="Trailer position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="t-fill"></i></div>
+          <div class="t-actions"><span class="t-time" id="t-time">0:00 / 1:27</span><button type="button" class="t-full" id="t-full">Play the full reading · 1 hr 31 min →</button></div>
+        </div>
+
         <div class="gate" id="gate" aria-live="polite">
           <p class="gate-lead" id="gate-lead"><b>Listen now</b><br>Add your name and email and you’re in.</p>
           <p class="gate-sub" id="gate-sub">Already have a personal link? Open it from the message it came in.</p>
@@ -442,18 +462,6 @@
         <div class="letter gated" id="letter" hidden><span class="label" id="letter-to"></span><p id="letter-body"></p><span class="from">Hunter</span></div>
 
         <div class="m-play gated">
-          <div class="trailer" id="trailer" hidden>
-            <audio id="t-audio" preload="none" data-src="../assets/molly/lfm-trailer.m4a"></audio>
-            <div class="t-top">
-              <button type="button" class="p-play" id="t-play" aria-label="Play the trailer">
-                <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
-                <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
-              </button>
-              <div class="t-info"><div class="t-title">Start with the trailer</div><div class="t-sub" id="t-sub">90 seconds · moments from the live reading</div></div>
-            </div>
-            <div class="t-bar" id="t-bar" role="slider" tabindex="0" aria-label="Trailer position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="t-fill"></i></div>
-            <div class="t-actions"><span class="t-time" id="t-time">0:00 / 1:27</span><button type="button" class="t-full" id="t-full">Play the full reading · 1 hr 31 min →</button></div>
-          </div>
           <span class="sound-rec p-label">
             <span class="lbl-desk"><i class="dot"></i>Recorded live · 1 hr 31 min</span>
             <span class="lbl-phone"><svg viewBox="0 0 18 22" aria-hidden="true"><rect x="1.5" y="1" width="15" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.4 9.6V8.2a2.6 2.6 0 0 1 5.2 0v1.4" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="5.2" y="9.6" width="7.6" height="5.6" rx="1.2" fill="currentColor"/><path d="M7 18h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Keeps playing with your screen locked &amp; in background</span>
@@ -898,13 +906,23 @@
 
   // ---------- Trailer: first-time visitors hear it first, then choose the full reading ----------
   // Skipped for anyone returning to a saved spot, arriving on a chapter link, or who has already moved on to the full reading.
-  var trailer = document.getElementById('trailer'), tAudio = document.getElementById('t-audio'), playWrap = trailer.parentNode;
+  var trailer = document.getElementById('trailer'), tAudio = document.getElementById('t-audio'), html = document.documentElement;
   var tFill = document.getElementById('t-fill'), tTime = document.getElementById('t-time'), tBar = document.getElementById('t-bar'), tFull = document.getElementById('t-full');
   var seenTrailer = false;
   try { seenTrailer = localStorage.getItem('lfm-trailer') === 'done'; } catch (err) {}
-  function onTrailer() { return playWrap.classList.contains('on-trailer'); }
+  function locked() { return html.classList.contains('lfm-locked'); }
+  function onTrailer() { return html.classList.contains('on-trailer') || (locked() && html.classList.contains('has-trailer')); }
   function mmss(t) { t = Math.max(0, Math.floor(t || 0)); return Math.floor(t / 60) + ':' + ('0' + t % 60).slice(-2); }
-  if (tAudio.dataset.src && !seenTrailer && !hasResume && !startedFromHash) { trailer.hidden = false; playWrap.classList.add('on-trailer'); }
+  if (tAudio.dataset.src) {
+    html.classList.add('has-trailer');
+    if (!seenTrailer && !hasResume && !startedFromHash) html.classList.add('on-trailer');
+  }
+  // Without a link, "full reading" opens the short sign-in form right under the trailer
+  function openGate() {
+    html.classList.add('gate-open');
+    var g = document.getElementById('gate'); g.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(function () { document.getElementById('g-name').focus({ preventScroll: true }); }, 400);
+  }
   function tSrc() { if (!tAudio.getAttribute('src')) { tAudio.src = tAudio.dataset.src; tAudio.load(); } }
   document.getElementById('t-play').addEventListener('click', function () { tSrc(); tAudio.paused ? tAudio.play().catch(function () {}) : tAudio.pause(); });
   tAudio.addEventListener('play', function () { trailer.classList.add('playing'); trailer.classList.remove('done'); document.getElementById('t-play').setAttribute('aria-label', 'Pause the trailer'); logEvent('trailer', { what: 'play' }); });
@@ -917,12 +935,14 @@
   tAudio.addEventListener('ended', function () {
     trailer.classList.add('done'); logEvent('trailer', { what: 'ended' });
     document.getElementById('t-sub').textContent = 'Ready for the whole thing?';
+    if (locked()) openGate();
   });
   tBar.addEventListener('click', function (e) { tSrc(); var r = tBar.getBoundingClientRect(), go = function () { tAudio.currentTime = (e.clientX - r.left) / r.width * tAudio.duration; }; tAudio.readyState ? go() : tAudio.addEventListener('loadedmetadata', go, { once: true }); });
   // Moving on swaps the trailer for the full player and starts the reading straight away
   tFull.addEventListener('click', function () {
     var finished = trailer.classList.contains('done');
-    tAudio.pause(); trailer.hidden = true; playWrap.classList.remove('on-trailer');
+    if (locked()) { logEvent('trailer', { what: 'gate' }); openGate(); return; }
+    tAudio.pause(); html.classList.remove('on-trailer');
     try { localStorage.setItem('lfm-trailer', 'done'); } catch (err) {}
     logEvent('trailer', { what: finished ? 'full' : 'skip' });
     seek(0, true);
@@ -1059,6 +1079,8 @@
     gmsg.className = 'gate-msg';
     if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { gmsg.className = 'gate-msg err'; gmsg.textContent = 'Please add your name and a valid email.'; return; }
     var btn = gform.querySelector('button'); btn.disabled = true; gmsg.textContent = 'One moment…';
+    // Phones only allow sound that starts from a tap, so wake the full player now, silently, while we have the tap
+    try { if (!audio.getAttribute('src')) { audio.src = audio.dataset.src; } audio.muted = true; var pr = audio.play(); if (pr) pr.then(function () { audio.pause(); audio.muted = false; }, function () { audio.muted = false; }); } catch (err) {}
     fetch(BASE + '/request-access', { method: 'POST', body: JSON.stringify({ name: name, email: email, note: note, website: document.getElementById('g-website').value, r: code, instant: 1 }) })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) {
@@ -1069,7 +1091,13 @@
           try { localStorage.setItem('lfm-r', code); history.replaceState(null, '', location.pathname + '?r=' + code + location.hash); } catch (err) {}
           flush(); session = Math.random().toString(36).slice(2, 10);
           logEvent('visit', { hash: location.hash.slice(1) }); flush();
-          setTimeout(function () { unlock(); window.scrollTo({ top: 0 }); }, 700);
+          setTimeout(function () {
+            tAudio.pause();
+            html.classList.remove('on-trailer', 'gate-open'); unlock();
+            try { localStorage.setItem('lfm-trailer', 'done'); } catch (err) {}
+            audio.muted = false; seek(0, true);
+            document.getElementById('player').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 700);
         }
         else { btn.disabled = false; gmsg.className = 'gate-msg err'; gmsg.textContent = (res.j && res.j.error) || 'That didn’t go through. Please try again.'; }
       })
