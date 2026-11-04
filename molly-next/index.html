@@ -235,6 +235,37 @@
   @media (hover: hover) { .track button:hover::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); } }
   .track button:focus-visible { outline: none; }
 
+  /* Comps: one line, a label, then their own strip drifting the other way */
+  .comps-block { max-width: 760px; margin: clamp(52px, 6vw, 80px) auto 0; padding-inline: var(--gut, 20px); text-align: center; }
+  .comps-line { font: 400 clamp(18px, 1.9vw, 23px)/1.5 var(--body); text-wrap: balance; color: var(--white); }
+  .comps-line i { font-style: italic; color: var(--lav); }
+  .comps-label { display: block; margin-top: clamp(26px, 3vw, 34px); }
+  .comps-marquee { --fh: clamp(220px, 24vw, 320px); margin-top: 6px; }
+  .comp-card { display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; padding: 12% 10%; text-align: left;
+               border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; background: radial-gradient(120% 80% at 50% 0%, #1b1520, #0b0a0a 70%); }
+  .cc-title { font: 600 calc(var(--fh, 300px) * .082)/.92 var(--molly); text-transform: uppercase; color: var(--white); text-wrap: balance; }
+  .comp-card.long .cc-title { font-size: calc(var(--fh, 300px) * .066); }
+  .cc-meta { font: 400 12px/1.5 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--lav); }
+  /* Gallery: comps open as note on the left, poster on the right */
+  .lb-text[hidden], .lb-card[hidden], #lb-img[hidden] { display: none; }
+  .lb.with-text .lb-stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: center; width: min(1100px, 100%); margin-inline: auto; padding-inline: 64px; }
+  .lb.with-text .lb-stage img, .lb.with-text .lb-card { max-height: min(78vh, 760px); justify-self: center; }
+  .lb-card { aspect-ratio: 2 / 3; height: min(70vh, 640px); }
+  .lb-card { --fh: min(70vh, 640px); }
+  .lb.with-text { background: rgba(0, 0, 0, .985); }
+  .lb-text { text-align: left; }
+  .lb-meta { font: 400 13px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--lav); }
+  .lb-title { margin-top: 8px; font: 600 clamp(36px, 4.4vw, 60px)/.9 var(--molly); text-transform: uppercase;
+              background: linear-gradient(90deg, #ff2b2b, var(--neon) 45%, #c4508c); -webkit-background-clip: text; background-clip: text; color: transparent;
+              filter: drop-shadow(0 0 5px rgba(240, 50, 85, .55)) drop-shadow(0 0 16px rgba(232, 52, 90, .25)); }
+  .lb-text p { margin-top: 18px; max-width: 44ch; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.6; }
+  @media (max-width: 760px) {
+    .lb.with-text .lb-stage { grid-template-columns: 1fr; align-content: start; overflow-y: auto; padding-inline: 4px; gap: 18px; }
+    .lb.with-text .lb-stage img, .lb.with-text .lb-card { order: -1; max-height: 42vh; height: 42vh; width: auto; }
+    .lb-card { --fh: 42vh; }
+    .lb-text p { font-size: 16px; }
+  }
+
   /* Gallery: big frames, arrows, keyboard and swipe */
   .lb { position: fixed; inset: 0; z-index: 50; display: grid; grid-template-rows: auto minmax(0, 1fr); background: rgba(0, 0, 0, .94);
         padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
@@ -313,11 +344,6 @@
   .gate-done .t { font: 600 clamp(26px, 3.4vw, 36px)/.9 var(--molly); text-transform: uppercase; background: linear-gradient(90deg, #ff2b2b, var(--neon) 45%, #c4508c); -webkit-background-clip: text; background-clip: text; color: transparent;
                   filter: drop-shadow(0 0 5px rgba(240, 50, 85, .6)) drop-shadow(0 0 16px rgba(232, 52, 90, .28)); }
   .gate-done p { margin-top: 10px; color: var(--ash); }
-  /* Comparisons under the logline */
-  .comps { margin-top: 14px; font: 400 clamp(13px, 1.2vw, 15px)/1.5 var(--mono); letter-spacing: .06em; color: var(--lav); text-wrap: balance; }
-  .comps .label { margin-right: 8px; color: var(--ash); }
-  .comps i { font-style: normal; }
-  .comps i + i::before { content: "·"; margin-inline: 8px; color: var(--ash); }
   /* A note written to this listener */
   .letter { width: 100%; max-width: 560px; margin: clamp(26px, 3.4vw, 38px) auto 0; padding: clamp(16px, 2.2vw, 22px) clamp(18px, 2.6vw, 26px); text-align: left;
             border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
@@ -454,7 +480,6 @@
 
       <div class="m-body">
         <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a <span class="def" tabindex="0" role="button" aria-describedby="def-neet">NEET<span class="def-tip" id="def-neet" role="tooltip"><b>NEET</b>Not in Education, Employment, or Training</span></span> pornsick twenty-something’s world unravels the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</p>
-        <p class="comps"><span class="label">Comps</span><i>American Beauty</i><i>Happiness</i><i>Me and You and Everyone We Know</i></p>
         <div class="meta caps"><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>45 in the audience</span></div>
 
         <div class="trailer" id="trailer">
@@ -532,7 +557,7 @@
       </div>
     </div>
 
-    <div class="marquee gated" role="region" aria-label="Key art. Select a frame to open the gallery.">
+    <div class="marquee art gated" role="region" aria-label="Key art. Select a frame to open the gallery.">
       <div class="track" id="track">
         <button type="button" data-i="0" data-full="../assets/molly/poster-molly.webp"><img src="../assets/molly/thumb-poster-molly.webp" alt="Poster: Molly on the phone, neon title" width="600" height="900" draggable="false" loading="lazy" decoding="async"></button>
         <button type="button" data-i="1" data-full="../assets/molly/poster-paul.webp"><img src="../assets/molly/thumb-poster-paul.webp" alt="Poster: Paul at his desk, neon title" width="600" height="900" draggable="false" loading="lazy" decoding="async"></button>
@@ -545,6 +570,14 @@
     </div>
 
     <p class="swipe-hint gated" id="swipe-hint" aria-hidden="true">Swipe to browse · tap to view</p>
+
+    <div class="comps-block gated">
+      <p class="comps-line">Somewhere between <i>American Beauty</i>, <i>Happiness</i> and <i>Me and You and Everyone We Know</i>, for a new era.</p>
+      <span class="label comps-label">Comps and stylistic references</span>
+    </div>
+    <div class="marquee comps-marquee gated" role="region" aria-label="Comps and stylistic references. Select one to read why.">
+      <div class="track" id="comp-track"></div>
+    </div>
     <div class="wrap">
       <div class="wave small" aria-hidden="true" data-bars="96"></div>
     </div>
@@ -652,7 +685,9 @@
 <div class="lb gated" id="lb" role="dialog" aria-modal="true" aria-label="Gallery" hidden>
   <div class="lb-top"><span class="caps lb-count" id="lb-count"></span><button type="button" class="lb-btn" id="lb-close" aria-label="Close gallery">×</button></div>
   <div class="lb-stage" id="lb-stage">
+    <div class="lb-text" id="lb-text" hidden></div>
     <img id="lb-img" alt="">
+    <div class="lb-card" id="lb-card" hidden></div>
     <button type="button" class="lb-btn lb-prev" id="lb-prev" aria-label="Previous">&lt;</button>
     <button type="button" class="lb-btn lb-next" id="lb-next" aria-label="Next">&gt;</button>
   </div>
@@ -682,15 +717,15 @@
     if ('ResizeObserver' in window) new ResizeObserver(size).observe(document.querySelector('.m-hero')); else window.addEventListener('resize', size);
   })();
 
-  // Key art marquee: a second, hidden copy of the frames makes the loop seamless.
-  var marquee = document.querySelector('.marquee'), track = document.getElementById('track');
+  // Marquees (key art, comps): a second, hidden copy of the frames makes the loop seamless.
+  function makeMarquee(marquee, track, dir, onPick) {
   var frames = Array.prototype.slice.call(track.querySelectorAll('button'));
   frames.forEach(function (f) {
     var c = f.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; track.appendChild(c);
   });
   // Position is kept in script: a slow drift, plus whatever the visitor adds by scrolling sideways, dragging or swiping.
   // Vertical scrolling is left to the page.
-  var x = 0, half = 0, kick = 0, last = 0, drift = reduced ? 0 : 22, running = false, onScreen = true; // drift in px per second
+  var x = 0, half = 0, kick = 0, last = 0, drift = reduced ? 0 : 22 * dir, running = false, onScreen = true; // drift in px per second
   function measure() { var h = track.scrollWidth / 2; if (h > 0) half = h; }
   function wrap() { if (half) { x = x % half; if (x > 0) x -= half; } }
   function frame(now) {
@@ -740,23 +775,64 @@
     setTimeout(function () { marquee.classList.remove('dragging'); }, 0);
   }
   window.addEventListener('pointerup', endDrag); window.addEventListener('pointercancel', endDrag);
+  track.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && moved <= 8) onPick(+b.dataset.i, b); });
+  return frames;
+  }
 
   // Gallery: opens on the image clicked. Key art runs in marquee order; photos from the night are their own set.
   // Arrows, keys and swipe move through it; Tab stays inside until it closes.
   var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'),
       lbCount = document.getElementById('lb-count'), at = 0, opener = null, items = [];
   function list(nodes) { return nodes.map(function (n) { var im = n.querySelector('img'); return { src: n.dataset.full || im.getAttribute('src'), alt: im.alt }; }); }
-  var sets = { art: list(frames), night: list(Array.prototype.slice.call(document.querySelectorAll('.night button'))) };
+  var artFrames = makeMarquee(document.querySelector('.marquee.art'), document.getElementById('track'), 1, function (i, b) { open('art', i, b); });
+  var sets = { art: list(artFrames), night: list(Array.prototype.slice.call(document.querySelectorAll('.night button'))) };
+  var lbText = document.getElementById('lb-text'), lbCard = document.getElementById('lb-card');
   function go(i) {
     at = (i + items.length) % items.length;
-    lbImg.src = items[at].src; lbImg.alt = items[at].alt;
-    lbCount.textContent = ('0' + (at + 1)).slice(-2) + ' / ' + ('0' + items.length).slice(-2);
+    var it = items[at];
+    // Comps show your note beside the poster; a comp without a poster file yet shows its title card
+    lb.classList.toggle('with-text', !!it.blurb);
+    lbText.hidden = !it.blurb; lbCard.hidden = !!it.src; lbImg.hidden = !it.src;
+    if (it.blurb) lbText.innerHTML = '<span class="lb-meta">' + it.meta + '</span><h3 class="lb-title">' + it.title + '</h3><p>' + it.blurb + '</p>';
+    if (!it.src) { lbCard.innerHTML = it.card; lbImg.removeAttribute('src'); return countUp(); }
+    lbImg.src = it.src; lbImg.alt = it.alt;
+    countUp();
     // Warm the neighbours so the arrows feel instant, without downloading the whole set up front.
-    [1, -1].forEach(function (d) { var it = items[(at + d + items.length) % items.length]; if (!it.warm) { it.warm = 1; new Image().src = it.src; } });
+    [1, -1].forEach(function (d) { var n = items[(at + d + items.length) % items.length]; if (n.src && !n.warm) { n.warm = 1; new Image().src = n.src; } });
   }
+  function countUp() { lbCount.textContent = ('0' + (at + 1)).slice(-2) + ' / ' + ('0' + items.length).slice(-2); }
+
+  // ---------- Comps and stylistic references ----------
+  // To add a poster: put the image at assets/molly/comps/<id>.webp (2:3, about 600×900 for the strip) and set img to that path.
+  // Blurbs are DRAFTS for Hunter to rewrite in his own words.
+  var COMPS = [
+    { id: 'american-beauty', title: 'American Beauty', year: 1999, by: 'Sam Mendes', img: '',
+      blurb: 'A suburban man’s private obsession with a teenager, played as comedy and heartbreak at once. <em>Molly</em> lives in that same uncomfortable space: a desire nobody should act on, inside a household that’s barely holding together.' },
+    { id: 'happiness', title: 'Happiness', year: 1998, by: 'Todd Solondz', img: '',
+      blurb: 'Lonely people and their secret compulsions, told with a completely straight face. I want <em>Molly</em>’s darkest material handled the same way: no winking, no looking away, and somehow still funny.' },
+    { id: 'me-and-you', title: 'Me and You and Everyone We Know', year: 2005, by: 'Miranda July', img: '',
+      blurb: 'Strangers reaching for each other online, including kids who wander into adult conversations they don’t understand. Its tenderness toward strange, unguarded people is the tone I’m chasing.' },
+    { id: 'magnolia', title: 'Magnolia', year: 1999, by: 'Paul Thomas Anderson', img: '',
+      blurb: 'Lives colliding over a short stretch of time, with every emotion turned all the way up. <em>Molly</em>’s single-week structure and its ensemble owe a lot to it.' },
+    { id: 'little-miss-sunshine', title: 'Little Miss Sunshine', year: 2006, by: 'Jonathan Dayton & Valerie Faris', img: '',
+      blurb: 'A family failing each other with love, and a kid at the center of it. The household in <em>Molly</em> sits in that register: funny because it hurts.' },
+    { id: 'pvt-chat', title: 'PVT Chat', year: 2020, by: 'Ben Hozie', img: '',
+      blurb: 'A young man in New York lost in an online obsession, shot close and raw. It’s the closest recent touchstone for Paul’s world and the grip the internet has on him.' },
+    { id: 'election', title: 'Election', year: 1999, by: 'Alexander Payne', img: '',
+      blurb: 'School, adults crossing lines, and satire sharp enough that you laugh while you wince. A spiritual cousin to the guidance-counselor thread.' }
+  ];
+  function compCard(c) { return '<span class="comp-card' + (c.title.length > 14 ? ' long' : '') + '"><span class="cc-title">' + c.title + '</span><span class="cc-meta">' + c.year + '<br>' + c.by + '</span></span>'; }
+  var compTrack = document.getElementById('comp-track');
+  compTrack.innerHTML = COMPS.map(function (c, i) {
+    return '<button type="button" data-i="' + i + '" aria-label="' + c.title + ' (' + c.year + ')">' +
+      (c.img ? '<img src="' + c.img + '" alt="" width="600" height="900" draggable="false" loading="lazy" decoding="async">' : compCard(c)) + '</button>';
+  }).join('');
+  sets.comps = COMPS.map(function (c) {
+    return { src: c.img, alt: 'Poster: ' + c.title, title: c.title, meta: c.year + ' · ' + c.by, blurb: c.blurb, card: compCard(c) };
+  });
+  makeMarquee(document.querySelector('.comps-marquee'), compTrack, -1, function (i, b) { open('comps', i, b); });
   function open(set, i, from) { items = sets[set]; opener = from; go(i); lb.hidden = false; document.body.classList.add('lb-open'); document.getElementById('lb-close').focus(); }
   function close() { lb.hidden = true; document.body.classList.remove('lb-open'); if (opener && opener.getAttribute('aria-hidden') !== 'true') opener.focus(); }
-  track.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && moved <= 8) open('art', +b.dataset.i, b); });
   document.querySelectorAll('.night').forEach(function (row) { row.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('night', +b.dataset.i, b); }); });
   document.getElementById('lb-prev').addEventListener('click', function () { go(at - 1); });
   document.getElementById('lb-next').addEventListener('click', function () { go(at + 1); });
@@ -993,7 +1069,7 @@
     tAudio.pause(); html.classList.remove('on-trailer');
     try { localStorage.setItem('lfm-trailer', 'done'); } catch (err) {}
     logEvent('trailer', { what: finished ? 'full' : 'skip' });
-    seek(0, true);
+    seek(CHAPTERS[1].t, true);   // the Artist's Statement
   });
   trailer.querySelector('.p-play').classList.add('t-btn');
 
@@ -1143,7 +1219,7 @@
             tAudio.pause();
             html.classList.remove('on-trailer', 'gate-open'); unlock();
             try { localStorage.setItem('lfm-trailer', 'done'); } catch (err) {}
-            audio.muted = false; seek(0, true);
+            audio.muted = false; seek(CHAPTERS[1].t, true);   // straight to the Artist's Statement
             document.getElementById('player').scrollIntoView({ behavior: 'smooth', block: 'center' });
           }, 700);
         }
