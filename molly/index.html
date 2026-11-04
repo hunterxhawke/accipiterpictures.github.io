@@ -1252,7 +1252,7 @@
   function lock(why) {
     root.classList.remove('lfm-pending'); root.classList.add('lfm-locked');
     if (why !== 'no-code') {
-      document.getElementById('gate-lead').innerHTML = '<b>This link isn’t active</b><br>It may have been mistyped or switched off.';
+      document.getElementById('gate-lead').innerHTML = '<b>Getting that ready for you</b><br>Add your name and email and you’re in.';
       try { localStorage.removeItem('lfm-r'); } catch (err) {}
     }
     logEvent('locked', { why: why }); flush();
