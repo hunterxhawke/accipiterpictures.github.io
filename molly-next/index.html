@@ -1128,10 +1128,10 @@
       sendResponse({ kind: kind }).then(function () {
         rKind = kind; try { localStorage.setItem('lfm-resp', kind); } catch (err) {}
         rmsg.textContent = ({
-          materials: 'I’ll be in touch! Anything to add?',
+          materials: 'I’ll share that soon! Any final thoughts for now?',
           intro: 'I’d love to learn more! Will be in touch soon. Any final thoughts for now?',
           pass: 'Thank you so much for listening! Anything you’d want me to know?'
-        })[kind] || 'Thank you! Anything to add?';
+        })[kind] || 'Thank you! Any final thoughts for now?';
         document.getElementById('r-text').focus({ preventScroll: true });
       }).catch(function (err) { markPicked(rKind); if (!rKind) respond.classList.remove('picked'); rFail(err); });
     });
