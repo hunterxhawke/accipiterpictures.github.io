@@ -495,7 +495,7 @@
     <nav aria-label="Main">
       <ul>
         <li><a href="#artwork" data-goto="artwork">Artwork</a></li>
-        <li><a href="#credits" data-goto="the-night">Credits</a></li>
+        <li><a href="#credits" data-goto="the-night" data-row="2">Credits</a></li>
         <li><a href="#respond" data-to-respond>Reach out</a></li>
       </ul>
     </nav>
@@ -1386,7 +1386,15 @@
     a.addEventListener('click', function (e) {
       var el = document.getElementById(a.getAttribute('data-goto')); if (!el) return;
       e.preventDefault();
-      var head = document.querySelector('header'), y = el.getBoundingClientRect().top + window.scrollY - (head ? head.offsetHeight : 0) - 20;
+      var top = el.getBoundingClientRect().top;
+      // Credits: land on the second row of photos from the night, whatever the layout (laptop rows or phone pairs),
+      // so the photos are glimpsed above the cast list without the jump feeling like it went to the wrong place
+      if (a.getAttribute('data-row')) {
+        var rows = [].map.call(document.querySelectorAll('.night-set .night button'), function (b) { return Math.round(b.getBoundingClientRect().top); })
+          .filter(function (t, i, all) { return all.indexOf(t) === i; }).sort(function (x, y) { return x - y; });
+        var r = rows[+a.getAttribute('data-row') - 1]; if (r != null) top = r;
+      }
+      var head = document.querySelector('header'), y = top + window.scrollY - (head ? head.offsetHeight : 0) - 20;
       window.scrollTo({ top: Math.max(0, y), behavior: reducedMotion ? 'auto' : 'smooth' });
     });
   });
