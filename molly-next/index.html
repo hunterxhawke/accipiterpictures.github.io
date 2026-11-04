@@ -594,7 +594,7 @@
           <button type="button" class="r-opt" data-kind="intro" aria-pressed="false">I know someone you should meet</button>
           <button type="button" class="r-opt quiet" data-kind="pass" aria-pressed="false">Not for me, but good luck</button>
         </div>
-        <form class="r-note" id="r-note"><textarea id="r-text" maxlength="2000" placeholder="Anything to add? Who you’d introduce me to, what stayed with you, what didn’t work…" aria-label="Add a note"></textarea><button class="btn btn-solid" type="submit">Send note</button></form>
+        <form class="r-note" id="r-note"><textarea id="r-text" maxlength="2000" placeholder="What stayed with you?" aria-label="Add a note"></textarea><button class="btn btn-solid" type="submit">Send note</button></form>
         <p class="r-msg" id="r-msg" role="status"></p>
       </div>
       <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
@@ -1140,7 +1140,7 @@
     e.preventDefault();
     var t = document.getElementById('r-text'), btn = this.querySelector('button'); if (!t.value.trim()) { t.focus(); return; }
     btn.disabled = true; rmsg.className = 'r-msg'; rmsg.textContent = 'Sending…';
-    sendResponse({ kind: 'note', message: t.value.trim() }).then(function () { t.value = ''; rmsg.textContent = 'Sent. Thank you for taking the time.'; })
+    sendResponse({ kind: 'note', message: t.value.trim() }).then(function () { t.value = ''; rmsg.textContent = 'Got it, thank you! Will be thinking on this'; })
       .catch(rFail).then(function () { btn.disabled = false; });
   });
   document.addEventListener('visibilitychange', function () { if (document.hidden) flush(true); });
