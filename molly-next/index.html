@@ -360,6 +360,18 @@
   .r-note textarea { width: 100%; min-height: 96px; padding: 12px 14px; border: 1px solid #2c2a28; background: var(--soot); color: var(--white); font: 400 16px/1.45 var(--body); resize: vertical; }
   .r-note textarea:focus { outline: none; border-color: var(--neon); }
   .r-note .btn { justify-self: start; }
+  /* Roles: compact check-all-that-apply grid in the page's checkbox style */
+  .roles { margin: 4px 0 0; padding: 0; border: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 14px; }
+  .roles legend { padding: 0; margin-bottom: 10px; color: var(--ash); }
+  .roles legend .opt { margin-left: 6px; color: #6f6a65; text-transform: none; letter-spacing: 0; font-weight: 400; }
+  .roles label { display: flex; align-items: center; gap: 9px; font-size: 15px; color: var(--white); cursor: pointer; }
+  .roles label.wide { grid-column: 1 / -1; color: var(--ash); }
+  .roles input { appearance: none; -webkit-appearance: none; flex: none; display: grid; place-content: center; width: 18px; height: 18px; margin: 0; border: 1px solid #4a4642; background: var(--soot); cursor: pointer; }
+  .roles input::before { content: ""; width: 9px; height: 5px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: translateY(-1px) rotate(-45deg); opacity: 0; }
+  .roles input:checked { border-color: var(--neon); background: var(--neon); box-shadow: 0 0 10px rgba(232, 52, 90, .45); }
+  .roles input:checked::before { opacity: 1; }
+  .roles input:focus-visible { outline: 2px solid var(--lav); outline-offset: 2px; }
+  @media (max-width: 640px) { .roles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .r-msg { min-height: 1.4em; margin-top: 10px; font-size: 15px; color: var(--lav); }
   .r-msg.err { color: #ff6b84; }
   @media (max-width: 560px) { .r-opts { grid-template-columns: 1fr; } }
@@ -595,7 +607,19 @@
           <button type="button" class="r-opt" data-kind="intro" aria-pressed="false">I know someone you should meet</button>
           <button type="button" class="r-opt quiet" data-kind="pass" aria-pressed="false">Not for me, but good luck</button>
         </div>
-        <form class="r-note" id="r-note"><textarea id="r-text" maxlength="2000" placeholder="What stayed with you?" aria-label="Add a note"></textarea><button class="btn btn-solid" type="submit">Send note</button></form>
+        <form class="r-note" id="r-note"><textarea id="r-text" maxlength="2000" placeholder="What stayed with you?" aria-label="Add a note"></textarea>
+          <fieldset class="roles"><legend class="label">What roles have you performed in the industry? <span class="opt">Check all that apply</span></legend>
+            <label><input type="checkbox" name="role" value="producer"><span>Producer</span></label>
+            <label><input type="checkbox" name="role" value="financier"><span>Financier / investor</span></label>
+            <label><input type="checkbox" name="role" value="director"><span>Director</span></label>
+            <label><input type="checkbox" name="role" value="writer"><span>Writer</span></label>
+            <label><input type="checkbox" name="role" value="actor"><span>Actor</span></label>
+            <label><input type="checkbox" name="role" value="casting"><span>Casting director</span></label>
+            <label><input type="checkbox" name="role" value="agent"><span>Agent or manager</span></label>
+            <label><input type="checkbox" name="role" value="distribution"><span>Distribution or sales</span></label>
+            <label><input type="checkbox" name="role" value="crew"><span>Crew</span></label>
+            <label class="wide"><input type="checkbox" name="role" value="none"><span>Not in the industry, just curious to listen</span></label>
+          </fieldset><button class="btn btn-solid" type="submit">Send note</button></form>
         <p class="r-msg" id="r-msg" role="status"></p>
       </div>
       <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
@@ -1153,10 +1177,18 @@
   });
   document.getElementById('r-note').addEventListener('submit', function (e) {
     e.preventDefault();
-    var t = document.getElementById('r-text'), btn = this.querySelector('button'); if (!t.value.trim()) { t.focus(); return; }
+    var form = this, t = document.getElementById('r-text'), btn = form.querySelector('button[type=submit]');
+    var roles = [].map.call(form.querySelectorAll('input[name=role]:checked'), function (c) { return c.value; });
+    if (!t.value.trim() && !roles.length) { t.focus(); return; }   // a note, roles, or both
     btn.disabled = true; rmsg.className = 'r-msg'; rmsg.textContent = 'Sending…';
-    sendResponse({ kind: 'note', message: t.value.trim() }).then(function () { t.value = ''; rmsg.textContent = 'Got it, thank you! Will be thinking on this'; })
+    sendResponse({ kind: 'note', message: t.value.trim(), roles: roles }).then(function () { t.value = ''; rmsg.textContent = 'Got it, thank you! Will be thinking on this'; })
       .catch(rFail).then(function () { btn.disabled = false; });
+  });
+  document.querySelectorAll('.roles input').forEach(function (c) {
+    c.addEventListener('change', function () {
+      if (!c.checked) return;
+      document.querySelectorAll('.roles input').forEach(function (o) { if (o !== c && (c.value === 'none' || o.value === 'none')) o.checked = false; });
+    });
   });
   document.addEventListener('visibilitychange', function () { if (document.hidden) flush(true); });
   window.addEventListener('pagehide', function () { flush(true); });
