@@ -495,7 +495,7 @@
     <nav aria-label="Main">
       <ul>
         <li><a href="#artwork" data-goto="artwork">Artwork</a></li>
-        <li><a href="#credits" data-goto="credits">Credits</a></li>
+        <li><a href="#credits" data-goto="the-night">Credits</a></li>
         <li><a href="#respond" data-to-respond>Reach out</a></li>
       </ul>
     </nav>
@@ -623,7 +623,7 @@
   <!-- ===== END CREDITS ===== -->
   <section class="credits-roll" id="credits">
     <div class="wrap">
-      <span class="label night-label">The night</span>
+      <span class="label night-label" id="the-night">The night</span>
       <div class="night-set">
       <div class="night" id="night" role="region" aria-label="Photos from the reading, in the order of the evening. Select one to open it larger.">
         <button type="button" data-i="0" style="--r: 1.777"><img src="../assets/molly/night-still-producers.webp" alt="The producers open the evening from the front of the stage" width="1920" height="1080" loading="lazy"></button>
@@ -1386,7 +1386,7 @@
     a.addEventListener('click', function (e) {
       var el = document.getElementById(a.getAttribute('data-goto')); if (!el) return;
       e.preventDefault();
-      var head = document.querySelector('header'), y = el.getBoundingClientRect().top + window.scrollY - (head ? head.offsetHeight : 0) - 8;
+      var head = document.querySelector('header'), y = el.getBoundingClientRect().top + window.scrollY - (head ? head.offsetHeight : 0) - 20;
       window.scrollTo({ top: Math.max(0, y), behavior: reducedMotion ? 'auto' : 'smooth' });
     });
   });
