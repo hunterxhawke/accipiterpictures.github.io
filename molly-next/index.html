@@ -241,7 +241,7 @@
   .comps-line i { font-style: italic; color: var(--lav); }
   .comps-label { display: block; margin-top: clamp(26px, 3vw, 34px); }
   /* Three comps, still, sized like the key art and given room; hover lights them the same way */
-  .comp-row { --fh: clamp(300px, 30vw, 420px); display: flex; justify-content: center; gap: clamp(32px, 5vw, 72px); margin-top: clamp(26px, 3.4vw, 40px); padding: 8px 16px clamp(8px, 2vw, 20px); }
+  .comp-row { --fh: clamp(300px, 30vw, 420px); position: relative; display: flex; justify-content: center; gap: clamp(32px, 5vw, 72px); margin-top: clamp(26px, 3.4vw, 40px); padding: 8px 16px clamp(8px, 2vw, 20px); }
   .comp-row button { position: relative; flex: none; height: var(--fh); width: calc(var(--fh) * 2 / 3); padding: 0; overflow: hidden; border: 0; background: var(--soot); cursor: zoom-in; }
   .comp-row img, .comp-row .comp-card { transition: transform .6s var(--ease); }
   .comp-row img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -249,10 +249,12 @@
   @media (hover: hover) { .comp-row button:hover img, .comp-row button:hover .comp-card { transform: scale(1.04); }
                           .comp-row button:hover::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); } }
   .comp-row button:focus-visible { outline: none; }
+  .comp-row .clone { display: none; }
   .comp-row button:focus-visible::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
   /* Phones: the row slides sideways, one poster centred at a time with the next peeking in */
   @media (max-width: 760px) {
-    .comp-row { --fh: 300px; justify-content: flex-start; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-inline: calc(50vw - 100px); }
+    .comp-row { --fh: 300px; justify-content: flex-start; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-inline: 0; }
+    .comp-row .clone { display: block; }
     .comp-row::-webkit-scrollbar { display: none; }
     .comp-row button { scroll-snap-align: center; }
   }
@@ -844,6 +846,33 @@
     return { src: c.img, alt: 'Poster: ' + c.title, title: c.title, meta: c.year + ' · ' + c.by, blurb: c.blurb, card: compCard(c) };
   });
   compRow.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('comps', +b.dataset.i, b); });
+
+  // Phones: the row is a loop. Copies sit either side of the real posters; it opens on the middle poster with
+  // its neighbours peeking in, and when a swipe settles in a copy it quietly jumps back to the same poster in the middle set.
+  var compReal = [].slice.call(compRow.children);
+  function copyOf(b) { var c = b.cloneNode(true); c.classList.add('clone'); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; return c; }
+  var before = compReal.map(copyOf);
+  before.forEach(function (c) { compRow.insertBefore(c, compReal[0]); });   // copies, the real set, copies
+  compReal.forEach(function (b) { compRow.appendChild(copyOf(b)); });
+  var phoneRow = window.matchMedia('(max-width: 760px)');
+  function centerOn(el, smooth) { compRow.scrollTo({ left: el.offsetLeft - (compRow.clientWidth - el.offsetWidth) / 2, behavior: smooth ? 'smooth' : 'auto' }); }
+  function setWidth() { return compReal[0].offsetLeft - before[0].offsetLeft; }
+  function loopBack() {
+    if (!phoneRow.matches) return;
+    var W = setWidth(), mid = compRow.scrollLeft + compRow.clientWidth / 2;
+    var start = compReal[0].offsetLeft, end = compReal[compReal.length - 1].offsetLeft + compReal[0].offsetWidth;
+    var jump = mid < start ? W : mid > end ? -W : 0;
+    if (!jump) return;
+    compRow.style.scrollSnapType = 'none'; compRow.scrollLeft += jump;
+    requestAnimationFrame(function () { compRow.style.scrollSnapType = ''; });
+  }
+  var settle;
+  compRow.addEventListener('scroll', function () { clearTimeout(settle); settle = setTimeout(loopBack, 140); }, { passive: true });
+  // Centre on the middle poster the first time the row is actually on screen (it's hidden until the page unlocks)
+  var rowPlaced = false;
+  function startRow() { if (phoneRow.matches && compRow.clientWidth) { centerOn(compReal[Math.floor(compReal.length / 2)]); rowPlaced = true; } }
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { if (en[0].isIntersecting && !rowPlaced) startRow(); }).observe(compRow);
+  if (phoneRow.addEventListener) phoneRow.addEventListener('change', function () { rowPlaced = false; startRow(); });
   function open(set, i, from) { items = sets[set]; opener = from; go(i); lb.hidden = false; document.body.classList.add('lb-open'); document.getElementById('lb-close').focus(); }
   function close() { lb.hidden = true; document.body.classList.remove('lb-open'); if (opener && opener.getAttribute('aria-hidden') !== 'true') opener.focus(); }
   document.querySelectorAll('.night').forEach(function (row) { row.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('night', +b.dataset.i, b); }); });
