@@ -101,6 +101,18 @@
   .m-by .hand { font-size: clamp(32px, 3.7vw, 44px); }
 
   .m-body { display: flex; flex-direction: column; align-items: center; max-width: 720px; margin: clamp(30px, 4vw, 44px) auto 0; text-align: center; }
+  /* A word with a definition: dotted lavender underline; a small tag rises above it on hover, focus or tap */
+  .def { position: relative; cursor: help; text-decoration: underline dotted rgba(180, 176, 228, .7); text-decoration-thickness: 1px; text-underline-offset: .22em; outline: none; }
+  .def:hover, .def:focus-visible, .def.open { text-decoration-color: var(--lav); color: #fff; }
+  .def-tip { position: absolute; left: 50%; bottom: calc(100% + 10px); z-index: 5; width: max-content; max-width: min(250px, 78vw); padding: 9px 12px 10px;
+             background: #0d0c0b; border: 1px solid rgba(180, 176, 228, .45); box-shadow: 0 0 14px rgba(180, 176, 228, .14), 0 8px 24px rgba(0, 0, 0, .6);
+             font: 400 12px/1.45 var(--mono); letter-spacing: .06em; text-transform: uppercase; text-align: left; color: var(--white);
+             opacity: 0; visibility: hidden; transform: translate(calc(-50% + var(--dx, 0px)), 4px); transition: opacity .16s, transform .16s, visibility 0s .16s; pointer-events: none; }
+  .def-tip b { display: block; margin-bottom: 3px; font-weight: 400; color: var(--lav); letter-spacing: .14em; text-shadow: 0 0 6px rgba(180, 176, 228, .45); }
+  .def-tip::after { content: ""; position: absolute; left: calc(50% - var(--dx, 0px)); top: 100%; width: 8px; height: 8px; margin: -4px 0 0 -4px; background: #0d0c0b;
+                    border: solid rgba(180, 176, 228, .45); border-width: 0 1px 1px 0; transform: rotate(45deg); }
+  .def:hover .def-tip, .def:focus-visible .def-tip, .def.open .def-tip { opacity: 1; visibility: visible; transform: translate(calc(-50% + var(--dx, 0px)), 0); transition-delay: 0s; }
+  @media (prefers-reduced-motion: reduce) { .def-tip { transition: none; } }
   .logline { max-width: 52ch; font-size: clamp(17px, 1.6vw, 20px); line-height: 1.55; text-wrap: pretty; }
   .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 0; margin-top: 20px; }
   .meta span + span::before { content: "·"; margin-inline: 10px; color: var(--ash); }
@@ -428,7 +440,7 @@
       </div>
 
       <div class="m-body">
-        <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a NEET pornsick twenty-something’s world unravels the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</p>
+        <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a <span class="def" tabindex="0" role="button" aria-describedby="def-neet">NEET<span class="def-tip" id="def-neet" role="tooltip"><b>NEET</b>Not in Education, Employment, or Training</span></span> pornsick twenty-something’s world unravels the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</p>
         <p class="comps"><span class="label">In the spirit of</span><i>American Beauty</i><i>Happiness</i><i>Me and You and Everyone We Know</i></p>
         <div class="meta caps"><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>45 in the audience</span></div>
 
@@ -1134,6 +1146,22 @@
   document.addEventListener('visibilitychange', function () { if (document.hidden) flush(true); });
   window.addEventListener('pagehide', function () { flush(true); });
   })();
+
+  // Definitions: tap to show on touch screens; tap anywhere else or press Esc to hide
+  document.querySelectorAll('.def').forEach(function (d) {
+    // Keep the bubble inside the screen edges; its little pointer stays over the word
+    var tip = d.querySelector('.def-tip');
+    function place() {
+      tip.style.setProperty('--dx', '0px');
+      var r = d.getBoundingClientRect(), w = tip.offsetWidth, vw = document.documentElement.clientWidth, m = 16;
+      var left = r.left + r.width / 2 - w / 2, dx = left < m ? m - left : left + w > vw - m ? vw - m - (left + w) : 0;
+      tip.style.setProperty('--dx', dx + 'px');
+    }
+    ['mouseenter', 'focus', 'touchstart'].forEach(function (ev) { d.addEventListener(ev, place, { passive: true }); });
+    d.addEventListener('click', function (e) { e.stopPropagation(); d.classList.toggle('open'); });
+    d.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); d.classList.toggle('open'); } if (e.key === 'Escape') { d.classList.remove('open'); d.blur(); } });
+  });
+  document.addEventListener('click', function () { document.querySelectorAll('.def.open').forEach(function (d) { d.classList.remove('open'); }); });
 
   // Phones and tablets read the script in Google Drive (no download step); computers download the PDF
   if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
