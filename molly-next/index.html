@@ -241,7 +241,7 @@
   .comps-line i { font-style: italic; color: var(--lav); }
   .comps-label { display: block; margin-top: clamp(26px, 3vw, 34px); }
   /* Three comps, still, sized like the key art and given room; hover lights them the same way */
-  .comp-row { --fh: clamp(220px, 24vw, 380px); display: flex; justify-content: center; gap: clamp(24px, 3.6vw, 56px); margin-top: clamp(26px, 3.4vw, 40px); padding: 8px 16px clamp(8px, 2vw, 20px); }
+  .comp-row { --fh: clamp(300px, 30vw, 420px); display: flex; justify-content: center; gap: clamp(32px, 5vw, 72px); margin-top: clamp(26px, 3.4vw, 40px); padding: 8px 16px clamp(8px, 2vw, 20px); }
   .comp-row button { position: relative; flex: none; height: var(--fh); width: calc(var(--fh) * 2 / 3); padding: 0; overflow: hidden; border: 0; background: var(--soot); cursor: zoom-in; }
   .comp-row img, .comp-row .comp-card { transition: transform .6s var(--ease); }
   .comp-row img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -821,11 +821,9 @@
     { id: 'happiness', title: 'Happiness', year: 1998, by: 'Todd Solondz', img: '',
       blurb: 'The dry, dark wit of Todd Solondz’s style has shaped my taste in film since high school. He lays bare the pathetic aspects of human existence that we can laugh at, to a point, until we realize we’re no different. <em>Looking for Molly</em> walks a similar fine line. I hope people see themselves in my characters at their lowest.' },
     { id: 'american-beauty', title: 'American Beauty', year: 1999, by: 'Sam Mendes', img: '',
-      blurb: '<em>American Beauty</em> exposed what was rotting beneath the 1990s family: the boredom, the pretending, the longing nobody could say out loud. <em>Molly</em> turns that lens on the 2020s, when all of it has moved onto our screens.' },
+      blurb: '<em>American Beauty</em> exposed what was rotting beneath the 1990s family. All of the characters bored, longing for more. Everyone playing a part they don’t quite fit. <em>Molly</em> turns that lens on the 2020s, when the roleplaying has moved onto our screens.' },
     { id: 'me-and-you', title: 'Me and You and Everyone We Know', year: 2005, by: 'Miranda July', img: '',
-      blurb: 'Miranda July never mocks her characters, no matter how lonely or strange they get. Her kids see the adult world far too early, and it’s funny and unsettling in equal measure. If <em>Happiness</em> is the bite, this is the ache, and <em>Molly</em> needs both.' },
-    { id: 'pvt-chat', title: 'PVT Chat', year: 2020, by: 'Ben Hozie', img: '',
-      blurb: 'A young man in New York lost in an online obsession, shot close and raw. It’s the closest recent touchstone for Paul’s world and the grip the internet has on him.' }
+      blurb: 'Miranda July never mocks her characters, no matter how lonely or strange they can seem. She has the courage to show how normal it is for young people, drawn by curiosity, to discover things they’re not quite ready for. I like to think Molly and Chris would feel at home in her story worlds.' }
   ];
   function compCard(c) { return '<span class="comp-card' + (c.title.length > 14 ? ' long' : '') + '"><span class="cc-title">' + c.title + '</span><span class="cc-meta">' + c.year + '<br>' + c.by + '</span></span>'; }
   var compRow = document.getElementById('comp-row');
