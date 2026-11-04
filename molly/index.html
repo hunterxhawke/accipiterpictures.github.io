@@ -343,12 +343,9 @@
   /* Content note: one quiet line under the player links, red label inline */
   /* ---------- The invitation gate ---------- */
   html.lfm-pending .gated, html.lfm-locked .gated { display: none !important; }
-  html.lfm-pending .nav ul, html.lfm-locked .nav ul { visibility: hidden; }
   @media (max-width: 400px) { .nav ul { gap: 14px; } .nav ul a { letter-spacing: .1em; } }
   .gate { display: none; width: 100%; max-width: 560px; margin-top: clamp(30px, 4vw, 42px); text-align: left; }
   html.lfm-locked .gate { display: block; }
-  html.lfm-locked footer { border-top: 0; border-image: none; }
-  html.lfm-locked .m-hero .wave.small { margin-top: clamp(44px, 6vw, 68px); }
   .gate-lead { font: 400 clamp(18px, 2vw, 21px)/1.45 var(--body); text-align: center; }
   .gate-lead b { font: 400 .9em/1 var(--mono); color: var(--lav); letter-spacing: .08em; text-transform: uppercase; text-shadow: 0 0 6px rgba(180, 176, 228, .45); }
   .gate form { display: grid; gap: 12px; margin-top: 26px; padding: clamp(16px, 2.4vw, 24px); border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
@@ -414,6 +411,13 @@
   .r-note textarea { width: 100%; min-height: 96px; padding: 12px 14px; border: 1px solid #2c2a28; background: var(--soot); color: var(--white); font: 400 16px/1.45 var(--body); resize: vertical; }
   .r-note textarea:focus { outline: none; border-color: var(--neon); }
   .r-note .btn { justify-self: start; }
+  /* Visitors without a link say who they are right here (it signs them in, like the form up top) */
+  .r-who { display: none; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  html.lfm-locked .r-who { display: grid; }
+  .r-who input { width: 100%; padding: 12px 14px; border: 1px solid #2c2a28; background: var(--soot); color: var(--white); font: 400 16px/1.4 var(--body); border-radius: 0; }
+  .r-who input:focus { outline: none; border-color: var(--neon); }
+  .when-locked { display: none; } html.lfm-locked .when-locked { display: inline; } html.lfm-locked .when-open { display: none; }
+  @media (max-width: 560px) { .r-who { grid-template-columns: 1fr; } }
   /* Roles: compact check-all-that-apply grid in the page's checkbox style */
   .roles { margin: 4px 0 0; padding: 0; border: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 14px; }
   .roles[hidden] { display: none; }
@@ -593,7 +597,7 @@
       </div>
     </div>
 
-    <div class="marquee art gated" id="artwork" role="region" aria-label="Key art. Select a frame to open the gallery.">
+    <div class="marquee art" id="artwork" role="region" aria-label="Key art. Select a frame to open the gallery.">
       <div class="track" id="track">
         <button type="button" data-i="0" data-full="../assets/molly/poster-molly.webp"><img src="../assets/molly/thumb-poster-molly.webp" alt="Poster: Molly on the phone, neon title" width="600" height="900" draggable="false" loading="lazy" decoding="async"></button>
         <button type="button" data-i="1" data-full="../assets/molly/poster-paul.webp"><img src="../assets/molly/thumb-poster-paul.webp" alt="Poster: Paul at his desk, neon title" width="600" height="900" draggable="false" loading="lazy" decoding="async"></button>
@@ -605,19 +609,19 @@
       </div>
     </div>
 
-    <p class="swipe-hint gated" id="swipe-hint" aria-hidden="true">Swipe to browse · tap to view</p>
+    <p class="swipe-hint" id="swipe-hint" aria-hidden="true">Swipe to browse · tap to view</p>
 
-    <div class="comps-block gated">
+    <div class="comps-block">
       <p class="comps-line">Todd Solondz’s <i>Happiness</i> rewired for the social media generation</p>
     </div>
-    <div class="comp-row gated" id="comp-row" role="list" aria-label="Comps. Select one to read why."></div>
+    <div class="comp-row" id="comp-row" role="list" aria-label="Comps. Select one to read why."></div>
     <div class="wrap">
       <div class="wave small" aria-hidden="true" data-bars="96"></div>
     </div>
   </section>
 
   <!-- ===== END CREDITS ===== -->
-  <section class="credits-roll gated" id="credits">
+  <section class="credits-roll" id="credits">
     <div class="wrap">
       <span class="label night-label">The night</span>
       <div class="night-set">
@@ -664,7 +668,7 @@
   </section>
 
   <!-- ===== CLOSING ===== -->
-  <section class="closing rule-top gated" id="next">
+  <section class="closing rule-top" id="next">
     <div class="wrap">
       <p>Thank you to everyone who generously contributed their time and talent to bring this reading to life!</p>
       <p>I’m very open to your thoughts on the script, the performances, and ideas for next steps. If you want to help get <em>Molly</em> made, I’d love to hear from you.</p>
@@ -675,7 +679,7 @@
           <button type="button" class="r-opt quiet" data-kind="pass" aria-pressed="false">Not for me, but good luck</button>
         </div>
         <p class="r-msg" id="r-msg" role="status"></p>
-        <form class="r-note" id="r-note"><textarea id="r-text" maxlength="2000" placeholder="What stayed with you?" aria-label="Add a note"></textarea>
+        <form class="r-note" id="r-note"><div class="r-who"><input id="rw-name" autocomplete="name" placeholder="Your name" aria-label="Your name"><input id="rw-email" type="email" autocomplete="email" placeholder="Email" aria-label="Email"></div><textarea id="r-text" maxlength="2000" placeholder="What stayed with you?" aria-label="Add a note"></textarea>
           <fieldset class="roles" id="roles" hidden><legend class="label">What do you do in film? <span class="opt">Check all that apply</span></legend>
             <label><input type="checkbox" name="role" value="producer"><span>Producer</span></label>
             <label><input type="checkbox" name="role" value="financier"><span>Financier / investor</span></label>
@@ -687,12 +691,11 @@
             <label><input type="checkbox" name="role" value="distribution"><span>Distribution or sales</span></label>
             <label><input type="checkbox" name="role" value="crew"><span>Crew</span></label>
             <label class="wide"><input type="checkbox" name="role" value="none"><span>Not in the industry, just curious to listen</span></label>
-          </fieldset><button class="btn btn-solid" type="submit">Send note</button></form>
+          </fieldset><button class="btn btn-solid" type="submit"><span class="when-open">Send note</span><span class="when-locked">Send</span></button></form>
       </div>
       <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       <div class="cta">
         <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script-2" data-script><span class="lbl-desk-inline">Download the script</span><span class="lbl-phone-inline">Read the script</span></a>
-        <a class="btn btn-line" href="mailto:hunter@accipiterpictures.com?subject=Looking%20for%20Molly">Get in touch</a>
       </div>
       <div class="mail"><span class="addr" id="email">hunter@accipiterpictures.com</span><button type="button" class="caps" id="copy">Copy email</button></div>
     </div>
@@ -715,7 +718,7 @@
   </div>
 </div>
 
-<div class="lb gated" id="lb" role="dialog" aria-modal="true" aria-label="Gallery" hidden>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Gallery" hidden>
   <div class="lb-top"><span class="caps lb-count" id="lb-count"></span><button type="button" class="lb-btn" id="lb-close" aria-label="Close gallery">×</button></div>
   <div class="lb-stage" id="lb-stage">
     <div class="lb-text" id="lb-text" hidden></div>
@@ -1271,6 +1274,18 @@
 
   // Request-access form
   var gate = document.getElementById('gate'), gform = document.getElementById('gate-form'), gmsg = document.getElementById('gate-msg');
+  // Sign someone in with name + email (instant). Resolves with their new code, already remembered and in the address bar.
+  function signUp(name, email, note) {
+    return fetch(BASE + '/request-access', { method: 'POST', body: JSON.stringify({ name: name, email: email, note: note || '', website: document.getElementById('g-website').value, r: code, instant: 1 }) })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok || !j.code) throw new Error((j && j.error) || 'That didn’t go through. Please try again.'); return j.code; }); })
+      .then(function (c) {
+        code = c; document.getElementById('roles').hidden = false;
+        try { localStorage.setItem('lfm-r', code); history.replaceState(null, '', location.pathname + '?r=' + code + location.hash); } catch (err) {}
+        flush(); session = Math.random().toString(36).slice(2, 10);
+        logEvent('visit', { hash: location.hash.slice(1) }); flush();
+        return c;
+      });
+  }
   gform.addEventListener('submit', function (e) {
     e.preventDefault();
     var name = document.getElementById('g-name').value.trim(), email = document.getElementById('g-email').value.trim(), note = document.getElementById('g-note').value.trim();
@@ -1302,7 +1317,7 @@
       .catch(function () { btn.disabled = false; gmsg.className = 'gate-msg err'; gmsg.textContent = 'Couldn’t send just now. You can also email hunter@accipiterpictures.com.'; });
   });
   // ---------- Responses: one tap, optional note; both go to the Green Room and your inbox ----------
-  var respond = document.getElementById('respond'), rmsg = document.getElementById('r-msg'), rKind = '';
+  var respond = document.getElementById('respond'), rmsg = document.getElementById('r-msg'), rKind = '', pendingKind = '';
   function sendResponse(body) {
     return fetch(BASE + '/respond', { method: 'POST', body: JSON.stringify(Object.assign({ r: code }, body)) })
       .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j && j.error); return j; }); });
@@ -1314,6 +1329,14 @@
   respond.querySelectorAll('.r-opt').forEach(function (b) {
     b.addEventListener('click', function () {
       var kind = b.dataset.kind; if (kind === rKind) return;
+      if (html.classList.contains('lfm-locked')) {
+        // No link yet: hold the choice, ask who it's from, send it all together
+        pendingKind = kind; markPicked(kind); rmsg.className = 'r-msg';
+        rmsg.textContent = ({ materials: 'I’ll share that soon! Who should I send it to?', intro: 'I’d love to learn more! Who’s this from?', pass: 'Thank you so much for listening! Who’s this from?' })[kind];
+        document.getElementById('roles').hidden = false;
+        setTimeout(function () { document.getElementById('rw-name').focus({ preventScroll: true }); }, 50);
+        return;
+      }
       markPicked(kind); rmsg.className = 'r-msg'; rmsg.textContent = 'Sending…';
       sendResponse({ kind: kind }).then(function () {
         rKind = kind; try { localStorage.setItem('lfm-resp', kind); } catch (err) {}
@@ -1330,6 +1353,24 @@
     e.preventDefault();
     var form = this, t = document.getElementById('r-text'), btn = form.querySelector('button[type=submit]');
     var roles = [].map.call(form.querySelectorAll('input[name=role]:checked'), function (c) { return c.value; });
+    if (html.classList.contains('lfm-locked')) {
+      var nm = document.getElementById('rw-name').value.trim(), em = document.getElementById('rw-email').value.trim();
+      if (!nm || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { rmsg.className = 'r-msg err'; rmsg.textContent = 'Please add your name and a valid email.'; return; }
+      btn.disabled = true; rmsg.className = 'r-msg'; rmsg.textContent = 'Sending…';
+      var anchor = respond.getBoundingClientRect().top;
+      signUp(nm, em).then(function () {
+        html.classList.remove('gate-open'); unlock();
+        window.scrollBy(0, respond.getBoundingClientRect().top - anchor);   // the player appears above; keep this spot still
+        var sends = [];
+        if (pendingKind) sends.push(sendResponse({ kind: pendingKind }));
+        if (t.value.trim() || roles.length) sends.push(sendResponse({ kind: 'note', message: t.value.trim(), roles: roles }));
+        return Promise.all(sends);
+      }).then(function () {
+        rKind = pendingKind; try { if (rKind) localStorage.setItem('lfm-resp', rKind); } catch (err) {}
+        t.value = ''; rmsg.className = 'r-msg'; rmsg.textContent = 'Got it, thank you! Will be thinking on this';
+      }).catch(rFail).then(function () { btn.disabled = false; });
+      return;
+    }
     if (!t.value.trim() && !roles.length) { t.focus(); return; }   // a note, roles, or both
     btn.disabled = true; rmsg.className = 'r-msg'; rmsg.textContent = 'Sending…';
     sendResponse({ kind: 'note', message: t.value.trim(), roles: roles }).then(function () { t.value = ''; rmsg.textContent = 'Got it, thank you! Will be thinking on this'; })
