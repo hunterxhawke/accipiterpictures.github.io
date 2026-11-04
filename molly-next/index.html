@@ -403,6 +403,7 @@
   .r-opt[aria-pressed="true"] { border-color: var(--neon); box-shadow: 0 0 0 1px var(--neon), 0 0 16px rgba(232, 52, 90, .3); }
   .r-opt.quiet { color: var(--ash); }
   .r-note { display: none; margin-top: 14px; text-align: left; }
+  .r-msg:not(:empty) + .r-note { margin-top: 12px; }
   .respond.picked .r-note { display: grid; gap: 10px; }
   .r-note textarea { width: 100%; min-height: 96px; padding: 12px 14px; border: 1px solid #2c2a28; background: var(--soot); color: var(--white); font: 400 16px/1.45 var(--body); resize: vertical; }
   .r-note textarea:focus { outline: none; border-color: var(--neon); }
@@ -420,7 +421,8 @@
   .roles input:checked::before { opacity: 1; }
   .roles input:focus-visible { outline: 2px solid var(--lav); outline-offset: 2px; }
   @media (max-width: 640px) { .roles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .r-msg { min-height: 1.4em; margin-top: 10px; font-size: 15px; color: var(--lav); }
+  .respond .r-msg { max-width: none; margin: 26px auto 0; font-size: 16px; line-height: 1.45; color: var(--lav); text-wrap: balance; }
+  .respond .r-msg:empty { margin-top: 0; }
   .r-msg.err { color: #ff6b84; }
   @media (max-width: 560px) { .r-opts { grid-template-columns: 1fr; } }
   .note { margin-top: 14px; padding-top: 12px; text-align: left; font-size: 13px; line-height: 1.5; color: var(--ash); border-top: 3px solid transparent; border-image: var(--rule-dim) 100% 0 0 0 / 3px 0 0 0 stretch; }
@@ -664,6 +666,7 @@
           <button type="button" class="r-opt" data-kind="intro" aria-pressed="false">I know someone you should meet</button>
           <button type="button" class="r-opt quiet" data-kind="pass" aria-pressed="false">Not for me, but good luck</button>
         </div>
+        <p class="r-msg" id="r-msg" role="status"></p>
         <form class="r-note" id="r-note"><textarea id="r-text" maxlength="2000" placeholder="What stayed with you?" aria-label="Add a note"></textarea>
           <fieldset class="roles" id="roles" hidden><legend class="label">What do you do in film? <span class="opt">Check all that apply</span></legend>
             <label><input type="checkbox" name="role" value="producer"><span>Producer</span></label>
@@ -677,7 +680,6 @@
             <label><input type="checkbox" name="role" value="crew"><span>Crew</span></label>
             <label class="wide"><input type="checkbox" name="role" value="none"><span>Not in the industry, just curious to listen</span></label>
           </fieldset><button class="btn btn-solid" type="submit">Send note</button></form>
-        <p class="r-msg" id="r-msg" role="status"></p>
       </div>
       <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       <div class="cta">
