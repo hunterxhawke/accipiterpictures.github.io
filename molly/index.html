@@ -156,6 +156,7 @@
   .p-jump { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 0; border: 0; background: none; cursor: pointer;
             font: 400 15px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--neon); text-shadow: 0 0 8px rgba(232, 52, 90, .55); transition: color .2s; }
   .p-jump:hover, .p-jump:focus-visible { outline: none; color: #ff5a78; }
+  .p-jump[hidden] { display: none; }
   .p-wave { position: relative; height: 78px; margin-top: 16px; cursor: pointer; touch-action: none; outline: none; }
   .p-wave canvas { display: block; width: 100%; height: 100%; }
   .p-wave:focus-visible { box-shadow: 0 0 0 2px var(--lav); }

@@ -157,6 +157,7 @@
   .p-jump { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 0; border: 0; background: none; cursor: pointer;
             font: 400 15px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--neon); text-shadow: 0 0 8px rgba(232, 52, 90, .55); transition: color .2s; }
   .p-jump:hover, .p-jump:focus-visible { outline: none; color: #ff5a78; }
+  .p-jump[hidden] { display: none; }
   .p-wave { position: relative; height: 78px; margin-top: 16px; cursor: pointer; touch-action: none; outline: none; }
   .p-wave canvas { display: block; width: 100%; height: 100%; }
   .p-wave:focus-visible { box-shadow: 0 0 0 2px var(--lav); }
@@ -883,7 +884,7 @@
   } catch (err) {}
   var lastSave = 0;
   audio.addEventListener('timeupdate', function () {
-    if (Date.now() - lastSave < 5000) return; lastSave = Date.now();
+    if (Date.now() - lastSave < 5000 || audio.currentTime >= 5346) return; lastSave = Date.now();
     try { localStorage.setItem(KEY, String(audio.currentTime)); } catch (err) {}
   });
   audio.addEventListener('play', function () { resumeEl.hidden = true; });
@@ -908,8 +909,22 @@
 
   // ---------- End card: shown when the recording finishes ----------
   var endCard = document.getElementById('p-end');
+  // The thank-you and responses appear at 1:29:06, as the audience starts applauding: few people stay for the credits.
+  // The recording keeps playing underneath; seeking back before that point puts the card away again.
+  var FINALE = 5346, finishedLogged = false;
+  function atFinale() { return audio.currentTime >= FINALE; }
+  audio.addEventListener('timeupdate', function () {
+    var show = atFinale();
+    if (show === endCard.hidden) {
+      endCard.hidden = !show; player.classList.toggle('finale', show); miniUpdate();
+      if (show) {
+        try { localStorage.removeItem(KEY); } catch (err) {}
+        if (!finishedLogged) { finishedLogged = true; logEvent('ended', {}); }
+      }
+    }
+  });
   audio.addEventListener('ended', function () { player.classList.add('ended'); endCard.hidden = false; try { localStorage.removeItem(KEY); } catch (err) {} });
-  audio.addEventListener('play', function () { player.classList.remove('ended'); endCard.hidden = true; });
+  audio.addEventListener('play', function () { player.classList.remove('ended'); if (!atFinale()) endCard.hidden = true; });
   document.getElementById('p-again').addEventListener('click', function () { seek(0, true); });
 
   // ---------- Trailer: first-time visitors hear it first, then choose the full reading ----------
@@ -968,7 +983,7 @@
   }
   function miniUpdate() {
     miniFill.style.width = (audio.currentTime / dur() * 100).toFixed(2) + '%';
-    miniSub.textContent = fmt(audio.currentTime) + ' · ' + chapterAt(audio.currentTime).name;
+    miniSub.textContent = audio.currentTime >= 5346 ? 'Thank you for listening · tap to share your thoughts' : fmt(audio.currentTime) + ' · ' + chapterAt(audio.currentTime).name;
   }
   audio.addEventListener('play', function () { started = true; mini.classList.add('playing'); document.getElementById('mini-play').setAttribute('aria-label', 'Pause'); miniShow(); });
   audio.addEventListener('pause', function () { mini.classList.remove('playing'); document.getElementById('mini-play').setAttribute('aria-label', 'Play'); });
@@ -1038,7 +1053,7 @@
   audio.addEventListener('play', function () { logEvent('play', { t: Math.round(audio.currentTime) }); });
   audio.addEventListener('pause', function () { logEvent('pause', { t: Math.round(audio.currentTime) }); closeSpan(); });
   audio.addEventListener('seeking', function () { closeSpan(); });
-  audio.addEventListener('ended', function () { closeSpan(); logEvent('ended', {}); });
+  audio.addEventListener('ended', function () { closeSpan(); if (!finishedLogged) { finishedLogged = true; logEvent('ended', {}); } });
   ['dl-script', 'dl-script-2', 'dl-script-3'].forEach(function (id) { var a = document.getElementById(id); if (a) a.addEventListener('click', function () { logEvent('download', {}); flush(); }); });
   document.getElementById('copy').addEventListener('click', function () { logEvent('copy-email', {}); });
   document.querySelectorAll('a[data-who]').forEach(function (a) { a.addEventListener('click', function () { logEvent('link', { who: a.getAttribute('data-who') }); flush(true); }); });
