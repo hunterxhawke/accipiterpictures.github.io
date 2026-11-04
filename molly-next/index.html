@@ -360,12 +360,16 @@
                   filter: drop-shadow(0 0 5px rgba(240, 50, 85, .6)) drop-shadow(0 0 16px rgba(232, 52, 90, .28)); }
   .gate-done p { margin-top: 10px; color: var(--ash); }
   /* A note written to this listener */
-  .letter { width: 100%; max-width: 560px; margin: clamp(26px, 3.4vw, 38px) auto 0; padding: clamp(16px, 2.2vw, 22px) clamp(18px, 2.6vw, 26px); text-align: left;
-            border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
+  /* A note to this listener: a slim aside above the player, three lines at most until they open it */
+  .letter { width: 100%; margin: clamp(22px, 2.8vw, 30px) auto 0; padding: 2px 0 2px 14px; text-align: left; border-left: 2px solid rgba(180, 176, 228, .5); }
   .letter[hidden] { display: none; }
-  .letter .label { color: var(--lav); }
-  .letter p { margin-top: 8px; font-size: clamp(16px, 1.5vw, 18px); line-height: 1.55; white-space: pre-line; }
-  .letter .from { display: block; margin-top: 8px; color: var(--ash); font-size: 15px; }
+  .letter .label { font-size: 10px; color: var(--lav); }
+  .letter p { margin-top: 4px; font-size: 15px; line-height: 1.5; color: #dcd8d3; white-space: pre-line; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+  .letter.open p { -webkit-line-clamp: unset; display: block; }
+  .letter .from { margin-left: .3em; font: 400 12px/1 var(--mono); letter-spacing: .06em; color: var(--lav); white-space: nowrap; }
+  .letter-more { margin-top: 4px; padding: 0; border: 0; background: none; cursor: pointer; font: 600 11px/1.4 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--ash); }
+  .letter-more:hover, .letter-more:focus-visible { color: var(--white); outline: none; }
+  .letter-more[hidden] { display: none; }
   /* Trailer: what people hear first; the full player takes its place when they choose */
   .trailer { width: 100%; padding: clamp(18px, 2.4vw, 26px); border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; text-align: left; }
   /* Everyone without a link can hear the trailer; the sign-in form appears only when they ask for the full reading.
@@ -527,7 +531,7 @@
           <div class="gate-done"><div class="t">You’re in!</div></div>
         </div>
 
-        <div class="letter gated" id="letter" hidden><span class="label" id="letter-to"></span><p id="letter-body"></p><span class="from">H.H.</span></div>
+        <div class="letter gated" id="letter" hidden><span class="label" id="letter-to"></span><p><span id="letter-body"></span> <span class="from" id="letter-from">H.H.</span></p><button type="button" class="letter-more" id="letter-more" hidden>Read more</button></div>
 
         <div class="m-play gated">
           <span class="sound-rec p-label">
@@ -1182,9 +1186,14 @@
   // A note you wrote to this person in the Green Room, shown above the player
   function showLetter(j) {
     if (!j.message) return;
-    document.getElementById('letter-to').textContent = j.first ? 'A note for ' + j.first : 'A note for you';
+    var box = document.getElementById('letter'), more = document.getElementById('letter-more'), p = box.querySelector('p');
+    // Opening line and sign-off are yours to change per person in the Green Room; these are the defaults
+    document.getElementById('letter-to').textContent = j.open || (j.first ? 'A note for ' + j.first : 'A note for you');
+    document.getElementById('letter-from').textContent = j.close || 'H.H.';
     document.getElementById('letter-body').textContent = j.message;
-    document.getElementById('letter').hidden = false;
+    box.hidden = false;
+    more.hidden = p.scrollHeight <= p.clientHeight + 2;   // only offered when the note runs past three lines
+    more.onclick = function () { var o = box.classList.toggle('open'); more.textContent = o ? 'Show less' : 'Read more'; };
   }
   function lock(why) {
     root.classList.remove('lfm-pending'); root.classList.add('lfm-locked');
