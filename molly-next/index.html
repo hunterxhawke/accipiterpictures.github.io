@@ -296,7 +296,6 @@
   html.lfm-locked .m-hero .wave.small { margin-top: clamp(44px, 6vw, 68px); }
   .gate-lead { font: 400 clamp(18px, 2vw, 21px)/1.45 var(--body); text-align: center; }
   .gate-lead b { font: 400 .9em/1 var(--mono); color: var(--lav); letter-spacing: .08em; text-transform: uppercase; text-shadow: 0 0 6px rgba(180, 176, 228, .45); }
-  .gate-sub { margin-top: 10px; text-align: center; color: var(--ash); font-size: 15px; }
   .gate form { display: grid; gap: 12px; margin-top: 26px; padding: clamp(16px, 2.4vw, 24px); border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
   .gate label { display: grid; gap: 6px; }
   .gate input, .gate textarea { width: 100%; padding: 12px 14px; border: 1px solid #2c2a28; background: var(--soot); color: var(--white); font: 400 16px/1.4 var(--body); border-radius: 0; }
@@ -459,7 +458,6 @@
 
         <div class="gate" id="gate" aria-live="polite">
           <p class="gate-lead" id="gate-lead"><b>Listen now</b><br>Add your name and email and you’re in.</p>
-          <p class="gate-sub" id="gate-sub">Already have a personal link? Open it from the message it came in.</p>
           <form id="gate-form" novalidate>
             <label><span class="label">Your name</span><input id="g-name" name="name" autocomplete="name" required></label>
             <label><span class="label">Email</span><input id="g-email" name="email" type="email" autocomplete="email" required></label>
