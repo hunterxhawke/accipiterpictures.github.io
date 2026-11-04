@@ -469,7 +469,7 @@
           <div class="gate-done"><div class="t">You’re in!</div></div>
         </div>
 
-        <div class="letter gated" id="letter" hidden><span class="label" id="letter-to"></span><p id="letter-body"></p><span class="from">Hunter</span></div>
+        <div class="letter gated" id="letter" hidden><span class="label" id="letter-to"></span><p id="letter-body"></p><span class="from">H.H.</span></div>
 
         <div class="m-play gated">
           <span class="sound-rec p-label">
@@ -1059,7 +1059,7 @@
   // A note you wrote to this person in the Green Room, shown above the player
   function showLetter(j) {
     if (!j.message) return;
-    document.getElementById('letter-to').textContent = j.first ? 'For ' + j.first : 'A note for you';
+    document.getElementById('letter-to').textContent = j.first ? 'A note for ' + j.first : 'A note for you';
     document.getElementById('letter-body').textContent = j.message;
     document.getElementById('letter').hidden = false;
   }
