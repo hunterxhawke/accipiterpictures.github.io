@@ -135,6 +135,10 @@
     .p-label .lbl-desk { display: none; }
     .p-label .lbl-phone { display: inline-flex; }
   }
+  /* When there's a personal note, it introduces the player: computers drop the "Recorded live" label (phones keep
+     their background-play note), and the player tucks up under the note */
+  @media (hover: hover) { html.has-letter .m-play .p-label { display: none; } }
+  html.has-letter .m-play { margin-top: 16px; }
   /* The reading player, in the sign's lettering: neon for what you've heard, lavender for the chapters */
   .player { margin-top: 10px; padding: clamp(14px, 2vw, 20px); text-align: left; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
   .p-top { display: flex; align-items: center; gap: 14px 18px; flex-wrap: wrap; }
@@ -144,7 +148,8 @@
   .p-play svg { width: 24px; height: 24px; fill: currentColor; filter: drop-shadow(0 0 4px rgba(232, 52, 90, .6)); }
   .p-play .i-pause { display: none; }
   .player.playing .p-play .i-play { display: none; }
-  .player.playing .p-play .i-pause { display: block; }
+  .player.playing .p-play .i-pause, .trailer.playing .p-play .i-pause { display: block; }
+  .trailer.playing .p-play .i-play { display: none; }
   .p-info { flex: 1 1 180px; min-width: 0; }
   .p-time { font: 400 clamp(18px, 2vw, 22px)/1 var(--mono); color: var(--lav); letter-spacing: .04em; font-variant-numeric: tabular-nums; text-shadow: 0 0 6px rgba(180, 176, 228, .45); }
   .p-time span { color: var(--ash); text-shadow: none; }
@@ -217,7 +222,7 @@
 
   /* Key art marquee: every frame whole, side by side, drifting. Sideways scroll, drag or swipe moves it; vertical scrolling stays with the page.
      Hover lights a frame; click opens the gallery. */
-  .marquee { --fh: clamp(300px, 34vw, 440px); position: relative; margin-top: clamp(40px, 5vw, 64px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; touch-action: pan-y; cursor: grab; }
+  .marquee { --fh: clamp(300px, 34vw, 440px); position: relative; margin-top: clamp(14px, 2vw, 26px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; touch-action: pan-y; cursor: grab; }
   /* Edge fades as overlays: cheaper on phones than masking a moving layer */
   .marquee::before, .marquee::after { content: ""; position: absolute; top: 0; bottom: 0; z-index: 2; width: 6%; pointer-events: none; }
   .marquee::before { left: 0; background: linear-gradient(90deg, var(--black), transparent); }
@@ -233,6 +238,54 @@
   .track button:focus-visible::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
   @media (hover: hover) { .track button:hover::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); } }
   .track button:focus-visible { outline: none; }
+
+  /* Comps: one line, a label, then their own strip drifting the other way */
+  .comps-block { max-width: 760px; margin: clamp(18px, 2.4vw, 30px) auto 0; padding-inline: var(--gut, 20px); text-align: center; }
+  .comps-line { font: 400 clamp(18px, 1.9vw, 23px)/1.5 var(--body); text-wrap: balance; color: var(--white); }
+  .comps-line i { font-style: italic; color: var(--lav); }
+  .comps-label { display: block; margin-top: clamp(26px, 3vw, 34px); }
+  /* Three comps, still, sized like the key art and given room; hover lights them the same way */
+  .comp-row { --fh: clamp(300px, 30vw, 420px); position: relative; display: flex; justify-content: center; gap: clamp(32px, 5vw, 72px); margin-top: clamp(26px, 3.4vw, 40px); padding: 8px 16px clamp(8px, 2vw, 20px); }
+  .comp-row button { position: relative; flex: none; height: var(--fh); width: calc(var(--fh) * 2 / 3); padding: 0; overflow: hidden; border: 0; background: var(--soot); cursor: zoom-in; }
+  .comp-row img, .comp-row .comp-card { transition: transform .6s var(--ease); }
+  .comp-row img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .comp-row button::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 0 var(--neon), 0 0 0 0 rgba(232, 52, 90, 0); transition: box-shadow .25s var(--ease); pointer-events: none; }
+  @media (hover: hover) { .comp-row button:hover img, .comp-row button:hover .comp-card { transform: scale(1.04); }
+                          .comp-row button:hover::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); } }
+  .comp-row button:focus-visible { outline: none; }
+  .comp-row .clone { display: none; }
+  .comp-row button:focus-visible::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
+  /* Phones: the row slides sideways, one poster centred at a time with the next peeking in */
+  @media (max-width: 760px) {
+    .comp-row { --fh: 300px; justify-content: flex-start; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-inline: 0; }
+    .comp-row .clone { display: block; }
+    .comp-row::-webkit-scrollbar { display: none; }
+    .comp-row button { scroll-snap-align: center; }
+  }
+  .comp-card { display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; padding: 12% 10%; text-align: left;
+               border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; background: radial-gradient(120% 80% at 50% 0%, #1b1520, #0b0a0a 70%); }
+  .cc-title { font: 600 calc(var(--fh, 300px) * .082)/.92 var(--molly); text-transform: uppercase; color: var(--white); text-wrap: balance; }
+  .comp-card.long .cc-title { font-size: calc(var(--fh, 300px) * .066); }
+  .cc-meta { font: 400 12px/1.5 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--lav); }
+  /* Gallery: comps open as note on the left, poster on the right */
+  .lb-text[hidden], .lb-card[hidden], #lb-img[hidden] { display: none; }
+  .lb.with-text .lb-stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: center; width: min(1100px, 100%); margin-inline: auto; padding-inline: 64px; }
+  .lb.with-text .lb-stage img, .lb.with-text .lb-card { max-height: min(78vh, 760px); justify-self: center; }
+  .lb-card { aspect-ratio: 2 / 3; height: min(70vh, 640px); }
+  .lb-card { --fh: min(70vh, 640px); }
+  .lb.with-text { background: rgba(0, 0, 0, .985); }
+  .lb-text { text-align: left; }
+  .lb-meta { font: 400 13px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--lav); }
+  .lb-title { margin-top: 8px; font: 600 clamp(36px, 4.4vw, 60px)/.9 var(--molly); text-transform: uppercase;
+              background: linear-gradient(90deg, #ff2b2b, var(--neon) 45%, #c4508c); -webkit-background-clip: text; background-clip: text; color: transparent;
+              filter: drop-shadow(0 0 5px rgba(240, 50, 85, .55)) drop-shadow(0 0 16px rgba(232, 52, 90, .25)); }
+  .lb-text p { margin-top: 18px; max-width: 44ch; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.6; }
+  @media (max-width: 760px) {
+    .lb.with-text .lb-stage { grid-template-columns: 1fr; align-content: start; overflow-y: auto; padding-inline: 4px; gap: 18px; }
+    .lb.with-text .lb-stage img, .lb.with-text .lb-card { order: -1; max-height: 42vh; height: 42vh; width: auto; }
+    .lb-card { --fh: 42vh; }
+    .lb-text p { font-size: 16px; }
+  }
 
   /* Gallery: big frames, arrows, keyboard and swipe */
   .lb { position: fixed; inset: 0; z-index: 50; display: grid; grid-template-rows: auto minmax(0, 1fr); background: rgba(0, 0, 0, .94);
@@ -296,11 +349,11 @@
   html.lfm-locked .m-hero .wave.small { margin-top: clamp(44px, 6vw, 68px); }
   .gate-lead { font: 400 clamp(18px, 2vw, 21px)/1.45 var(--body); text-align: center; }
   .gate-lead b { font: 400 .9em/1 var(--mono); color: var(--lav); letter-spacing: .08em; text-transform: uppercase; text-shadow: 0 0 6px rgba(180, 176, 228, .45); }
-  .gate-sub { margin-top: 10px; text-align: center; color: var(--ash); font-size: 15px; }
   .gate form { display: grid; gap: 12px; margin-top: 26px; padding: clamp(16px, 2.4vw, 24px); border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
   .gate label { display: grid; gap: 6px; }
   .gate input, .gate textarea { width: 100%; padding: 12px 14px; border: 1px solid #2c2a28; background: var(--soot); color: var(--white); font: 400 16px/1.4 var(--body); border-radius: 0; }
-  .gate textarea { min-height: 84px; resize: vertical; }
+  .gate textarea { min-height: 64px; resize: vertical; }
+  .gate .opt { color: var(--ash); text-transform: none; letter-spacing: 0; font-weight: 400; }
   .gate input:focus, .gate textarea:focus { outline: none; border-color: var(--neon); box-shadow: 0 0 0 1px var(--neon), 0 0 16px rgba(232, 52, 90, .25); }
   .gate .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .gate .btn { justify-self: start; margin-top: 4px; }
@@ -312,8 +365,76 @@
   .gate-done .t { font: 600 clamp(26px, 3.4vw, 36px)/.9 var(--molly); text-transform: uppercase; background: linear-gradient(90deg, #ff2b2b, var(--neon) 45%, #c4508c); -webkit-background-clip: text; background-clip: text; color: transparent;
                   filter: drop-shadow(0 0 5px rgba(240, 50, 85, .6)) drop-shadow(0 0 16px rgba(232, 52, 90, .28)); }
   .gate-done p { margin-top: 10px; color: var(--ash); }
+  /* A note written to this listener */
+  /* A note to this listener: a slim aside above the player, three lines at most until they open it */
+  .letter { width: 100%; margin: clamp(22px, 2.8vw, 30px) auto 0; padding: 2px 0 2px 14px; text-align: left; border-left: 2px solid rgba(180, 176, 228, .5); }
+  .letter[hidden] { display: none; }
+  .letter .label { font-size: 10px; color: var(--lav); }
+  .letter p { margin-top: 4px; font-size: 15px; line-height: 1.5; color: #dcd8d3; white-space: pre-line; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+  .letter.open p { -webkit-line-clamp: unset; display: block; }
+  .letter .from { margin-left: .3em; font: 400 12px/1 var(--mono); letter-spacing: .06em; color: var(--lav); white-space: nowrap; }
+  .letter-more { margin-top: 4px; padding: 0; border: 0; background: none; cursor: pointer; font: 600 11px/1.4 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--ash); }
+  .letter-more:hover, .letter-more:focus-visible { color: var(--white); outline: none; }
+  .letter-more[hidden] { display: none; }
+  /* Trailer: what people hear first; the full player takes its place when they choose */
+  .trailer { width: 100%; padding: clamp(18px, 2.4vw, 26px); border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; text-align: left; }
+  /* Everyone without a link can hear the trailer; the sign-in form appears only when they ask for the full reading.
+     First-time listeners with a link hear it first too, then it gives way to the full player. */
+  .trailer { display: none; margin-top: clamp(28px, 3.6vw, 40px); }
+  html.on-trailer .trailer, html.lfm-locked.has-trailer .trailer { display: block; }
+  html.lfm-pending .trailer { display: none; }
+  html.on-trailer .m-play .player, html.on-trailer .m-play .p-label { display: none; }
+  html.lfm-locked.has-trailer .gate { display: none; }
+  html.lfm-locked.has-trailer.gate-open .gate { display: block; }
+  .t-top { display: flex; align-items: center; gap: clamp(14px, 2vw, 20px); }
+  .t-info { flex: 1; min-width: 0; }
+  .t-title { font: 600 clamp(26px, 3.2vw, 36px)/.9 var(--molly); text-transform: uppercase; letter-spacing: .01em; }
+  .t-sub { margin-top: 6px; font: 400 13px/1.3 var(--mono); letter-spacing: .08em; color: var(--lav); text-transform: uppercase; }
+  .t-bar { position: relative; height: 4px; margin-top: 18px; background: #2a2826; cursor: pointer; }
+  .t-bar i { position: absolute; inset: 0 auto 0 0; width: 0; background: linear-gradient(90deg, #ff2b2b, var(--neon) 60%, #c4508c); box-shadow: 0 0 8px rgba(232, 52, 90, .5); }
+  .t-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 18px; margin-top: 18px; }
+  .t-actions .t-time { font: 400 13px/1 var(--mono); color: var(--ash); }
+  .t-full { padding: 0; border: 0; background: none; cursor: pointer; font: 600 12px/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--white); }
+  .t-full:hover, .t-full:focus-visible { color: var(--neon-hi, #ff5a7a); outline: none; }
+  .trailer.done .t-full { padding: 13px 18px; background: var(--white); color: #000; }
+  .trailer.done .t-full:hover { background: var(--neon); color: #fff; }
+  /* Responses: one tap to say where you stand */
+  .respond { max-width: 860px; margin: clamp(26px, 3vw, 34px) auto 0; }
+  .respond .label { display: block; margin-bottom: 12px; }
+  .r-opts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .r-opt { display: flex; align-items: center; justify-content: center; padding: 14px 16px; text-align: center; border: 1px solid #2c2a28; background: var(--soot); color: var(--white); font: 400 16px/1.3 var(--body); text-wrap: balance; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+  .r-opt:hover, .r-opt:focus-visible { outline: none; border-color: var(--neon); box-shadow: 0 0 0 1px var(--neon), 0 0 16px rgba(232, 52, 90, .25); }
+  .r-opt[aria-pressed="true"] { border-color: var(--neon); box-shadow: 0 0 0 1px var(--neon), 0 0 16px rgba(232, 52, 90, .3); }
+  .r-opt.quiet { color: var(--ash); }
+  .r-note { display: none; margin-top: 14px; text-align: left; }
+  .r-msg:not(:empty) + .r-note { margin-top: 12px; }
+  .respond.picked .r-note { display: grid; gap: 10px; }
+  .r-note textarea { width: 100%; min-height: 96px; padding: 12px 14px; border: 1px solid #2c2a28; background: var(--soot); color: var(--white); font: 400 16px/1.45 var(--body); resize: vertical; }
+  .r-note textarea:focus { outline: none; border-color: var(--neon); }
+  .r-note .btn { justify-self: start; }
+  /* Roles: compact check-all-that-apply grid in the page's checkbox style */
+  .roles { margin: 4px 0 0; padding: 0; border: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 14px; }
+  .roles[hidden] { display: none; }
+  .roles legend { padding: 0; margin-bottom: 10px; color: var(--ash); }
+  .roles legend .opt { margin-left: 6px; color: #6f6a65; text-transform: none; letter-spacing: 0; font-weight: 400; }
+  .roles label { display: flex; align-items: center; gap: 9px; font-size: 15px; color: var(--white); cursor: pointer; }
+  .roles label.wide { grid-column: 1 / -1; color: var(--ash); }
+  .roles input { appearance: none; -webkit-appearance: none; flex: none; display: grid; place-content: center; width: 18px; height: 18px; margin: 0; border: 1px solid #4a4642; background: var(--soot); cursor: pointer; }
+  .roles input::before { content: ""; width: 9px; height: 5px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: translateY(-1px) rotate(-45deg); opacity: 0; }
+  .roles input:checked { border-color: var(--neon); background: var(--neon); box-shadow: 0 0 10px rgba(232, 52, 90, .45); }
+  .roles input:checked::before { opacity: 1; }
+  .roles input:focus-visible { outline: 2px solid var(--lav); outline-offset: 2px; }
+  @media (max-width: 640px) { .roles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .respond .r-msg { max-width: none; margin: 26px auto 0; font-size: 16px; line-height: 1.45; color: var(--lav); text-wrap: balance; }
+  .respond .r-msg:empty { margin-top: 0; }
+  .r-msg.err { color: #ff6b84; }
+  @media (max-width: 560px) { .r-opts { grid-template-columns: 1fr; } }
   .note { margin-top: 14px; padding-top: 12px; text-align: left; font-size: 13px; line-height: 1.5; color: var(--ash); border-top: 3px solid transparent; border-image: var(--rule-dim) 100% 0 0 0 / 3px 0 0 0 stretch; }
   .note .label { margin-right: 10px; font-size: 10px; color: var(--rec); }
+  /* A quiet way to respond before the end; it steps aside while the thank-you card is up, so the page doesn't ask twice */
+  .reach { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--lav); text-decoration: none; transition: color .2s, opacity .3s; }
+  .reach:hover, .reach:focus-visible { color: #ff5a78; outline: none; text-shadow: 0 0 8px rgba(232, 52, 90, .5); }
+  .player.finale ~ .reach, .player.ended ~ .reach { opacity: 0; visibility: hidden; }
 
   /* ---------- Closing ---------- */
   .closing { padding-block: clamp(48px, 6vw, 80px); text-align: center; }
@@ -392,19 +513,35 @@
         <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a <span class="def" tabindex="0" role="button" aria-describedby="def-neet">NEET<span class="def-tip" id="def-neet" role="tooltip"><b>NEET</b>Not in Education, Employment, or Training</span></span> pornsick twenty-something’s world unravels the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</p>
         <div class="meta caps"><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>45 in the audience</span></div>
 
+        <div class="trailer" id="trailer">
+          <!-- The free preview. Today it plays the Artist's Statement straight from the reading (data-start/data-end), only for visitors
+               without a link. When the real trailer exists: point data-src at it, drop data-start/data-end and data-locked-only. -->
+          <audio id="t-audio" preload="none" data-src="../assets/molly/lfm-reading.m4a" data-start="47.7" data-end="166" data-locked-only></audio>
+          <div class="t-top">
+            <button type="button" class="p-play" id="t-play" aria-label="Play the preview">
+              <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+              <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
+            </button>
+            <div class="t-info"><div class="t-title">Start with the Artist’s Statement</div><div class="t-sub" id="t-sub">2 minutes · from the live reading</div></div>
+          </div>
+          <div class="t-bar" id="t-bar" role="slider" tabindex="0" aria-label="Preview position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="t-fill"></i></div>
+          <div class="t-actions"><span class="t-time" id="t-time">0:00 / 1:58</span><button type="button" class="t-full" id="t-full">Play the full reading →</button></div>
+        </div>
+
         <div class="gate" id="gate" aria-live="polite">
-          <p class="gate-lead" id="gate-lead"><b>By invitation</b><br>This reading is shared one link at a time.</p>
-          <p class="gate-sub" id="gate-sub">If someone sent you a link, open it from their original message. Otherwise, submit below and I’ll send you yours!</p>
+          <p class="gate-lead" id="gate-lead"><b>Listen now</b><br>Add your name and email and you’re in.</p>
           <form id="gate-form" novalidate>
             <label><span class="label">Your name</span><input id="g-name" name="name" autocomplete="name" required></label>
             <label><span class="label">Email</span><input id="g-email" name="email" type="email" autocomplete="email" required></label>
-            <label><span class="label">How did you hear about it?</span><textarea id="g-note" name="note" required></textarea></label>
+            <label><span class="label">How did you hear about this? <span class="opt">(optional)</span></span><textarea id="g-note" name="note"></textarea></label>
             <label class="hp" aria-hidden="true">Website<input id="g-website" name="website" tabindex="-1" autocomplete="off"></label>
-            <button class="btn btn-solid" type="submit">Request access</button>
+            <button class="btn btn-solid" type="submit">Listen now</button>
             <p class="gate-msg" id="gate-msg" role="alert"></p>
           </form>
-          <div class="gate-done"><div class="t">Request received</div><p>Thank you. I’ll send your personal link to the email you gave.</p></div>
+          <div class="gate-done"><div class="t">You’re in!</div></div>
         </div>
+
+        <div class="letter gated" id="letter" hidden><span class="label" id="letter-to"></span><p><span id="letter-body"></span> <span class="from" id="letter-from">H.H.</span></p><button type="button" class="letter-more" id="letter-more" hidden>Read more</button></div>
 
         <div class="m-play gated">
           <span class="sound-rec p-label">
@@ -440,7 +577,7 @@
               <p>If <em>Molly</em> stayed with you, the script is yours to read, and I’d love to hear what you think.</p>
               <div class="cta">
                 <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script-3" data-script><span class="lbl-desk-inline">Download the script</span><span class="lbl-phone-inline">Read the script</span></a>
-                <a class="btn btn-line" href="#next">Get in touch</a>
+                <a class="btn btn-line" href="#respond" data-to-respond>Tell me what you thought</a>
               </div>
               <button type="button" class="again" id="p-again">↺ Listen again</button>
             </div>
@@ -449,11 +586,12 @@
             <a href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script" data-script><span class="lbl-desk-inline">Read the script · PDF ↓</span><span class="lbl-phone-inline">Read the script</span></a>
           </div>
           <p class="note"><span class="label">Content note</span><span>The material is intentionally challenging and provocative. Audience discretion is advised.</span></p>
+          <a class="reach caps" href="#respond" data-to-respond>Thoughts? Reach out!</a>
         </div>
       </div>
     </div>
 
-    <div class="marquee gated" role="region" aria-label="Key art. Select a frame to open the gallery.">
+    <div class="marquee art gated" role="region" aria-label="Key art. Select a frame to open the gallery.">
       <div class="track" id="track">
         <button type="button" data-i="0" data-full="../assets/molly/poster-molly.webp"><img src="../assets/molly/thumb-poster-molly.webp" alt="Poster: Molly on the phone, neon title" width="600" height="900" draggable="false" loading="lazy" decoding="async"></button>
         <button type="button" data-i="1" data-full="../assets/molly/poster-paul.webp"><img src="../assets/molly/thumb-poster-paul.webp" alt="Poster: Paul at his desk, neon title" width="600" height="900" draggable="false" loading="lazy" decoding="async"></button>
@@ -466,6 +604,11 @@
     </div>
 
     <p class="swipe-hint gated" id="swipe-hint" aria-hidden="true">Swipe to browse · tap to view</p>
+
+    <div class="comps-block gated">
+      <p class="comps-line">Todd Solondz’s <i>Happiness</i> rewired for the social media generation</p>
+    </div>
+    <div class="comp-row gated" id="comp-row" role="list" aria-label="Comps. Select one to read why."></div>
     <div class="wrap">
       <div class="wave small" aria-hidden="true" data-bars="96"></div>
     </div>
@@ -522,7 +665,28 @@
   <section class="closing rule-top gated" id="next">
     <div class="wrap">
       <p>Thank you to everyone who generously contributed their time and talent to bring this reading to life!</p>
-      <p>I’m very open to your thoughts on the script, the performances, and ideas for next steps. If you want to help get <em>Molly</em> made, write to me directly.</p>
+      <p>I’m very open to your thoughts on the script, the performances, and ideas for next steps. If you want to help get <em>Molly</em> made, I’d love to hear from you.</p>
+      <div class="respond" id="respond">
+        <div class="r-opts" role="group" aria-label="Your response">
+          <button type="button" class="r-opt" data-kind="materials" aria-pressed="false">Send me the pitch deck</button>
+          <button type="button" class="r-opt" data-kind="intro" aria-pressed="false">I know someone you should meet</button>
+          <button type="button" class="r-opt quiet" data-kind="pass" aria-pressed="false">Not for me, but good luck</button>
+        </div>
+        <p class="r-msg" id="r-msg" role="status"></p>
+        <form class="r-note" id="r-note"><textarea id="r-text" maxlength="2000" placeholder="What stayed with you?" aria-label="Add a note"></textarea>
+          <fieldset class="roles" id="roles" hidden><legend class="label">What do you do in film? <span class="opt">Check all that apply</span></legend>
+            <label><input type="checkbox" name="role" value="producer"><span>Producer</span></label>
+            <label><input type="checkbox" name="role" value="financier"><span>Financier / investor</span></label>
+            <label><input type="checkbox" name="role" value="director"><span>Director</span></label>
+            <label><input type="checkbox" name="role" value="writer"><span>Writer</span></label>
+            <label><input type="checkbox" name="role" value="actor"><span>Actor</span></label>
+            <label><input type="checkbox" name="role" value="casting"><span>Casting director</span></label>
+            <label><input type="checkbox" name="role" value="agent"><span>Agent or manager</span></label>
+            <label><input type="checkbox" name="role" value="distribution"><span>Distribution or sales</span></label>
+            <label><input type="checkbox" name="role" value="crew"><span>Crew</span></label>
+            <label class="wide"><input type="checkbox" name="role" value="none"><span>Not in the industry, just curious to listen</span></label>
+          </fieldset><button class="btn btn-solid" type="submit">Send note</button></form>
+      </div>
       <div class="sign"><img src="../assets/icon-feather.png" alt="" width="120" height="127" loading="lazy"><span class="hand"><span class="ch" role="img" aria-label="H"></span>unter Hawke</span></div>
       <div class="cta">
         <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script-2" data-script><span class="lbl-desk-inline">Download the script</span><span class="lbl-phone-inline">Read the script</span></a>
@@ -552,7 +716,9 @@
 <div class="lb gated" id="lb" role="dialog" aria-modal="true" aria-label="Gallery" hidden>
   <div class="lb-top"><span class="caps lb-count" id="lb-count"></span><button type="button" class="lb-btn" id="lb-close" aria-label="Close gallery">×</button></div>
   <div class="lb-stage" id="lb-stage">
+    <div class="lb-text" id="lb-text" hidden></div>
     <img id="lb-img" alt="">
+    <div class="lb-card" id="lb-card" hidden></div>
     <button type="button" class="lb-btn lb-prev" id="lb-prev" aria-label="Previous">&lt;</button>
     <button type="button" class="lb-btn lb-next" id="lb-next" aria-label="Next">&gt;</button>
   </div>
@@ -582,15 +748,15 @@
     if ('ResizeObserver' in window) new ResizeObserver(size).observe(document.querySelector('.m-hero')); else window.addEventListener('resize', size);
   })();
 
-  // Key art marquee: a second, hidden copy of the frames makes the loop seamless.
-  var marquee = document.querySelector('.marquee'), track = document.getElementById('track');
+  // Marquees (key art, comps): a second, hidden copy of the frames makes the loop seamless.
+  function makeMarquee(marquee, track, dir, onPick) {
   var frames = Array.prototype.slice.call(track.querySelectorAll('button'));
   frames.forEach(function (f) {
     var c = f.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; track.appendChild(c);
   });
   // Position is kept in script: a slow drift, plus whatever the visitor adds by scrolling sideways, dragging or swiping.
   // Vertical scrolling is left to the page.
-  var x = 0, half = 0, kick = 0, last = 0, drift = reduced ? 0 : 22, running = false, onScreen = true; // drift in px per second
+  var x = 0, half = 0, kick = 0, last = 0, drift = reduced ? 0 : 22 * dir, running = false, onScreen = true; // drift in px per second
   function measure() { var h = track.scrollWidth / 2; if (h > 0) half = h; }
   function wrap() { if (half) { x = x % half; if (x > 0) x -= half; } }
   function frame(now) {
@@ -640,23 +806,83 @@
     setTimeout(function () { marquee.classList.remove('dragging'); }, 0);
   }
   window.addEventListener('pointerup', endDrag); window.addEventListener('pointercancel', endDrag);
+  track.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && moved <= 8) onPick(+b.dataset.i, b); });
+  return frames;
+  }
 
   // Gallery: opens on the image clicked. Key art runs in marquee order; photos from the night are their own set.
   // Arrows, keys and swipe move through it; Tab stays inside until it closes.
   var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'),
       lbCount = document.getElementById('lb-count'), at = 0, opener = null, items = [];
   function list(nodes) { return nodes.map(function (n) { var im = n.querySelector('img'); return { src: n.dataset.full || im.getAttribute('src'), alt: im.alt }; }); }
-  var sets = { art: list(frames), night: list(Array.prototype.slice.call(document.querySelectorAll('.night button'))) };
+  var artFrames = makeMarquee(document.querySelector('.marquee.art'), document.getElementById('track'), 1, function (i, b) { open('art', i, b); });
+  var sets = { art: list(artFrames), night: list(Array.prototype.slice.call(document.querySelectorAll('.night button'))) };
+  var lbText = document.getElementById('lb-text'), lbCard = document.getElementById('lb-card');
   function go(i) {
     at = (i + items.length) % items.length;
-    lbImg.src = items[at].src; lbImg.alt = items[at].alt;
-    lbCount.textContent = ('0' + (at + 1)).slice(-2) + ' / ' + ('0' + items.length).slice(-2);
+    var it = items[at];
+    // Comps show your note beside the poster; a comp without a poster file yet shows its title card
+    lb.classList.toggle('with-text', !!it.blurb);
+    lbText.hidden = !it.blurb; lbCard.hidden = !!it.src; lbImg.hidden = !it.src;
+    if (it.blurb) lbText.innerHTML = '<span class="lb-meta">' + it.meta + '</span><h3 class="lb-title">' + it.title + '</h3><p>' + it.blurb + '</p>';
+    if (!it.src) { lbCard.innerHTML = it.card; lbImg.removeAttribute('src'); return countUp(); }
+    lbImg.src = it.src; lbImg.alt = it.alt;
+    countUp();
     // Warm the neighbours so the arrows feel instant, without downloading the whole set up front.
-    [1, -1].forEach(function (d) { var it = items[(at + d + items.length) % items.length]; if (!it.warm) { it.warm = 1; new Image().src = it.src; } });
+    [1, -1].forEach(function (d) { var n = items[(at + d + items.length) % items.length]; if (n.src && !n.warm) { n.warm = 1; new Image().src = n.src; } });
   }
+  function countUp() { lbCount.textContent = ('0' + (at + 1)).slice(-2) + ' / ' + ('0' + items.length).slice(-2); }
+
+  // ---------- Comps and stylistic references ----------
+  // To add a poster: put the image at assets/molly/comps/<id>.webp (2:3, about 900×1350) and set img to that path.
+  // Blurbs are DRAFTS for Hunter to rewrite in his own words.
+  var COMPS = [
+    { id: 'happiness', title: 'Happiness', year: 1998, by: 'Todd Solondz', img: '../assets/molly/comps/happiness.webp',
+      blurb: 'The dry, dark wit of Todd Solondz’s style has shaped my taste in film since high school. He lays bare the pathetic aspects of human existence that we can laugh at to a point until we realize we’re no different from his characters. <em>Looking for Molly</em> walks a similar fine line. I hope people see themselves in my characters at their lowest.' },
+    { id: 'american-beauty', title: 'American Beauty', year: 1999, by: 'Sam Mendes', img: '../assets/molly/comps/american-beauty.webp',
+      blurb: '<em>American Beauty</em> exposed what was rotting beneath the 1990s family. All of the characters bored, longing for more. Everyone playing a part they don’t quite fit. <em>Molly</em> turns that lens on the 2020s, when the roleplaying has moved onto our screens.' },
+    { id: 'me-and-you', title: 'Me and You and Everyone We Know', year: 2005, by: 'Miranda July', img: '../assets/molly/comps/me-and-you.webp',
+      blurb: 'Miranda July never mocks her characters, no matter how lonely or strange they can seem. She also has the courage to show how normal it is for young people, drawn by curiosity, to discover things they’re not quite ready for. I like to think Molly and Chris would feel at home in her story worlds.' }
+  ];
+  function compCard(c) { return '<span class="comp-card' + (c.title.length > 14 ? ' long' : '') + '"><span class="cc-title">' + c.title + '</span><span class="cc-meta">' + c.year + '<br>' + c.by + '</span></span>'; }
+  var compRow = document.getElementById('comp-row');
+  compRow.innerHTML = COMPS.map(function (c, i) {
+    return '<button type="button" role="listitem" data-i="' + i + '" aria-label="' + c.title + ' (' + c.year + '): why it’s a comp">' +
+      (c.img ? '<img src="' + c.img + '" alt="" width="600" height="900" draggable="false" loading="lazy" decoding="async">' : compCard(c)) + '</button>';
+  }).join('');
+  sets.comps = COMPS.map(function (c) {
+    return { src: c.img, alt: 'Poster: ' + c.title, title: c.title, meta: c.year + ' · ' + c.by, blurb: c.blurb, card: compCard(c) };
+  });
+  compRow.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('comps', +b.dataset.i, b); });
+
+  // Phones: the row is a loop. Copies sit either side of the real posters; it opens on the middle poster with
+  // its neighbours peeking in, and when a swipe settles in a copy it quietly jumps back to the same poster in the middle set.
+  var compReal = [].slice.call(compRow.children);
+  function copyOf(b) { var c = b.cloneNode(true); c.classList.add('clone'); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; return c; }
+  var before = compReal.map(copyOf);
+  before.forEach(function (c) { compRow.insertBefore(c, compReal[0]); });   // copies, the real set, copies
+  compReal.forEach(function (b) { compRow.appendChild(copyOf(b)); });
+  var phoneRow = window.matchMedia('(max-width: 760px)');
+  function centerOn(el, smooth) { compRow.scrollTo({ left: el.offsetLeft - (compRow.clientWidth - el.offsetWidth) / 2, behavior: smooth ? 'smooth' : 'auto' }); }
+  function setWidth() { return compReal[0].offsetLeft - before[0].offsetLeft; }
+  function loopBack() {
+    if (!phoneRow.matches) return;
+    var W = setWidth(), mid = compRow.scrollLeft + compRow.clientWidth / 2;
+    var start = compReal[0].offsetLeft, end = compReal[compReal.length - 1].offsetLeft + compReal[0].offsetWidth;
+    var jump = mid < start ? W : mid > end ? -W : 0;
+    if (!jump) return;
+    compRow.style.scrollSnapType = 'none'; compRow.scrollLeft += jump;
+    requestAnimationFrame(function () { compRow.style.scrollSnapType = ''; });
+  }
+  var settle;
+  compRow.addEventListener('scroll', function () { clearTimeout(settle); settle = setTimeout(loopBack, 140); }, { passive: true });
+  // Centre on the middle poster the first time the row is actually on screen (it's hidden until the page unlocks)
+  var rowPlaced = false;
+  function startRow() { if (phoneRow.matches && compRow.clientWidth) { centerOn(compReal[Math.floor(compReal.length / 2)]); rowPlaced = true; } }
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { if (en[0].isIntersecting && !rowPlaced) startRow(); }).observe(compRow);
+  if (phoneRow.addEventListener) phoneRow.addEventListener('change', function () { rowPlaced = false; startRow(); });
   function open(set, i, from) { items = sets[set]; opener = from; go(i); lb.hidden = false; document.body.classList.add('lb-open'); document.getElementById('lb-close').focus(); }
   function close() { lb.hidden = true; document.body.classList.remove('lb-open'); if (opener && opener.getAttribute('aria-hidden') !== 'true') opener.focus(); }
-  track.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b && moved <= 8) open('art', +b.dataset.i, b); });
   document.querySelectorAll('.night').forEach(function (row) { row.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('night', +b.dataset.i, b); }); });
   document.getElementById('lb-prev').addEventListener('click', function () { go(at - 1); });
   document.getElementById('lb-next').addEventListener('click', function () { go(at + 1); });
@@ -797,10 +1023,11 @@
   var startedFromHash = fromHash();
 
   // Remember where this listener left off, on this device only
-  var resumeEl = document.getElementById('p-resume');
+  var resumeEl = document.getElementById('p-resume'), hasResume = false;
   try {
     var saved = parseFloat(localStorage.getItem(KEY));
     if (!startedFromHash && saved > 60 && saved < DUR - 120) {
+      hasResume = true;
       document.getElementById('p-resume-t').textContent = fmt(saved);
       resumeEl.hidden = false;
       document.getElementById('p-resume-go').addEventListener('click', function () { seek(saved, true); resumeEl.hidden = true; });
@@ -808,7 +1035,7 @@
   } catch (err) {}
   var lastSave = 0;
   audio.addEventListener('timeupdate', function () {
-    if (Date.now() - lastSave < 5000) return; lastSave = Date.now();
+    if (Date.now() - lastSave < 5000 || audio.currentTime >= 5346) return; lastSave = Date.now();
     try { localStorage.setItem(KEY, String(audio.currentTime)); } catch (err) {}
   });
   audio.addEventListener('play', function () { resumeEl.hidden = true; });
@@ -821,8 +1048,8 @@
                 { src: new URL('../assets/molly/artwork-1024.jpg', document.baseURI).href, sizes: '1024x1024', type: 'image/jpeg' }]
     });
     var ms = navigator.mediaSession;
-    ms.setActionHandler('play', function () { audio.play(); });
-    ms.setActionHandler('pause', function () { audio.pause(); });
+    ms.setActionHandler('play', function () { (onTrailer() ? tAudio : audio).play(); });
+    ms.setActionHandler('pause', function () { (onTrailer() ? tAudio : audio).pause(); });
     ms.setActionHandler('seekbackward', function () { seek(audio.currentTime - 15); });
     ms.setActionHandler('seekforward', function () { seek(audio.currentTime + 30); });
     try { ms.setActionHandler('seekto', function (d) { seek(d.seekTime); }); } catch (err) {}
@@ -833,9 +1060,85 @@
 
   // ---------- End card: shown when the recording finishes ----------
   var endCard = document.getElementById('p-end');
+  // The thank-you and responses appear at 1:29:06, as the audience starts applauding: few people stay for the credits.
+  // The recording keeps playing underneath; seeking back before that point puts the card away again.
+  var FINALE = 5346, finishedLogged = false;
+  function atFinale() { return audio.currentTime >= FINALE; }
+  audio.addEventListener('timeupdate', function () {
+    var show = atFinale();
+    if (show === endCard.hidden) {
+      endCard.hidden = !show; player.classList.toggle('finale', show); miniUpdate();
+      if (show) {
+        try { localStorage.removeItem(KEY); } catch (err) {}
+        if (!finishedLogged) { finishedLogged = true; logEvent('ended', {}); }
+      }
+    }
+  });
   audio.addEventListener('ended', function () { player.classList.add('ended'); endCard.hidden = false; try { localStorage.removeItem(KEY); } catch (err) {} });
-  audio.addEventListener('play', function () { player.classList.remove('ended'); endCard.hidden = true; });
+  audio.addEventListener('play', function () { player.classList.remove('ended'); if (!atFinale()) endCard.hidden = true; });
   document.getElementById('p-again').addEventListener('click', function () { seek(0, true); });
+
+  // ---------- Preview: a short listen before the full reading ----------
+  // Today it's the Artist's Statement, played from the reading file between data-start and data-end, and only shown to
+  // visitors without a link (data-locked-only). A real trailer later just needs its own data-src.
+  var trailer = document.getElementById('trailer'), tAudio = document.getElementById('t-audio'), html = document.documentElement;
+  var tFill = document.getElementById('t-fill'), tTime = document.getElementById('t-time'), tBar = document.getElementById('t-bar'), tFull = document.getElementById('t-full');
+  var T0 = parseFloat(tAudio.dataset.start) || 0, T1 = parseFloat(tAudio.dataset.end) || 0, lockedOnly = tAudio.hasAttribute('data-locked-only');
+  function tLen() { return (T1 || tAudio.duration || 0) - T0; }
+  var seenTrailer = false;
+  try { seenTrailer = localStorage.getItem('lfm-trailer') === 'done'; } catch (err) {}
+  function locked() { return html.classList.contains('lfm-locked'); }
+  function onTrailer() { return html.classList.contains('on-trailer') || (locked() && html.classList.contains('has-trailer')); }
+  function mmss(t) { t = Math.max(0, Math.floor(t || 0)); return Math.floor(t / 60) + ':' + ('0' + t % 60).slice(-2); }
+  if (tAudio.dataset.src) {
+    html.classList.add('has-trailer');
+    if (!lockedOnly && !seenTrailer && !hasResume && !startedFromHash) html.classList.add('on-trailer');
+  }
+  // Without a link, "full reading" opens the short sign-in form right under the preview
+  function openGate() {
+    html.classList.add('gate-open');
+    var g = document.getElementById('gate'); g.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(function () { document.getElementById('g-name').focus({ preventScroll: true }); }, 400);
+  }
+  function tSrc() { if (!tAudio.getAttribute('src')) { tAudio.src = tAudio.dataset.src; tAudio.load(); } }
+  function tSeek(t) { var go = function () { tAudio.currentTime = t; }; tAudio.readyState ? go() : tAudio.addEventListener('loadedmetadata', go, { once: true }); }
+  document.getElementById('t-play').addEventListener('click', function () {
+    tSrc();
+    if (!tAudio.paused) { tAudio.pause(); return; }
+    if (tAudio.currentTime < T0 || (T1 && tAudio.currentTime >= T1 - 0.5)) tSeek(T0);
+    tAudio.play().catch(function () {});
+  });
+  tAudio.addEventListener('play', function () { trailer.classList.add('playing'); trailer.classList.remove('done'); document.getElementById('t-play').setAttribute('aria-label', 'Pause the preview'); logEvent('trailer', { what: 'play' }); });
+  tAudio.addEventListener('pause', function () { trailer.classList.remove('playing'); document.getElementById('t-play').setAttribute('aria-label', 'Play the preview'); });
+  function previewEnded() {
+    trailer.classList.add('done'); logEvent('trailer', { what: 'ended' });
+    document.getElementById('t-sub').textContent = 'Ready for the whole thing?';
+    if (locked()) openGate();
+  }
+  tAudio.addEventListener('timeupdate', function () {
+    if (T1 && tAudio.currentTime >= T1 && !tAudio.paused) { tAudio.pause(); previewEnded(); }
+    var len = tLen() || 1, pos = Math.min(len, Math.max(0, tAudio.currentTime - T0));
+    tFill.style.width = (pos / len * 100) + '%'; tBar.setAttribute('aria-valuenow', Math.round(pos / len * 100));
+    tTime.textContent = mmss(pos) + ' / ' + mmss(len);
+  });
+  tAudio.addEventListener('ended', previewEnded);
+  tBar.addEventListener('click', function (e) { tSrc(); var r = tBar.getBoundingClientRect(); tSeek(T0 + (e.clientX - r.left) / r.width * tLen()); });
+  // Where the full reading picks up: after the Artist's Statement preview, right where they left it
+  function fullStart() {
+    if (!T1) return CHAPTERS[1].t;   // a separate trailer: start the reading at the Artist's Statement
+    if (trailer.classList.contains('done')) return T1;
+    return tAudio.currentTime > T0 + 1 ? tAudio.currentTime : CHAPTERS[1].t;
+  }
+  // Moving on swaps the preview for the full player and starts the reading straight away
+  tFull.addEventListener('click', function () {
+    var finished = trailer.classList.contains('done');
+    if (locked()) { logEvent('trailer', { what: 'gate' }); openGate(); return; }
+    tAudio.pause(); html.classList.remove('on-trailer');
+    try { localStorage.setItem('lfm-trailer', 'done'); } catch (err) {}
+    logEvent('trailer', { what: finished ? 'full' : 'skip' });
+    seek(fullStart(), true);
+  });
+  trailer.querySelector('.p-play').classList.add('t-btn');
 
   // ---------- Mini player: appears once listening has started and the full player is off screen ----------
   var mini = document.getElementById('mini'), miniFill = document.getElementById('mini-fill'), miniSub = document.getElementById('mini-sub');
@@ -848,7 +1151,7 @@
   }
   function miniUpdate() {
     miniFill.style.width = (audio.currentTime / dur() * 100).toFixed(2) + '%';
-    miniSub.textContent = fmt(audio.currentTime) + ' · ' + chapterAt(audio.currentTime).name;
+    miniSub.textContent = audio.currentTime >= 5346 ? 'Thank you for listening · tap to share your thoughts' : fmt(audio.currentTime) + ' · ' + chapterAt(audio.currentTime).name;
   }
   audio.addEventListener('play', function () { started = true; mini.classList.add('playing'); document.getElementById('mini-play').setAttribute('aria-label', 'Pause'); miniShow(); });
   audio.addEventListener('pause', function () { mini.classList.remove('playing'); document.getElementById('mini-play').setAttribute('aria-label', 'Play'); });
@@ -918,7 +1221,7 @@
   audio.addEventListener('play', function () { logEvent('play', { t: Math.round(audio.currentTime) }); });
   audio.addEventListener('pause', function () { logEvent('pause', { t: Math.round(audio.currentTime) }); closeSpan(); });
   audio.addEventListener('seeking', function () { closeSpan(); });
-  audio.addEventListener('ended', function () { closeSpan(); logEvent('ended', {}); });
+  audio.addEventListener('ended', function () { closeSpan(); if (!finishedLogged) { finishedLogged = true; logEvent('ended', {}); } });
   ['dl-script', 'dl-script-2', 'dl-script-3'].forEach(function (id) { var a = document.getElementById(id); if (a) a.addEventListener('click', function () { logEvent('download', {}); flush(); }); });
   document.getElementById('copy').addEventListener('click', function () { logEvent('copy-email', {}); });
   document.querySelectorAll('a[data-who]').forEach(function (a) { a.addEventListener('click', function () { logEvent('link', { who: a.getAttribute('data-who') }); flush(true); }); });
@@ -934,6 +1237,18 @@
     root.classList.remove('lfm-pending', 'lfm-locked');
     if (!audio.getAttribute('src')) { audio.src = audio.dataset.src; audio.load(); fromHash(); }
   }
+  // A note you wrote to this person in the Green Room, shown above the player
+  function showLetter(j) {
+    if (!j.message) return;
+    var box = document.getElementById('letter'), more = document.getElementById('letter-more'), p = box.querySelector('p');
+    // Opening line and sign-off are yours to change per person in the Green Room; these are the defaults
+    document.getElementById('letter-to').textContent = j.open || (j.first ? 'A note for ' + j.first : 'A note for you');
+    document.getElementById('letter-from').textContent = j.close || 'H.H.';
+    document.getElementById('letter-body').textContent = j.message;
+    box.hidden = false; document.documentElement.classList.add('has-letter');
+    more.hidden = p.scrollHeight <= p.clientHeight + 2;   // only offered when the note runs past three lines
+    more.onclick = function () { var o = box.classList.toggle('open'); more.textContent = o ? 'Show less' : 'Read more'; };
+  }
   function lock(why) {
     root.classList.remove('lfm-pending'); root.classList.add('lfm-locked');
     if (why !== 'no-code') {
@@ -948,7 +1263,7 @@
     var settled = false, timer = setTimeout(function () { if (!settled) { settled = true; unlock(); } }, 6000);
     fetch(BASE + '/check?r=' + encodeURIComponent(code), { cache: 'no-store' })
       .then(function (r) { return r.json(); })
-      .then(function (j) { if (settled) return; settled = true; clearTimeout(timer); j && j.ok ? unlock() : lock('inactive'); })
+      .then(function (j) { if (settled) return; settled = true; clearTimeout(timer); if (j && j.ok) { unlock(); showLetter(j); document.getElementById('roles').hidden = !j.self; } else lock('inactive'); })
       .catch(function () { if (settled) return; settled = true; clearTimeout(timer); unlock(); });
   }
 
@@ -959,15 +1274,80 @@
     var name = document.getElementById('g-name').value.trim(), email = document.getElementById('g-email').value.trim(), note = document.getElementById('g-note').value.trim();
     gmsg.className = 'gate-msg';
     if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { gmsg.className = 'gate-msg err'; gmsg.textContent = 'Please add your name and a valid email.'; return; }
-    if (!note) { gmsg.className = 'gate-msg err'; gmsg.textContent = 'Please say how you heard about the reading.'; return; }
-    var btn = gform.querySelector('button'); btn.disabled = true; gmsg.textContent = 'Sending…';
-    fetch(BASE + '/request-access', { method: 'POST', body: JSON.stringify({ name: name, email: email, note: note, website: document.getElementById('g-website').value, r: code }) })
-      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok || r.status === 429, j: j }; }); })
+    var btn = gform.querySelector('button'); btn.disabled = true; gmsg.textContent = 'One moment…';
+    // Phones only allow sound that starts from a tap, so wake the full player now, silently, while we have the tap
+    try { if (!audio.getAttribute('src')) { audio.src = audio.dataset.src; } audio.muted = true; var pr = audio.play(); if (pr) pr.then(function () { audio.pause(); audio.muted = false; }, function () { audio.muted = false; }); } catch (err) {}
+    fetch(BASE + '/request-access', { method: 'POST', body: JSON.stringify({ name: name, email: email, note: note, website: document.getElementById('g-website').value, r: code, instant: 1 }) })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) {
-        if (res.ok) { gate.classList.add('sent'); gmsg.textContent = ''; }
+        if (res.ok && res.j && res.j.code) {
+          // They now have their own link: remember it, put it in the address bar, and start a fresh visit under it
+          gate.classList.add('sent'); gmsg.textContent = '';
+          code = res.j.code; document.getElementById('roles').hidden = false;   // they signed themselves up, so ask what they do
+          try { localStorage.setItem('lfm-r', code); history.replaceState(null, '', location.pathname + '?r=' + code + location.hash); } catch (err) {}
+          flush(); session = Math.random().toString(36).slice(2, 10);
+          logEvent('visit', { hash: location.hash.slice(1) }); flush();
+          setTimeout(function () {
+            tAudio.pause();
+            html.classList.remove('on-trailer', 'gate-open'); unlock();
+            try { localStorage.setItem('lfm-trailer', 'done'); } catch (err) {}
+            audio.muted = false; seek(fullStart(), true);   // picks up after the preview
+            document.getElementById('player').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 700);
+        }
         else { btn.disabled = false; gmsg.className = 'gate-msg err'; gmsg.textContent = (res.j && res.j.error) || 'That didn’t go through. Please try again.'; }
       })
       .catch(function () { btn.disabled = false; gmsg.className = 'gate-msg err'; gmsg.textContent = 'Couldn’t send just now. You can also email hunter@accipiterpictures.com.'; });
+  });
+  // ---------- Responses: one tap, optional note; both go to the Green Room and your inbox ----------
+  var respond = document.getElementById('respond'), rmsg = document.getElementById('r-msg'), rKind = '';
+  function sendResponse(body) {
+    return fetch(BASE + '/respond', { method: 'POST', body: JSON.stringify(Object.assign({ r: code }, body)) })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j && j.error); return j; }); });
+  }
+  function rFail(err) { rmsg.className = 'r-msg err'; rmsg.textContent = (err && err.message) || 'That didn’t send. You can always email hunter@accipiterpictures.com.'; }
+  try { rKind = localStorage.getItem('lfm-resp') || ''; } catch (err) {}
+  function markPicked(kind) { respond.querySelectorAll('.r-opt').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.kind === kind ? 'true' : 'false'); }); if (kind) respond.classList.add('picked'); }
+  markPicked(rKind);
+  respond.querySelectorAll('.r-opt').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var kind = b.dataset.kind; if (kind === rKind) return;
+      markPicked(kind); rmsg.className = 'r-msg'; rmsg.textContent = 'Sending…';
+      sendResponse({ kind: kind }).then(function () {
+        rKind = kind; try { localStorage.setItem('lfm-resp', kind); } catch (err) {}
+        rmsg.textContent = ({
+          materials: 'I’ll share that soon! Any final thoughts for now?',
+          intro: 'I’d love to learn more! Will be in touch soon. Any final thoughts for now?',
+          pass: 'Thank you so much for listening! Anything you’d want me to know?'
+        })[kind] || 'Thank you! Any final thoughts for now?';
+        document.getElementById('r-text').focus({ preventScroll: true });
+      }).catch(function (err) { markPicked(rKind); if (!rKind) respond.classList.remove('picked'); rFail(err); });
+    });
+  });
+  document.getElementById('r-note').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var form = this, t = document.getElementById('r-text'), btn = form.querySelector('button[type=submit]');
+    var roles = [].map.call(form.querySelectorAll('input[name=role]:checked'), function (c) { return c.value; });
+    if (!t.value.trim() && !roles.length) { t.focus(); return; }   // a note, roles, or both
+    btn.disabled = true; rmsg.className = 'r-msg'; rmsg.textContent = 'Sending…';
+    sendResponse({ kind: 'note', message: t.value.trim(), roles: roles }).then(function () { t.value = ''; rmsg.textContent = 'Got it, thank you! Will be thinking on this'; })
+      .catch(rFail).then(function () { btn.disabled = false; });
+  });
+  document.querySelectorAll('.roles input').forEach(function (c) {
+    c.addEventListener('change', function () {
+      if (!c.checked) return;
+      document.querySelectorAll('.roles input').forEach(function (o) { if (o !== c && (c.value === 'none' || o.value === 'none')) o.checked = false; });
+    });
+  });
+  document.querySelectorAll('[data-to-respond]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var top = document.querySelector('#next .wrap'), head = document.querySelector('header'), h = head ? head.offsetHeight : 0;
+      // Land so the thank-you paragraph sits just under the header; if the section is shorter than the screen, centre it instead
+      var r = top.getBoundingClientRect(), room = window.innerHeight - h, y = r.top + window.scrollY - h - 24;
+      if (r.height < room - 48) y = r.top + window.scrollY - h - (room - r.height) / 2;
+      window.scrollTo({ top: Math.max(0, y), behavior: reducedMotion ? 'auto' : 'smooth' });
+    });
   });
   document.addEventListener('visibilitychange', function () { if (document.hidden) flush(true); });
   window.addEventListener('pagehide', function () { flush(true); });
