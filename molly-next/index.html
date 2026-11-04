@@ -241,7 +241,7 @@
   .comps-line i { font-style: italic; color: var(--lav); }
   .comps-label { display: block; margin-top: clamp(26px, 3vw, 34px); }
   /* Three comps, still, sized like the key art and given room; hover lights them the same way */
-  .comp-row { --fh: clamp(300px, 30vw, 420px); display: flex; justify-content: center; gap: clamp(32px, 5vw, 72px); margin-top: clamp(26px, 3.4vw, 40px); padding: 8px 16px clamp(8px, 2vw, 20px); }
+  .comp-row { --fh: clamp(220px, 24vw, 380px); display: flex; justify-content: center; gap: clamp(24px, 3.6vw, 56px); margin-top: clamp(26px, 3.4vw, 40px); padding: 8px 16px clamp(8px, 2vw, 20px); }
   .comp-row button { position: relative; flex: none; height: var(--fh); width: calc(var(--fh) * 2 / 3); padding: 0; overflow: hidden; border: 0; background: var(--soot); cursor: zoom-in; }
   .comp-row img, .comp-row .comp-card { transition: transform .6s var(--ease); }
   .comp-row img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -818,12 +818,14 @@
   // To add a poster: put the image at assets/molly/comps/<id>.webp (2:3, about 900×1350) and set img to that path.
   // Blurbs are DRAFTS for Hunter to rewrite in his own words.
   var COMPS = [
-    { id: 'american-beauty', title: 'American Beauty', year: 1999, by: 'Sam Mendes', img: '',
-      blurb: 'A suburban man’s private obsession with a teenager, played as comedy and heartbreak at once. <em>Molly</em> lives in that same uncomfortable space: a desire nobody should act on, inside a household that’s barely holding together.' },
     { id: 'happiness', title: 'Happiness', year: 1998, by: 'Todd Solondz', img: '',
       blurb: 'Lonely people and their secret compulsions, told with a completely straight face. I want <em>Molly</em>’s darkest material handled the same way: no winking, no looking away, and somehow still funny.' },
+    { id: 'american-beauty', title: 'American Beauty', year: 1999, by: 'Sam Mendes', img: '',
+      blurb: 'A suburban man’s private obsession with a teenager, played as comedy and heartbreak at once. <em>Molly</em> lives in that same uncomfortable space: a desire nobody should act on, inside a household that’s barely holding together.' },
     { id: 'me-and-you', title: 'Me and You and Everyone We Know', year: 2005, by: 'Miranda July', img: '',
-      blurb: 'Strangers reaching for each other online, including kids who wander into adult conversations they don’t understand. Its tenderness toward strange, unguarded people is the tone I’m chasing.' }
+      blurb: 'Strangers reaching for each other online, including kids who wander into adult conversations they don’t understand. Its tenderness toward strange, unguarded people is the tone I’m chasing.' },
+    { id: 'pvt-chat', title: 'PVT Chat', year: 2020, by: 'Ben Hozie', img: '',
+      blurb: 'A young man in New York lost in an online obsession, shot close and raw. It’s the closest recent touchstone for Paul’s world and the grip the internet has on him.' }
   ];
   function compCard(c) { return '<span class="comp-card' + (c.title.length > 14 ? ' long' : '') + '"><span class="cc-title">' + c.title + '</span><span class="cc-meta">' + c.year + '<br>' + c.by + '</span></span>'; }
   var compRow = document.getElementById('comp-row');
