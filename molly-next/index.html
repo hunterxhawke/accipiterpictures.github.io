@@ -818,11 +818,11 @@
   // To add a poster: put the image at assets/molly/comps/<id>.webp (2:3, about 900×1350) and set img to that path.
   // Blurbs are DRAFTS for Hunter to rewrite in his own words.
   var COMPS = [
-    { id: 'happiness', title: 'Happiness', year: 1998, by: 'Todd Solondz', img: '',
+    { id: 'happiness', title: 'Happiness', year: 1998, by: 'Todd Solondz', img: '../assets/molly/comps/happiness.webp',
       blurb: 'The dry, dark wit of Todd Solondz’s style has shaped my taste in film since high school. He lays bare the pathetic aspects of human existence that we can laugh at, to a point, until we realize we’re no different. <em>Looking for Molly</em> walks a similar fine line. I hope people see themselves in my characters at their lowest.' },
-    { id: 'american-beauty', title: 'American Beauty', year: 1999, by: 'Sam Mendes', img: '',
+    { id: 'american-beauty', title: 'American Beauty', year: 1999, by: 'Sam Mendes', img: '../assets/molly/comps/american-beauty.webp',
       blurb: '<em>American Beauty</em> exposed what was rotting beneath the 1990s family. All of the characters bored, longing for more. Everyone playing a part they don’t quite fit. <em>Molly</em> turns that lens on the 2020s, when the roleplaying has moved onto our screens.' },
-    { id: 'me-and-you', title: 'Me and You and Everyone We Know', year: 2005, by: 'Miranda July', img: '',
+    { id: 'me-and-you', title: 'Me and You and Everyone We Know', year: 2005, by: 'Miranda July', img: '../assets/molly/comps/me-and-you.webp',
       blurb: 'Miranda July never mocks her characters, no matter how lonely or strange they can seem. She has the courage to show how normal it is for young people, drawn by curiosity, to discover things they’re not quite ready for. I like to think Molly and Chris would feel at home in her story worlds.' }
   ];
   function compCard(c) { return '<span class="comp-card' + (c.title.length > 14 ? ' long' : '') + '"><span class="cc-title">' + c.title + '</span><span class="cc-meta">' + c.year + '<br>' + c.by + '</span></span>'; }
