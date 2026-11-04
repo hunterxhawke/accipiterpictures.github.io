@@ -135,6 +135,10 @@
     .p-label .lbl-desk { display: none; }
     .p-label .lbl-phone { display: inline-flex; }
   }
+  /* When there's a personal note, it introduces the player: computers drop the "Recorded live" label (phones keep
+     their background-play note), and the player tucks up under the note */
+  @media (hover: hover) { html.has-letter .m-play .p-label { display: none; } }
+  html.has-letter .m-play { margin-top: 16px; }
   /* The reading player, in the sign's lettering: neon for what you've heard, lavender for the chapters */
   .player { margin-top: 10px; padding: clamp(14px, 2vw, 20px); text-align: left; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
   .p-top { display: flex; align-items: center; gap: 14px 18px; flex-wrap: wrap; }
@@ -218,7 +222,7 @@
 
   /* Key art marquee: every frame whole, side by side, drifting. Sideways scroll, drag or swipe moves it; vertical scrolling stays with the page.
      Hover lights a frame; click opens the gallery. */
-  .marquee { --fh: clamp(300px, 34vw, 440px); position: relative; margin-top: clamp(40px, 5vw, 64px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; touch-action: pan-y; cursor: grab; }
+  .marquee { --fh: clamp(300px, 34vw, 440px); position: relative; margin-top: clamp(14px, 2vw, 26px); padding-block: clamp(24px, 3vw, 36px); overflow: hidden; touch-action: pan-y; cursor: grab; }
   /* Edge fades as overlays: cheaper on phones than masking a moving layer */
   .marquee::before, .marquee::after { content: ""; position: absolute; top: 0; bottom: 0; z-index: 2; width: 6%; pointer-events: none; }
   .marquee::before { left: 0; background: linear-gradient(90deg, var(--black), transparent); }
@@ -236,7 +240,7 @@
   .track button:focus-visible { outline: none; }
 
   /* Comps: one line, a label, then their own strip drifting the other way */
-  .comps-block { max-width: 760px; margin: clamp(52px, 6vw, 80px) auto 0; padding-inline: var(--gut, 20px); text-align: center; }
+  .comps-block { max-width: 760px; margin: clamp(18px, 2.4vw, 30px) auto 0; padding-inline: var(--gut, 20px); text-align: center; }
   .comps-line { font: 400 clamp(18px, 1.9vw, 23px)/1.5 var(--body); text-wrap: balance; color: var(--white); }
   .comps-line i { font-style: italic; color: var(--lav); }
   .comps-label { display: block; margin-top: clamp(26px, 3vw, 34px); }
@@ -1222,7 +1226,7 @@
     document.getElementById('letter-to').textContent = j.open || (j.first ? 'A note for ' + j.first : 'A note for you');
     document.getElementById('letter-from').textContent = j.close || 'H.H.';
     document.getElementById('letter-body').textContent = j.message;
-    box.hidden = false;
+    box.hidden = false; document.documentElement.classList.add('has-letter');
     more.hidden = p.scrollHeight <= p.clientHeight + 2;   // only offered when the note runs past three lines
     more.onclick = function () { var o = box.classList.toggle('open'); more.textContent = o ? 'Show less' : 'Read more'; };
   }
