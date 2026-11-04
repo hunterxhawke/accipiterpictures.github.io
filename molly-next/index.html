@@ -419,6 +419,10 @@
   @media (max-width: 560px) { .r-opts { grid-template-columns: 1fr; } }
   .note { margin-top: 14px; padding-top: 12px; text-align: left; font-size: 13px; line-height: 1.5; color: var(--ash); border-top: 3px solid transparent; border-image: var(--rule-dim) 100% 0 0 0 / 3px 0 0 0 stretch; }
   .note .label { margin-right: 10px; font-size: 10px; color: var(--rec); }
+  /* A quiet way to respond before the end; it steps aside while the thank-you card is up, so the page doesn't ask twice */
+  .reach { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--lav); text-decoration: none; transition: color .2s, opacity .3s; }
+  .reach:hover, .reach:focus-visible { color: #ff5a78; outline: none; text-shadow: 0 0 8px rgba(232, 52, 90, .5); }
+  .player.finale ~ .reach, .player.ended ~ .reach { opacity: 0; visibility: hidden; }
 
   /* ---------- Closing ---------- */
   .closing { padding-block: clamp(48px, 6vw, 80px); text-align: center; }
@@ -559,7 +563,7 @@
               <p>If <em>Molly</em> stayed with you, the script is yours to read, and I’d love to hear what you think.</p>
               <div class="cta">
                 <a class="btn btn-solid" href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script-3" data-script><span class="lbl-desk-inline">Download the script</span><span class="lbl-phone-inline">Read the script</span></a>
-                <a class="btn btn-line" href="#respond">Tell me what you thought</a>
+                <a class="btn btn-line" href="#respond" data-to-respond>Tell me what you thought</a>
               </div>
               <button type="button" class="again" id="p-again">↺ Listen again</button>
             </div>
@@ -568,6 +572,7 @@
             <a href="../assets/molly/Looking-for-Molly_Hunter-Hawke.pdf" download id="dl-script" data-script><span class="lbl-desk-inline">Read the script · PDF ↓</span><span class="lbl-phone-inline">Read the script</span></a>
           </div>
           <p class="note"><span class="label">Content note</span><span>The material is intentionally challenging and provocative. Audience discretion is advised.</span></p>
+          <a class="reach caps" href="#respond" data-to-respond>Thoughts? Reach out!</a>
         </div>
       </div>
     </div>
@@ -1269,6 +1274,16 @@
     c.addEventListener('change', function () {
       if (!c.checked) return;
       document.querySelectorAll('.roles input').forEach(function (o) { if (o !== c && (c.value === 'none' || o.value === 'none')) o.checked = false; });
+    });
+  });
+  document.querySelectorAll('[data-to-respond]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var top = document.querySelector('#next .wrap'), head = document.querySelector('header'), h = head ? head.offsetHeight : 0;
+      // Land so the thank-you paragraph sits just under the header; if the section is shorter than the screen, centre it instead
+      var r = top.getBoundingClientRect(), room = window.innerHeight - h, y = r.top + window.scrollY - h - 24;
+      if (r.height < room - 48) y = r.top + window.scrollY - h - (room - r.height) / 2;
+      window.scrollTo({ top: Math.max(0, y), behavior: reducedMotion ? 'auto' : 'smooth' });
     });
   });
   document.addEventListener('visibilitychange', function () { if (document.hidden) flush(true); });
