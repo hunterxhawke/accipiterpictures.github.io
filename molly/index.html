@@ -168,7 +168,8 @@
   .p-tip { position: absolute; bottom: calc(100% + 6px); transform: translateX(-50%); padding: 4px 8px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .15s;
            background: var(--soot); font: 400 12px/1 var(--mono); color: var(--lav); }
   .p-wave:hover .p-tip { opacity: 1; }
-  .p-chapters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 12px; list-style: none; }
+  .p-chapters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 12px; list-style: none; max-height: 120px; overflow: hidden; transition: max-height .7s var(--ease) .5s, opacity .6s .9s, margin .7s .5s; }
+  .player.zoomed .p-chapters { max-height: 0; opacity: 0; margin-top: 0; pointer-events: none; transition: none; }
   .p-chapters button { width: 100%; padding: 10px 4px 8px; border: 0; background: none; text-align: left; cursor: pointer; color: var(--ash); border-top: 2px solid rgba(180, 176, 228, .18); transition: color .2s, border-color .2s; }
   .p-chapters button:hover, .p-chapters button:focus-visible { outline: none; color: var(--white); border-color: rgba(180, 176, 228, .5); }
   .p-chapters button[aria-current="true"] { color: var(--white); border-color: var(--neon); }
@@ -950,30 +951,40 @@
 
   // Waveform: neon for what's been played, dim for the rest, lavender ticks at each chapter
   var ctx = canvas.getContext('2d'), hoverX = -1;
+  // The player can show a window of the recording. Until the trailer exists, a first-time listener with a link starts on
+  // the Artist's Statement alone (its own detailed waveform and a 2-minute clock); listening past it widens to the full reading.
+  var STATEMENT_FIRST = true;
+  var SA = CHAPTERS[1].t, SB = CHAPTERS[2].t, SPEAKS = [82, 85, 79, 84, 83, 75, 76, 78, 74, 80, 77, 74, 50, 89, 86, 87, 78, 85, 86, 84, 80, 83, 83, 79, 73, 80, 81, 66, 81, 79, 83, 78, 80, 50, 83, 83, 78, 81, 75, 70, 61, 68, 81, 80, 77, 79, 79, 77, 76, 73, 72, 69, 65, 65, 60, 82, 84, 79, 83, 86, 80, 76, 79, 62, 84, 81, 80, 77, 61, 79, 87, 80, 80, 77, 50, 78, 84, 82, 79, 73, 76, 71, 78, 71, 50, 57, 88, 78, 77, 51, 84, 80, 89, 70, 83, 85, 75, 51, 81, 83, 81, 76, 74, 71, 78, 67, 74, 86, 86, 83, 84, 69, 80, 78, 71, 64, 80, 85, 73, 78, 79, 84, 82, 81, 52, 87, 83, 79, 76, 74, 82, 52, 79, 79, 73, 71, 77, 58, 52, 81, 85, 86, 83, 81, 80, 62, 75, 85, 77, 50, 80, 82, 81, 79, 76, 50, 82, 79, 79, 50, 76, 84, 80, 76, 81, 71, 50, 50, 86, 84, 80, 77, 77, 81, 73, 76, 67, 86, 79, 88, 70, 81, 82, 86, 82, 74, 74, 76, 50, 82, 79, 80, 69, 74, 89, 83, 82, 82, 83, 66, 81, 84, 76, 72, 49, 87, 64, 81, 83, 52, 80, 88, 81, 86, 87, 84, 81, 77, 80, 57, 80, 84, 52, 81, 88, 88, 83, 81, 71, 90, 79, 84, 78, 50, 87, 82, 83, 64, 72, 85, 84, 78, 76, 68, 50, 50, 83, 83, 80, 83, 50, 88, 80, 80, 81, 82, 81, 79, 77, 50, 80, 82, 75, 78, 51, 61, 75, 92, 83, 76, 73, 76, 71, 71, 87, 73, 77, 62, 85, 74, 82, 72, 72, 59, 52, 86, 82, 89, 62, 78, 83, 79, 77, 84, 70, 78, 82, 74, 72, 52];
+  var view = { a: 0, b: DUR }, zoomed = false;
+  function peakAt(t) {
+    if (t >= SA && t < SB) return SPEAKS[Math.min(SPEAKS.length - 1, Math.floor((t - SA) / (SB - SA) * SPEAKS.length))];
+    return PEAKS[Math.min(PEAKS.length - 1, Math.floor(t / DUR * PEAKS.length))];
+  }
   function draw() {
     var r = window.devicePixelRatio || 1, w = wave.clientWidth, h = wave.clientHeight;
     if (canvas.width !== Math.round(w * r) || canvas.height !== Math.round(h * r)) { canvas.width = Math.round(w * r); canvas.height = Math.round(h * r); }
     ctx.setTransform(r, 0, 0, r, 0, 0); ctx.clearRect(0, 0, w, h);
-    var step = 3, n = Math.floor(w / step), played = audio.currentTime / dur() * w, mid = h / 2;
+    var step = 3, n = Math.floor(w / step), span = view.b - view.a, mid = h / 2;
+    var played = Math.max(0, Math.min(w, (audio.currentTime - view.a) / span * w));
     var grad = ctx.createLinearGradient(0, 0, w, 0);
     grad.addColorStop(0, '#ff2b2b'); grad.addColorStop(.45, '#e8345a'); grad.addColorStop(1, '#c4508c');
     for (var i = 0; i < n; i++) {
-      var v = PEAKS[Math.min(PEAKS.length - 1, Math.floor(i / n * PEAKS.length))] / 99;
+      var v = peakAt(view.a + i / n * span) / 99;
       var bh = Math.max(2, v * (h - 6)), x = i * step;
       ctx.fillStyle = x < played ? grad : (hoverX >= 0 && x < hoverX ? 'rgba(180,176,228,.45)' : 'rgba(143,138,132,.38)');
       ctx.fillRect(x, mid - bh / 2, 2, bh);
     }
     ctx.fillStyle = '#b4b0e4';
-    CHAPTERS.forEach(function (c) { if (c.t > 0) ctx.fillRect(Math.round(c.t / dur() * w), 0, 1, h); });
+    CHAPTERS.forEach(function (c) { var cx = (c.t - view.a) / span * w; if (c.t > 0 && cx > 0 && cx < w) ctx.fillRect(Math.round(cx), 0, 1, h); });
     if (played > 0) { ctx.fillStyle = '#ffd6de'; ctx.shadowColor = '#e8345a'; ctx.shadowBlur = 8; ctx.fillRect(Math.round(played) - 1, 2, 2, h - 4); ctx.shadowBlur = 0; }
   }
 
   // Only touch the page when something visible changed, and skip drawing while the screen is off or the tab is hidden.
   var lastSec = -1, lastCh = null;
   function update() {
-    var t = audio.currentTime, c = chapterAt(t), sec = Math.floor(t);
+    var t = audio.currentTime, c = zoomed && t < SA ? CHAPTERS[1] : chapterAt(t), sec = Math.floor(t);
     if (sec !== lastSec) {
-      lastSec = sec; elCur.textContent = fmt(t);
+      lastSec = sec; elCur.textContent = fmt(zoomed ? t - SA : t);
       elJump.hidden = t >= 165;                     // only offered before the reading begins
       wave.setAttribute('aria-valuenow', sec); wave.setAttribute('aria-valuetext', fmt(t) + ', ' + c.name);
     }
@@ -986,13 +997,17 @@
   document.addEventListener('visibilitychange', function () { if (!document.hidden) update(); });
   function seek(t, play) {
     t = Math.max(0, Math.min(dur() - 0.5, t));
+    if (zoomed) { if (t >= SB - 0.25) expand(true); else if (t < SA) t = SA; }
     if (audio.readyState < 1) { audio.addEventListener('loadedmetadata', function once() { audio.removeEventListener('loadedmetadata', once); audio.currentTime = t; update(); }); audio.load(); }
     else audio.currentTime = t;
     update();
     if (play) audio.play().catch(function () {});
   }
 
-  document.getElementById('p-play').addEventListener('click', function () { audio.paused ? audio.play().catch(function () {}) : audio.pause(); });
+  document.getElementById('p-play').addEventListener('click', function () {
+    if (audio.paused && zoomed && audio.currentTime < SA) { seek(SA, true); return; }
+    audio.paused ? audio.play().catch(function () {}) : audio.pause();
+  });
   document.getElementById('p-back').addEventListener('click', function () { seek(audio.currentTime - 15); });
   document.getElementById('p-fwd').addEventListener('click', function () { seek(audio.currentTime + 30); });
   elJump.addEventListener('click', function () { seek(166, true); logEvent('chapter', { ch: 'reading' }); });
@@ -1000,17 +1015,17 @@
   rateBtn.addEventListener('click', function () { ri = (ri + 1) % RATES.length; audio.playbackRate = RATES[ri]; rateBtn.textContent = RATES[ri] + '×'; });
   audio.addEventListener('play', function () { player.classList.add('playing'); document.getElementById('p-play').setAttribute('aria-label', 'Pause'); });
   audio.addEventListener('pause', function () { player.classList.remove('playing'); document.getElementById('p-play').setAttribute('aria-label', 'Play the reading'); });
-  audio.addEventListener('loadedmetadata', function () { elDur.textContent = fmt(dur()); update(); });
+  audio.addEventListener('loadedmetadata', function () { if (!zoomed) { view.b = dur(); elDur.textContent = fmt(dur()); } update(); });
   audio.addEventListener('timeupdate', update);
   window.addEventListener('resize', draw);
 
   // Scrub on the waveform with mouse, finger or keyboard
-  function tAt(e) { var b = wave.getBoundingClientRect(); return Math.max(0, Math.min(1, (e.clientX - b.left) / b.width)) * dur(); }
+  function tAt(e) { var b = wave.getBoundingClientRect(); return view.a + Math.max(0, Math.min(1, (e.clientX - b.left) / b.width)) * (view.b - view.a); }
   var scrubbing = false;
   wave.addEventListener('pointerdown', function (e) { scrubbing = true; wave.setPointerCapture(e.pointerId); seek(tAt(e)); });
   wave.addEventListener('pointermove', function (e) {
     var b = wave.getBoundingClientRect(), t = tAt(e);
-    hoverX = e.clientX - b.left; tip.style.left = hoverX + 'px'; tip.textContent = fmt(t) + ' · ' + chapterAt(t).name;
+    hoverX = e.clientX - b.left; tip.style.left = hoverX + 'px'; tip.textContent = fmt(zoomed ? t - SA : t) + ' · ' + chapterAt(t).name;
     if (scrubbing) seek(t); else draw();
   });
   wave.addEventListener('pointerup', function () { scrubbing = false; });
@@ -1038,6 +1053,31 @@
       document.getElementById('p-resume-go').addEventListener('click', function () { seek(saved, true); resumeEl.hidden = true; });
     }
   } catch (err) {}
+  // Start zoomed on the Artist's Statement: first-time listeners with a link only (not returning to a saved spot or a chapter link)
+  var expandedBefore = false;
+  try { expandedBefore = localStorage.getItem('lfm-expanded') === '1'; } catch (err) {}
+  function zoomIn() {
+    zoomed = true; view = { a: SA, b: SB }; player.classList.add('zoomed');
+    elDur.textContent = fmt(SB - SA); lastSec = -1; update();
+  }
+  function expand(animate) {
+    if (!zoomed) return;
+    zoomed = false; player.classList.remove('zoomed');
+    try { localStorage.setItem('lfm-expanded', '1'); } catch (err) {}
+    elDur.textContent = fmt(dur()); lastSec = -1;
+    var from = { a: view.a, b: view.b }, to = { a: 0, b: dur() };
+    if (!animate || reducedMotion) { view = to; update(); return; }
+    var t0 = performance.now(), D = 1300;
+    (function step(now) {
+      var k = Math.min(1, (now - t0) / D), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;   // ease in-out
+      view = { a: from.a + (to.a - from.a) * e, b: from.b + (to.b - from.b) * e };
+      draw();
+      if (k < 1) requestAnimationFrame(step); else { view = to; update(); }
+    })(t0);
+  }
+  if (STATEMENT_FIRST && !hasResume && !startedFromHash && !expandedBefore) zoomIn();
+  // Listening on past the statement widens the timeline to the whole reading
+  audio.addEventListener('timeupdate', function () { if (zoomed && audio.currentTime >= SB - 0.25) expand(!audio.paused); });
   var lastSave = 0;
   audio.addEventListener('timeupdate', function () {
     if (Date.now() - lastSave < 5000 || audio.currentTime >= 5346) return; lastSave = Date.now();
