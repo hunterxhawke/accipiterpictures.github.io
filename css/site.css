@@ -3,6 +3,13 @@
    Baka Too for hand-written asides. Woodcut textures stand in for every rule and frame.
    Color appears only inside the films and in the record light. */
 
+/* Baka Too by Positype: licensed web font (Fontspring web license, Nov 2026), hosted here */
+@font-face {
+  font-family: "Baka Too";
+  src: url(../assets/fonts/bakatoo-webfont.woff2) format("woff2"), url(../assets/fonts/bakatoo-webfont.woff) format("woff");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
 :root {
   --black: #000;
   --white: #fff;
@@ -10,7 +17,7 @@
   --soot: #1c1b1a;           /* raised surfaces */
   --rec: #e8452c;            /* record light */
   --display: "Big Shoulders Display", "Big Shoulders", "Oswald", Impact, sans-serif;
-  --accent: "baka-too", "Baka Too", "Nanum Brush Script", "Segoe Script", cursive;
+  --accent: "Baka Too", "Segoe Script", cursive;
   --body: "Jost", "Futura", "Century Gothic", system-ui, sans-serif;
   --max: 1180px;
   --gut: clamp(16px, 4vw, 44px);
