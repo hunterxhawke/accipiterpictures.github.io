@@ -308,8 +308,10 @@ footer p { font-size: 14px; color: var(--ash); }
 /* ---------- Tablet ---------- */
 /* ---------- Gear page (/gear/) ---------- */
 .kit-link { margin-top: 28px; }
-.kit-page .back { display: inline-block; margin-bottom: 44px; text-decoration: none; }
-.kit-page .back:hover { color: var(--white); }
+.crumbs { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; margin-bottom: clamp(48px, 6vw, 72px); }
+.crumbs a { padding-bottom: 4px; color: var(--white); text-decoration: none; }
+.crumbs a:hover { border-image-source: var(--rule); }
+.crumbs [aria-current] { color: var(--ash); }
 .kit-page .head { align-items: flex-end; }
 .kit-page h1.pictures { font-size: clamp(64px, 10vw, 132px); line-height: 1.05; color: var(--white); }
 .kit-intro { max-width: 34ch; color: var(--ash); font-size: 17px; line-height: 1.5; }
