@@ -37,12 +37,19 @@
     internal = !!ref && ref.host === location.host && !/\/(sound|about|gear)\/?$/.test(ref.pathname);
   } catch (e) {}
   try { seen = !!sessionStorage.getItem('ap-intro'); sessionStorage.setItem('ap-intro', '1'); } catch (e) {}
+  /* Arriving at a section from another page (/#sound, /#about…): jump straight there, no smooth scroll.
+     Smooth scrolling comes back once the page has loaded, for links within this page. */
+  if (location.hash) {
+    var d = document.documentElement;
+    d.classList.add('jump');
+    addEventListener('load', function () { setTimeout(function () { d.classList.remove('jump'); }, 100); });
+  }
   var forced = /[?&]intro\b/.test(location.search);   /* add ?intro to the address to replay it */
   if (forced || (!internal && !seen && !matchMedia('(prefers-reduced-motion: reduce)').matches))
     document.documentElement.classList.add('splash-on');
 })();
 </script>
-<link rel="stylesheet" href="css/site.css?v=53ae52b4">
+<link rel="stylesheet" href="css/site.css?v=d123eef6">
 </head>
 <body>
 
