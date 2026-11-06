@@ -306,7 +306,28 @@ footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 
 footer p { font-size: 14px; color: var(--ash); }
 
 /* ---------- Tablet ---------- */
+/* ---------- Gear page (/gear/) ---------- */
+.kit-link { margin-top: 28px; }
+.kit-page .back { display: inline-block; margin-bottom: 44px; text-decoration: none; }
+.kit-page .back:hover { color: var(--white); }
+.kit-page .head { align-items: flex-end; }
+.kit-page h1.pictures { font-size: clamp(64px, 10vw, 132px); line-height: 1.05; color: var(--white); }
+.kit-intro { max-width: 34ch; color: var(--ash); font-size: 17px; line-height: 1.5; }
+.kit-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 24px; list-style: none; padding-top: 28px; }
+.kit-stats li { display: flex; flex-direction: column; gap: 8px; }
+.kit-stats b { font-size: clamp(54px, 7vw, 88px); color: var(--white); }
+.kit-stats .caps { line-height: 1.5; }
+.kit-list { columns: 2; column-gap: clamp(32px, 5vw, 72px); margin-top: clamp(48px, 6vw, 72px); }
+.kit-group { break-inside: avoid; margin-bottom: 40px; }
+.kit-group h2 { padding-bottom: 10px; color: var(--white); border-bottom: 3px solid transparent; border-image: var(--rule) 0 0 100% 0 / 0 0 3px 0 stretch; }
+.kit-group ul { list-style: none; }
+.kit-group li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 9px 0; font-size: 16px; border-bottom: 3px solid transparent; border-image: var(--rule-dim) 0 0 100% 0 / 0 0 3px 0 stretch; }
+.kit-group li:last-child { border: 0; border-image: none; }
+.kit-group small { display: block; margin-top: 2px; color: var(--ash); font-size: 13px; }
+.kit-group .n { flex: none; color: var(--ash); font-weight: 600; font-variant-numeric: tabular-nums; }
+
 @media (max-width: 860px) {
+  .kit-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 24px; }
   .about, .sound-head { grid-template-columns: 1fr; }
   .about .portrait { max-width: 380px; }
   .row-grid { --per: 3; }
@@ -317,6 +338,8 @@ footer p { font-size: 14px; color: var(--ash); }
 
 /* ---------- Phone ---------- */
 @media (max-width: 600px) {
+  .kit-list { columns: 1; }
+  .kit-group li { font-size: 15px; }
   .brand img { height: 22px; }
   .rec { display: none; }
   .entry { padding: 14px 18px; }
