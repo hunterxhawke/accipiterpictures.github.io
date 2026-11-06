@@ -139,6 +139,7 @@ img { max-width: 100%; height: auto; display: block; }
 .head .hand { font-size: clamp(26px, 3vw, 36px); color: var(--ash); }
 .head h2.pictures { font-size: clamp(56px, 8.4vw, 112px); line-height: 1.05; color: var(--white); }
 .sub { margin-top: clamp(56px, 7vw, 88px); }
+.sub[id] { scroll-margin-top: 104px; }   /* linked sub-sections land below the sticky top bar, title visible */
 .sub > .label { display: block; margin-bottom: 20px; }
 
 /* ---------- Definition band: hover lifts the definition away and the hawk's line takes its place ---------- */
