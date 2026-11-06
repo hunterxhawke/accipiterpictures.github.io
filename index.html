@@ -5,6 +5,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Accipiter Pictures is the film label of Hunter Hawke, a New York City writer, director, producer and sound professional. Hunter Hawke Sound offers location sound, post-sound and kit rental.">
+<!-- Link previews (iMessage, Instagram, Slack, etc.) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Accipiter Pictures">
+<meta property="og:url" content="https://accipiterpictures.com/">
+<meta property="og:title" content="Accipiter Pictures">
+<meta property="og:description" content="Films by Hunter Hawke, writer, director and producer. Hunter Hawke Sound: location sound, post-sound and kit rental. NYC and Beyond.">
+<meta property="og:image" content="https://accipiterpictures.com/assets/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Accipiter Pictures logo with Hunter Hawke signature">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.ico?v=4" sizes="any">
 <link rel="icon" type="image/svg+xml" href="favicon.svg?v=4">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
@@ -12,10 +23,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Brand fonts. Big Shoulders Display + Jost are free on Google Fonts. -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,600;1,400;1,600&family=Nanum+Brush+Script&display=swap">
-<!-- Baka Too, from Hunter's Adobe Fonts web project. Nanum Brush Script is the fallback. -->
-<link rel="preconnect" href="https://use.typekit.net" crossorigin>
-<link rel="stylesheet" href="https://use.typekit.net/nvv1dxb.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,600;1,400;1,600&display=swap">
+<!-- Baka Too (Positype), self-hosted under Hunter's Fontspring web license; see css/site.css -->
+<link rel="preload" href="assets/fonts/bakatoo-webfont.woff2" as="font" type="font/woff2" crossorigin>
 <!-- First visit from outside the site (once per browser session): play the intro in js/site.js.
      Set before first paint so the page never flashes. -->
 <script>
@@ -24,15 +34,22 @@
   try {
     var ref = document.referrer && new URL(document.referrer);
     /* the /sound/ and /about/ short links (where other domains forward) count as arriving from outside */
-    internal = !!ref && ref.host === location.host && !/\/(sound|about)\/?$/.test(ref.pathname);
+    internal = !!ref && ref.host === location.host && !/\/(sound|about|gear)\/?$/.test(ref.pathname);
   } catch (e) {}
   try { seen = !!sessionStorage.getItem('ap-intro'); sessionStorage.setItem('ap-intro', '1'); } catch (e) {}
+  /* Arriving at a section from another page (/#sound, /#about…): jump straight there, no smooth scroll.
+     Smooth scrolling comes back once the page has loaded, for links within this page. */
+  if (location.hash) {
+    var d = document.documentElement;
+    d.classList.add('jump');
+    addEventListener('load', function () { setTimeout(function () { d.classList.remove('jump'); }, 100); });
+  }
   var forced = /[?&]intro\b/.test(location.search);   /* add ?intro to the address to replay it */
   if (forced || (!internal && !seen && !matchMedia('(prefers-reduced-motion: reduce)').matches))
     document.documentElement.classList.add('splash-on');
 })();
 </script>
-<link rel="stylesheet" href="css/site.css?v=dd255366">
+<link rel="stylesheet" href="css/site.css?v=f5ca4c3a">
 </head>
 <body>
 
@@ -166,14 +183,14 @@
       <div class="services rule-top-bright">
         <div class="svc"><h3>Production sound</h3><p>Rock-solid reliable gear, 12 simultaneous lavaliers in-house. The sky is the limit on your creative!</p></div>
         <div class="svc"><h3>Post-sound</h3><p>Buttery smooth dialogue edit and a perfectly dialed-in mix.</p></div>
-        <div class="svc"><h3>Kit rental</h3><p>Set-tested gear, charged and ready to roll. Take it solo or bring me along.</p></div>
+        <div class="svc"><h3>Kit rental</h3><p>Set-tested gear, charged and ready to roll. Take it solo or bring me along.</p><a class="more caps rule-bottom" href="kit/">See the kit <span aria-hidden="true">→</span></a></div>
       </div>
       <div class="sound-cta">
         <a class="btn btn-solid" href="mailto:hunter@accipiterpictures.com?subject=Sound%20booking"><span class="dot" aria-hidden="true"></span>Book Hunter Hawke Sound</a>
         <span class="hand">Leave it to me — I’ve got you covered.</span>
       </div>
 
-      <div class="sub">
+      <div class="sub" id="clients">
         <span class="label">Past Clients</span>
         <div class="clients row-grid">
           <div class="client"><img src="assets/clients/maybelline.webp" alt="Maybelline New York" width="1241" height="132" style="--h:28px" loading="lazy"></div>
@@ -204,7 +221,7 @@
         </div>
       </div>
 
-      <div class="sub">
+      <div class="sub" id="sound-work">
         <span class="label">Selected Sound Work</span>
         <!-- TODO: confirm Hunter's credit on each; add links if there are trailers -->
         <div class="posters row-grid">
@@ -221,12 +238,12 @@
           <figure class="poster"><div class="art"><img src="assets/posters/hot-and-single.webp" alt="Poster for Hot &amp; Single" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Hot &amp; Single</span><span class="meta rule-top"><span class="caps">Production Sound</span></span></figcaption></figure>
           <figure class="poster"><div class="art"><img src="assets/posters/lost-dog.webp" alt="Poster for Lost Dog" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Lost Dog</span><span class="meta rule-top"><span class="caps">Production Sound</span><span class="year">2026</span></span></figcaption></figure>
           <figure class="poster"><div class="art"><img src="assets/posters/cerulea.webp" alt="Poster for Cerulea" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Cerulea</span><span class="meta rule-top"><span class="caps">Production Sound</span><span class="year">2026</span></span></figcaption></figure>
-          <figure class="poster"><div class="art"><img src="assets/posters/lucy-schulman.webp" alt="Poster for Lucy Schulman" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Lucy Schulman</span><span class="meta rule-top"><span class="caps">Additional Boom Operator</span><span class="year">2026</span></span></figcaption></figure>
+          <figure class="poster"><div class="art"><img src="assets/posters/lucy-schulman.webp?v=2" alt="Lucy Schulman, Tribeca Film Festival selection" width="700" height="1050" loading="lazy"></div><figcaption><span class="t">Lucy Schulman</span><span class="meta rule-top"><span class="caps">Additional Boom Operator</span><span class="year">2026</span></span></figcaption></figure>
         </div>
       </div>
 
       <div class="sub">
-        <span class="label">Gear</span>
+        <div class="sub-head"><span class="label">The Kit</span><a class="more caps rule-bottom" href="kit/">See the full kit <span aria-hidden="true">→</span></a></div>
         <div class="gear rule-top-bright">
           <div><h4>Recorders &amp; Mixers</h4><ul>
             <li>Sound Devices 833 + SL-2</li>
@@ -245,8 +262,8 @@
             <li>Wisycom MCR54 &amp; MPR52 receivers</li>
             <li>Wisycom MTP61 / MTP60 / MTP40S transmitters</li>
             <li>Sennheiser G4 wireless</li>
-            <li>Sennheiser G4 IEM for client monitoring (×6)</li>
-            <li>Deity TC-1 timecode (×4) + TC-SL1 smart slate</li>
+            <li>Sennheiser G4 Client Comms (×6)</li>
+            <li>Deity TC-1 timecode (×5) + TC-SL1 smart slates (×2)</li>
           </ul></div>
           <div><h4>Boom &amp; Field Kit</h4><ul>
             <li>K-Tek KP16CCR graphite boom</li>
