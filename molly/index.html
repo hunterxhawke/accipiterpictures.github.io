@@ -369,6 +369,8 @@
   /* A note to this listener: a slim aside above the player, three lines at most until they open it */
   .letter { width: 100%; margin: clamp(22px, 2.8vw, 30px) auto 0; padding: 2px 0 2px 14px; text-align: left; border-left: 2px solid rgba(180, 176, 228, .5); }
   .letter[hidden] { display: none; }
+  .preview-tag { position: fixed; left: 50%; top: 74px; z-index: 30; transform: translateX(-50%); padding: 7px 14px; background: #1b1820; border: 1px solid rgba(180, 176, 228, .5);
+                 font: 400 12px/1.3 var(--mono); letter-spacing: .06em; color: var(--lav); white-space: nowrap; pointer-events: none; }
   .letter .label { font-size: 10px; color: var(--lav); }
   .letter p { margin-top: 4px; font-size: 15px; line-height: 1.5; color: #dcd8d3; white-space: pre-line; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
   .letter.open p { -webkit-line-clamp: unset; display: block; }
@@ -1081,7 +1083,7 @@
   var lastSave = 0;
   audio.addEventListener('timeupdate', function () {
     if (Date.now() - lastSave < 5000 || audio.currentTime >= 5346) return; lastSave = Date.now();
-    try { localStorage.setItem(KEY, String(audio.currentTime)); } catch (err) {}
+    try { if (!/[?&]preview=1\b/.test(location.search)) localStorage.setItem(KEY, String(audio.currentTime)); } catch (err) {}
   });
   audio.addEventListener('play', function () { resumeEl.hidden = true; });
 
@@ -1227,10 +1229,15 @@
   // and which stretches of the recording were actually heard. Reports go to the Listener Room (a Cloudflare Worker).
   // Nothing is sent until ENDPOINT is set to the Worker's address + /collect.
   var ENDPOINT = 'https://lfm-092826-room.hunter-e61.workers.dev/collect';
-  var code = '';
+  // Preview (?preview=1, from the Green Room): see someone's page exactly as they will, without it being remembered
+  // on this browser or counted as their visit.
+  var PREVIEW = /[?&]preview=1\b/.test(location.search);
+  var code = '', codeFromLink = false;
   try {
     code = (new URLSearchParams(location.search).get('r') || '').replace(/[^a-z0-9-]/gi, '').slice(0, 24);
-    if (code) localStorage.setItem('lfm-r', code); else code = localStorage.getItem('lfm-r') || '';
+    codeFromLink = !!code;
+    if (code) { if (!PREVIEW) localStorage.setItem('lfm-r', code); }
+    else code = localStorage.getItem('lfm-r') || '';
   } catch (err) {}
   var session = Math.random().toString(36).slice(2, 10), queue = [];
   var device = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'phone' : 'computer';
@@ -1238,7 +1245,7 @@
   var referrer = '';
   try { var rh = document.referrer ? new URL(document.referrer).hostname : ''; if (rh && rh.indexOf('accipiterpictures.com') < 0) referrer = rh; } catch (err) {}
   function logEvent(type, data) {
-    if (!ENDPOINT) return;
+    if (!ENDPOINT || PREVIEW) return;
     var ev = { type: type, at: new Date().toISOString() };
     for (var k in data) ev[k] = data[k];
     queue.push(ev);
@@ -1284,7 +1291,8 @@
   }
   // A note you wrote to this person in the Green Room, shown above the player
   function showLetter(j) {
-    if (!j.message) return;
+    if (PREVIEW) showPreviewTag(j.first);
+    if (!j.message || !codeFromLink) return;
     var box = document.getElementById('letter'), more = document.getElementById('letter-more'), p = box.querySelector('p');
     // Opening line and sign-off are yours to change per person in the Green Room; these are the defaults
     document.getElementById('letter-to').textContent = j.open || (j.first ? 'A note for ' + j.first : 'A note for you');
@@ -1293,6 +1301,11 @@
     box.hidden = false; document.documentElement.classList.add('has-letter');
     more.hidden = p.scrollHeight <= p.clientHeight + 2;   // only offered when the note runs past three lines
     more.onclick = function () { var o = box.classList.toggle('open'); more.textContent = o ? 'Show less' : 'Read more'; };
+  }
+  function showPreviewTag(first) {
+    var t = document.createElement('div'); t.className = 'preview-tag';
+    t.textContent = 'Preview of ' + (first ? first + '’s' : 'this') + ' page · nothing is recorded';
+    document.body.appendChild(t);
   }
   function lock(why) {
     root.classList.remove('lfm-pending'); root.classList.add('lfm-locked');
@@ -1359,6 +1372,7 @@
   // ---------- Responses: one tap, optional note; both go to the Green Room and your inbox ----------
   var respond = document.getElementById('respond'), rmsg = document.getElementById('r-msg'), rKind = '', pendingKind = '';
   function sendResponse(body) {
+    if (PREVIEW) return Promise.reject(new Error('This is a preview, so responses aren’t sent.'));
     return fetch(BASE + '/respond', { method: 'POST', body: JSON.stringify(Object.assign({ r: code }, body)) })
       .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j && j.error); return j; }); });
   }
