@@ -136,7 +136,7 @@
   /* When there's a personal note, it introduces the player: computers drop the "Recorded live" label (phones keep
      their background-play note), and the player tucks up under the note */
   @media (hover: hover) { html.has-letter .m-play .p-label { display: none; } }
-  html.has-letter .m-play { margin-top: 16px; }
+  html.has-letter .m-play, html.has-letter .trailer { margin-top: 16px; }
   /* The reading player, in the sign's lettering: neon for what you've heard, lavender for the chapters */
   .player { margin-top: 10px; padding: clamp(14px, 2vw, 20px); text-align: left; border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; }
   .p-top { display: flex; align-items: center; gap: 14px 18px; flex-wrap: wrap; }
@@ -252,14 +252,12 @@
   @media (hover: hover) { .comp-row button:hover img, .comp-row button:hover .comp-card { transform: scale(1.04); }
                           .comp-row button:hover::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); } }
   .comp-row button:focus-visible { outline: none; }
-  .comp-row .clone { display: none; }
   .comp-row button:focus-visible::after { box-shadow: inset 0 0 0 3px var(--neon), 0 0 22px 2px rgba(232, 52, 90, .45); }
   /* Phones: the row slides sideways, one poster centred at a time with the next peeking in */
   @media (max-width: 760px) {
-    .comp-row { --fh: 300px; justify-content: flex-start; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-inline: 0; }
-    .comp-row .clone { display: block; }
-    .comp-row::-webkit-scrollbar { display: none; }
-    .comp-row button { scroll-snap-align: center; }
+    .comp-row { --fh: 300px; display: block; overflow: hidden; padding-inline: 0; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+    .cr-track { display: flex; gap: 16px; will-change: transform; }
+    .cr-track.anim { transition: transform .42s cubic-bezier(.22, .7, .24, 1); }
   }
   .comp-card { display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; padding: 12% 10%; text-align: left;
                border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; background: radial-gradient(120% 80% at 50% 0%, #1b1520, #0b0a0a 70%); }
@@ -520,19 +518,21 @@
         <p class="logline">Haunted by a screenshot of a high schooler he met on the internet, a <span class="def" tabindex="0" role="button" aria-describedby="def-neet">NEET<span class="def-tip" id="def-neet" role="tooltip"><b>NEET</b>Not in Education, Employment, or Training</span></span> pornsick twenty-something’s world unravels the same week that his autistic fifth-grader stepbrother becomes infatuated with the guidance counselor at his elementary school.</p>
         <div class="meta caps"><span>Rutgers Presbyterian Church</span><span>16 voices</span><span>45 in the audience</span></div>
 
+        <div class="letter gated" id="letter" hidden><span class="label" id="letter-to"></span><p><span id="letter-body"></span> <span class="from" id="letter-from">H.H.</span></p><button type="button" class="letter-more" id="letter-more" hidden>Read more</button></div>
+
         <div class="trailer" id="trailer">
-          <!-- The free preview. Today it plays the Artist's Statement straight from the reading (data-start/data-end), only for visitors
-               without a link. When the real trailer exists: point data-src at it, drop data-start/data-end and data-locked-only. -->
-          <audio id="t-audio" preload="none" data-src="../assets/molly/lfm-reading.m4a" data-start="47.7" data-end="166" data-locked-only></audio>
+          <!-- The trailer: first-time visitors hear it before the full reading, with or without a link.
+               (The player can also play a stretch of the reading instead: data-start/data-end, plus data-locked-only to limit it to visitors without a link.) -->
+          <audio id="t-audio" preload="none" data-src="../assets/molly/lfm-trailer.mp3"></audio>
           <div class="t-top">
-            <button type="button" class="p-play" id="t-play" aria-label="Play the preview">
+            <button type="button" class="p-play" id="t-play" aria-label="Play the trailer">
               <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
               <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>
             </button>
-            <div class="t-info"><div class="t-title">Start with the Artist’s Statement</div><div class="t-sub" id="t-sub">2 minutes · from the live reading</div></div>
+            <div class="t-info"><div class="t-title">Start with the trailer</div><div class="t-sub" id="t-sub">1:37 · moments from the live reading</div></div>
           </div>
-          <div class="t-bar" id="t-bar" role="slider" tabindex="0" aria-label="Preview position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="t-fill"></i></div>
-          <div class="t-actions"><span class="t-time" id="t-time">0:00 / 1:58</span><button type="button" class="t-full" id="t-full">Play the full reading →</button></div>
+          <div class="t-bar" id="t-bar" role="slider" tabindex="0" aria-label="Trailer position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="t-fill"></i></div>
+          <div class="t-actions"><span class="t-time" id="t-time">0:00 / 1:37</span><button type="button" class="t-full" id="t-full">Play the full reading →</button></div>
         </div>
 
         <div class="gate" id="gate" aria-live="polite">
@@ -548,7 +548,6 @@
           <div class="gate-done"><div class="t">You’re in!</div></div>
         </div>
 
-        <div class="letter gated" id="letter" hidden><span class="label" id="letter-to"></span><p><span id="letter-body"></span> <span class="from" id="letter-from">H.H.</span></p><button type="button" class="letter-more" id="letter-more" hidden>Read more</button></div>
 
         <div class="m-play gated">
           <span class="sound-rec p-label">
@@ -861,32 +860,73 @@
   });
   compRow.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('comps', +b.dataset.i, b); });
 
-  // Phones: the row is a loop. Copies sit either side of the real posters; it opens on the middle poster with
-  // its neighbours peeking in, and when a swipe settles in a copy it quietly jumps back to the same poster in the middle set.
-  var compReal = [].slice.call(compRow.children);
-  function copyOf(b) { var c = b.cloneNode(true); c.classList.add('clone'); c.setAttribute('aria-hidden', 'true'); c.tabIndex = -1; return c; }
-  var before = compReal.map(copyOf);
-  before.forEach(function (c) { compRow.insertBefore(c, compReal[0]); });   // copies, the real set, copies
-  compReal.forEach(function (b) { compRow.appendChild(copyOf(b)); });
-  var phoneRow = window.matchMedia('(max-width: 760px)');
-  function centerOn(el, smooth) { compRow.scrollTo({ left: el.offsetLeft - (compRow.clientWidth - el.offsetWidth) / 2, behavior: smooth ? 'smooth' : 'auto' }); }
-  function setWidth() { return compReal[0].offsetLeft - before[0].offsetLeft; }
-  function loopBack() {
-    if (!phoneRow.matches) return;
-    var W = setWidth(), mid = compRow.scrollLeft + compRow.clientWidth / 2;
-    var start = compReal[0].offsetLeft, end = compReal[compReal.length - 1].offsetLeft + compReal[0].offsetWidth;
-    var jump = mid < start ? W : mid > end ? -W : 0;
-    if (!jump) return;
-    compRow.style.scrollSnapType = 'none'; compRow.scrollLeft += jump;
-    requestAnimationFrame(function () { compRow.style.scrollSnapType = ''; });
+  // Phones: a swipe carousel with no ends. Seven slots are laid out around the poster in the middle; a swipe glides
+  // the row, then the slot that went off one edge is moved to the other edge and given the next poster in the cycle.
+  // Nothing ever runs out, and there's no scroll position to jump back, so it behaves the same on every phone.
+  var phoneRow = window.matchMedia('(max-width: 760px)'), desktopRow = compRow.innerHTML;
+  var crIdx = 1, crTrack = null, crGap = 16, SLOTS = 7, MID = 3, crBusy = false, crDragged = false;
+  function cmod(n) { return ((n % COMPS.length) + COMPS.length) % COMPS.length; }
+  function slotHTML(n) {
+    var i = cmod(n), c = COMPS[i];
+    return '<button type="button" data-i="' + i + '" aria-label="' + c.title + ' (' + c.year + '): why it’s a comp">' +
+      (c.img ? '<img src="' + c.img + '" alt="" width="600" height="900" draggable="false" decoding="async">' : compCard(c)) + '</button>';
   }
-  var settle;
-  compRow.addEventListener('scroll', function () { clearTimeout(settle); settle = setTimeout(loopBack, 140); }, { passive: true });
-  // Centre on the middle poster the first time the row is actually on screen (it's hidden until the page unlocks)
-  var rowPlaced = false;
-  function startRow() { if (phoneRow.matches && compRow.clientWidth) { centerOn(compReal[Math.floor(compReal.length / 2)]); rowPlaced = true; } }
-  if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { if (en[0].isIntersecting && !rowPlaced) startRow(); }).observe(compRow);
-  if (phoneRow.addEventListener) phoneRow.addEventListener('change', function () { rowPlaced = false; startRow(); });
+  function crSlotW() { return crTrack.children[0].offsetWidth + crGap; }
+  function crPlace(dx, anim) {
+    var x = compRow.clientWidth / 2 - crTrack.children[0].offsetWidth / 2 - MID * crSlotW() + dx;
+    crTrack.classList.toggle('anim', !!anim);
+    crTrack.style.transform = 'translate3d(' + x + 'px,0,0)';
+  }
+  function crLabel() { [].forEach.call(crTrack.children, function (b, k) { var mid = k === MID; b.tabIndex = mid ? 0 : -1; if (mid) b.removeAttribute('aria-hidden'); else b.setAttribute('aria-hidden', 'true'); }); }
+  function buildPhone() {
+    compRow.innerHTML = '<div class="cr-track"></div>'; crTrack = compRow.firstChild;
+    var h = ''; for (var k = -MID; k <= MID; k++) h += slotHTML(crIdx + k);
+    crTrack.innerHTML = h; crLabel(); crPlace(0, false);
+  }
+  function crGo(steps) {
+    if (!steps) { crPlace(0, true); return; }
+    crBusy = true; crPlace(-steps * crSlotW(), true);
+    var done = false;
+    function finish() {
+      if (done) return; done = true; crTrack.removeEventListener('transitionend', finish);
+      // Recycle the slots that left the screen to the far side, then reset the row's offset: visually nothing moves
+      for (var s = 0; s < Math.abs(steps); s++) {
+        if (steps > 0) { var f = crTrack.firstElementChild; crTrack.appendChild(f); f.outerHTML = slotHTML(crIdx + s + 1 + MID); }
+        else { var l = crTrack.lastElementChild; crTrack.insertBefore(l, crTrack.firstElementChild); l.outerHTML = slotHTML(crIdx - s - 1 - MID); }
+      }
+      crIdx += steps; crLabel(); crPlace(0, false); crBusy = false;
+    }
+    crTrack.addEventListener('transitionend', finish); setTimeout(finish, 520);
+  }
+  var cx0 = 0, cy0 = 0, ct0 = 0, cdx = 0, cDown = false, cDrag = false;
+  compRow.addEventListener('pointerdown', function (e) {
+    if (!phoneRow.matches || crBusy) return;
+    cDown = true; cDrag = false; cx0 = e.clientX; cy0 = e.clientY; ct0 = performance.now(); cdx = 0;
+  });
+  compRow.addEventListener('pointermove', function (e) {
+    if (!cDown) return;
+    var dx = e.clientX - cx0, dy = e.clientY - cy0;
+    if (!cDrag) { if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) { cDrag = true; compRow.setPointerCapture(e.pointerId); } else return; }
+    cdx = dx; crPlace(dx, false);
+  });
+  function crRelease() {
+    if (!cDown) return; cDown = false;
+    if (!cDrag) return;
+    crDragged = true; setTimeout(function () { crDragged = false; }, 0);
+    var w = crSlotW(), v = cdx / Math.max(1, performance.now() - ct0);
+    var steps = -Math.round(cdx / w);
+    if (!steps && Math.abs(v) > 0.3) steps = cdx < 0 ? 1 : -1;   // a quick flick moves one poster
+    crGo(Math.max(-2, Math.min(2, steps)));
+  }
+  compRow.addEventListener('pointerup', crRelease);
+  compRow.addEventListener('pointercancel', crRelease);
+  compRow.addEventListener('click', function (e) { if (crDragged) { e.stopImmediatePropagation(); e.preventDefault(); } }, true);
+  function layoutComps() { if (phoneRow.matches) buildPhone(); else { compRow.innerHTML = desktopRow; crTrack = null; } }
+  layoutComps();
+  if (phoneRow.addEventListener) phoneRow.addEventListener('change', layoutComps);
+  window.addEventListener('resize', function () { if (crTrack && !crBusy) crPlace(0, false); });
+  // The row is hidden until the page opens on some visits; place it properly once it's on screen
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { if (en[0].isIntersecting && crTrack && !crBusy) crPlace(0, false); }).observe(compRow);
   function open(set, i, from) { items = sets[set]; opener = from; go(i); lb.hidden = false; document.body.classList.add('lb-open'); document.getElementById('lb-close').focus(); }
   function close() { lb.hidden = true; document.body.classList.remove('lb-open'); if (opener && opener.getAttribute('aria-hidden') !== 'true') opener.focus(); }
   document.querySelectorAll('.night').forEach(function (row) { row.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('night', +b.dataset.i, b); }); });
@@ -1153,8 +1193,8 @@
     if (tAudio.currentTime < T0 || (T1 && tAudio.currentTime >= T1 - 0.5)) tSeek(T0);
     tAudio.play().catch(function () {});
   });
-  tAudio.addEventListener('play', function () { trailer.classList.add('playing'); trailer.classList.remove('done'); document.getElementById('t-play').setAttribute('aria-label', 'Pause the preview'); logEvent('trailer', { what: 'play' }); });
-  tAudio.addEventListener('pause', function () { trailer.classList.remove('playing'); document.getElementById('t-play').setAttribute('aria-label', 'Play the preview'); });
+  tAudio.addEventListener('play', function () { trailer.classList.add('playing'); trailer.classList.remove('done'); document.getElementById('t-play').setAttribute('aria-label', 'Pause the trailer'); logEvent('trailer', { what: 'play' }); });
+  tAudio.addEventListener('pause', function () { trailer.classList.remove('playing'); document.getElementById('t-play').setAttribute('aria-label', 'Play the trailer'); });
   function previewEnded() {
     trailer.classList.add('done'); logEvent('trailer', { what: 'ended' });
     document.getElementById('t-sub').textContent = 'Ready for the whole thing?';
