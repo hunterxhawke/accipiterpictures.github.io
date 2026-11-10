@@ -1210,7 +1210,7 @@
   tBar.addEventListener('click', function (e) { tSrc(); var r = tBar.getBoundingClientRect(); tSeek(T0 + (e.clientX - r.left) / r.width * tLen()); });
   // Where the full reading picks up: after the Artist's Statement preview, right where they left it
   function fullStart() {
-    if (!T1) return CHAPTERS[1].t;   // a separate trailer: start the reading at the Artist's Statement
+    if (!T1) return 0;   // after the trailer, the full reading starts from the very beginning
     if (trailer.classList.contains('done')) return T1;
     return tAudio.currentTime > T0 + 1 ? tAudio.currentTime : CHAPTERS[1].t;
   }
