@@ -288,6 +288,8 @@
     .lb.with-text .lb-stage img, .lb.with-text .lb-card { order: -1; max-height: 42vh; height: 42vh; width: auto; }
     .lb-card { --fh: 42vh; }
     .lb-text p { font-size: 16px; }
+    /* Comps: arrows sit beside the poster, level with its middle, clear of the note below */
+    .lb.with-text .lb-prev, .lb.with-text .lb-next { top: calc(12px + 21vh); bottom: auto; transform: translateY(-50%); }
   }
 
   /* Gallery: big frames, arrows, keyboard and swipe */
