@@ -1299,7 +1299,7 @@
   }
   function flush(final) {
     if (!ENDPOINT) return;
-    closeSpan();
+    closeSpan(); tCloseSpan();
     if (!queue.length) return;
     var body = JSON.stringify({ r: code, s: session, d: device, ref: referrer, entry: location.hash.slice(1), events: queue.splice(0) });
     var blob = new Blob([body], { type: 'text/plain;charset=UTF-8' });
@@ -1309,6 +1309,20 @@
   // Heard time: contiguous stretches of normal playback; a jump or pause closes the stretch
   var spanA = null, lastT = 0;
   function closeSpan() { if (spanA !== null && lastT - spanA >= 1) logEvent('heard', { a: Math.round(spanA), b: Math.round(lastT) }); spanA = null; }
+  // The trailer reports what was actually heard the same way, so the Green Room can show where people drop off or move on
+  var tSpanA = null, tLastT = 0;
+  function tCloseSpan() { if (tSpanA !== null && tLastT - tSpanA >= 1) logEvent('theard', { a: Math.round(tSpanA), b: Math.round(tLastT) }); tSpanA = null; }
+  tAudio.addEventListener('timeupdate', function () {
+    if (tAudio.paused) return;
+    var t = tAudio.currentTime;
+    if (tSpanA === null) { tSpanA = t; tLastT = t; return; }
+    var d = t - tLastT;
+    if (d < 0 || d > 3) { tCloseSpan(); tSpanA = t; }
+    tLastT = t;
+  });
+  tAudio.addEventListener('pause', tCloseSpan);
+  tAudio.addEventListener('seeking', tCloseSpan);
+  tAudio.addEventListener('ended', tCloseSpan);
   audio.addEventListener('timeupdate', function () {
     if (audio.paused) return;
     var t = audio.currentTime;
