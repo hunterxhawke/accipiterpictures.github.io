@@ -263,7 +263,7 @@
   @media (max-width: 760px) {
     .comp-row { --fh: 300px; display: block; overflow: hidden; padding-inline: 0; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
     .cr-track { display: flex; gap: 16px; will-change: transform; }
-    .cr-track.anim { transition: transform .42s cubic-bezier(.22, .7, .24, 1); }
+    .cr-track img { -webkit-touch-callout: none; pointer-events: none; }
   }
   .comp-card { display: flex; flex-direction: column; justify-content: space-between; width: 100%; height: 100%; padding: 12% 10%; text-align: left;
                border: 3px solid transparent; border-image: url(../assets/frame-dim.png) 50 / 3px stretch; background: radial-gradient(120% 80% at 50% 0%, #1b1520, #0b0a0a 70%); }
@@ -866,73 +866,76 @@
   });
   compRow.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('comps', +b.dataset.i, b); });
 
-  // Phones: a swipe carousel with no ends. Seven slots are laid out around the poster in the middle; a swipe glides
-  // the row, then the slot that went off one edge is moved to the other edge and given the next poster in the cycle.
-  // Nothing ever runs out, and there's no scroll position to jump back, so it behaves the same on every phone.
+  // Phones: the comps follow the finger like the poster strip above: drag freely, flick and it coasts, grab it mid-glide,
+  // and it settles with a poster centred. Three identical sets sit side by side and the position wraps, so it never ends.
   var phoneRow = window.matchMedia('(max-width: 760px)'), desktopRow = compRow.innerHTML;
-  var crIdx = 1, crTrack = null, crGap = 16, SLOTS = 7, MID = 3, crBusy = false, crDragged = false;
-  function cmod(n) { return ((n % COMPS.length) + COMPS.length) % COMPS.length; }
-  function slotHTML(n) {
-    var i = cmod(n), c = COMPS[i];
+  var crTrack = null, crPos = 1, crS = 216, crW = 648, crOff = 0, crAnim = 0;   // crPos in posters: 1 = American Beauty centred
+  function slotHTML(i) {
+    var c = COMPS[i];
     return '<button type="button" data-i="' + i + '" aria-label="' + c.title + ' (' + c.year + '): why it’s a comp">' +
       (c.img ? '<img src="' + c.img + '" alt="" width="600" height="900" draggable="false" decoding="async">' : compCard(c)) + '</button>';
   }
-  function crSlotW() { return crTrack.children[0].offsetWidth + crGap; }
-  function crPlace(dx, anim) {
-    var x = compRow.clientWidth / 2 - crTrack.children[0].offsetWidth / 2 - MID * crSlotW() + dx;
-    crTrack.classList.toggle('anim', !!anim);
-    crTrack.style.transform = 'translate3d(' + x + 'px,0,0)';
+  function crMeasure() {
+    var b = crTrack.children[0]; crS = b.offsetWidth + 16; crW = crS * COMPS.length;
+    crOff = compRow.clientWidth / 2 - b.offsetWidth / 2;
   }
-  function crLabel() { [].forEach.call(crTrack.children, function (b, k) { var mid = k === MID; b.tabIndex = mid ? 0 : -1; if (mid) b.removeAttribute('aria-hidden'); else b.setAttribute('aria-hidden', 'true'); }); }
+  function crRender() {
+    var px = ((crPos * crS) % crW + crW) % crW;   // wrap into one set
+    crTrack.style.transform = 'translate3d(' + (crOff - crW - px).toFixed(2) + 'px,0,0)';
+    var mid = ((Math.round(crPos) % COMPS.length) + COMPS.length) % COMPS.length;
+    [].forEach.call(crTrack.children, function (b, k) { var on = k === COMPS.length + mid; b.tabIndex = on ? 0 : -1; if (on) b.removeAttribute('aria-hidden'); else b.setAttribute('aria-hidden', 'true'); });
+  }
   function buildPhone() {
-    compRow.innerHTML = '<div class="cr-track"></div>'; crTrack = compRow.firstChild;
-    var h = ''; for (var k = -MID; k <= MID; k++) h += slotHTML(crIdx + k);
-    crTrack.innerHTML = h; crLabel(); crPlace(0, false);
+    var one = COMPS.map(function (c, i) { return slotHTML(i); }).join('');
+    compRow.innerHTML = '<div class="cr-track">' + one + one + one + '</div>'; crTrack = compRow.firstChild;
+    crMeasure(); crRender();
   }
-  function crGo(steps) {
-    if (!steps) { crPlace(0, true); return; }
-    crBusy = true; crPlace(-steps * crSlotW(), true);
-    var done = false;
-    function finish() {
-      if (done) return; done = true; crTrack.removeEventListener('transitionend', finish);
-      // Recycle the slots that left the screen to the far side, then reset the row's offset: visually nothing moves
-      for (var s = 0; s < Math.abs(steps); s++) {
-        if (steps > 0) { var f = crTrack.firstElementChild; crTrack.appendChild(f); f.outerHTML = slotHTML(crIdx + s + 1 + MID); }
-        else { var l = crTrack.lastElementChild; crTrack.insertBefore(l, crTrack.firstElementChild); l.outerHTML = slotHTML(crIdx - s - 1 - MID); }
-      }
-      crIdx += steps; crLabel(); crPlace(0, false); crBusy = false;
-    }
-    crTrack.addEventListener('transitionend', finish); setTimeout(finish, 520);
+  // Glide to a poster with an ease-out; a new touch stops it where it is
+  var crGliding = false;
+  function crGlide(to, ms) {
+    cancelAnimationFrame(crAnim);
+    var from = crPos, t0 = performance.now(); crGliding = true;
+    (function step(now) {
+      var k = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - k, 3);
+      crPos = from + (to - from) * e; crRender();
+      if (k < 1) crAnim = requestAnimationFrame(step); else crGliding = false;
+    })(t0);
   }
-  var cx0 = 0, cy0 = 0, ct0 = 0, cdx = 0, cDown = false, cDrag = false;
+  var cPressed = false, cDrag = false, cCaught = false, cx0 = 0, cy0 = 0, cStart = 0, cMoved = 0, cHist = [];
   compRow.addEventListener('pointerdown', function (e) {
-    if (!phoneRow.matches || crBusy) return;
-    cDown = true; cDrag = false; cx0 = e.clientX; cy0 = e.clientY; ct0 = performance.now(); cdx = 0;
+    if (!crTrack || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    cCaught = crGliding; cancelAnimationFrame(crAnim); crGliding = false;   // catch it mid-glide
+    cPressed = true; cDrag = false; cMoved = 0; cx0 = e.clientX; cy0 = e.clientY; cStart = crPos; cHist = [[performance.now(), e.clientX]];
   });
-  compRow.addEventListener('pointermove', function (e) {
-    if (!cDown) return;
+  window.addEventListener('pointermove', function (e) {
+    if (!cPressed) return;
     var dx = e.clientX - cx0, dy = e.clientY - cy0;
-    if (!cDrag) { if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) { cDrag = true; compRow.setPointerCapture(e.pointerId); } else return; }
-    cdx = dx; crPlace(dx, false);
+    if (!cDrag) {
+      if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+      if (Math.abs(dy) > Math.abs(dx)) { cPressed = false; crGlide(Math.round(crPos), 250); return; }   // vertical: the page scrolls
+      cDrag = true;
+    }
+    cMoved = Math.max(cMoved, Math.abs(dx));
+    crPos = cStart - dx / crS; crRender();
+    cHist.push([performance.now(), e.clientX]); if (cHist.length > 6) cHist.shift();
   });
-  function crRelease() {
-    if (!cDown) return; cDown = false;
-    if (!cDrag) return;
-    crDragged = true; setTimeout(function () { crDragged = false; }, 0);
-    var w = crSlotW(), v = cdx / Math.max(1, performance.now() - ct0);
-    var steps = -Math.round(cdx / w);
-    if (!steps && Math.abs(v) > 0.3) steps = cdx < 0 ? 1 : -1;   // a quick flick moves one poster
-    crGo(Math.max(-2, Math.min(2, steps)));
+  function cRelease() {
+    if (!cPressed) return; cPressed = false;
+    // A touch that only stopped it mid-glide: settle on the nearest poster (and don't treat it as a tap)
+    if (!cDrag) { if (cCaught || Math.abs(crPos - Math.round(crPos)) > 0.01) { cMoved = 99; crGlide(Math.round(crPos), 260); } return; }
+    // Speed over the last moments of the swipe, so it coasts the way the finger left it
+    var a = cHist[0], z = cHist[cHist.length - 1], v = (z[0] - a[0]) > 0 ? (z[1] - a[1]) / (z[0] - a[0]) : 0;   // px per ms
+    var target = Math.round(crPos - (v * 220) / crS);                                                               // project the flick
+    target = Math.max(Math.round(crPos) - 3, Math.min(Math.round(crPos) + 3, target));
+    crGlide(target, Math.min(700, 280 + Math.abs(target - crPos) * 160));
   }
-  compRow.addEventListener('pointerup', crRelease);
-  compRow.addEventListener('pointercancel', crRelease);
-  compRow.addEventListener('click', function (e) { if (crDragged) { e.stopImmediatePropagation(); e.preventDefault(); } }, true);
-  function layoutComps() { if (phoneRow.matches) buildPhone(); else { compRow.innerHTML = desktopRow; crTrack = null; } }
+  window.addEventListener('pointerup', cRelease); window.addEventListener('pointercancel', cRelease);
+  compRow.addEventListener('click', function (e) { if (crTrack && cMoved > 8) { e.stopImmediatePropagation(); e.preventDefault(); cMoved = 0; } }, true);
+  function layoutComps() { cancelAnimationFrame(crAnim); if (phoneRow.matches) buildPhone(); else { compRow.innerHTML = desktopRow; crTrack = null; } }
   layoutComps();
   if (phoneRow.addEventListener) phoneRow.addEventListener('change', layoutComps);
-  window.addEventListener('resize', function () { if (crTrack && !crBusy) crPlace(0, false); });
-  // The row is hidden until the page opens on some visits; place it properly once it's on screen
-  if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { if (en[0].isIntersecting && crTrack && !crBusy) crPlace(0, false); }).observe(compRow);
+  window.addEventListener('resize', function () { if (crTrack) { crMeasure(); crRender(); } });
+  if ('ResizeObserver' in window) new ResizeObserver(function () { if (crTrack) { crMeasure(); crRender(); } }).observe(compRow);
   function open(set, i, from) { items = sets[set]; opener = from; go(i); lb.hidden = false; document.body.classList.add('lb-open'); document.getElementById('lb-close').focus(); }
   function close() { lb.hidden = true; document.body.classList.remove('lb-open'); if (opener && opener.getAttribute('aria-hidden') !== 'true') opener.focus(); }
   document.querySelectorAll('.night').forEach(function (row) { row.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) open('night', +b.dataset.i, b); }); });
