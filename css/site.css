@@ -395,9 +395,12 @@ footer p { font-size: 14px; color: var(--ash); }
 
 /* ---------- Credits page (/credits/) ---------- */
 .cr-filter { display: flex; flex-wrap: wrap; gap: 8px 22px; }
-.cr-filter button { padding: 0 0 5px; background: none; border: 0; border-bottom: 3px solid transparent; color: var(--ash); cursor: pointer; font-family: var(--body); }
+.cr-filter button { position: relative; padding: 0 0 8px; background: none; border: 0; color: var(--ash); cursor: pointer; font-family: var(--body); }
 .cr-filter button:hover { color: var(--white); }
-.cr-filter button[aria-pressed="true"] { color: var(--white); border-image: var(--rule) 0 0 100% 0 / 0 0 3px 0 stretch; }
+.cr-filter button[aria-pressed="true"] { color: var(--white); }
+/* active chip: the leveled woodcut rule (the standard one slopes, which shows on short words) */
+.cr-filter button[aria-pressed="true"]::after { content: ""; position: absolute; inset: auto 0 0; height: 4px; background: currentColor;
+  -webkit-mask: url(../assets/rule-level.png) center / 100% 100% no-repeat; mask: url(../assets/rule-level.png) center / 100% 100% no-repeat; }
 .cr-list { margin-top: 28px; }
 .cr-year h2 { display: flex; justify-content: space-between; align-items: baseline; }
 .cr-year h2 .n { color: var(--ash); }
