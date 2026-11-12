@@ -394,9 +394,7 @@ footer p { font-size: 14px; color: var(--ash); }
 }
 
 /* ---------- Credits page (/credits/) ---------- */
-.cr-featured { margin-top: clamp(48px, 6vw, 72px); }
-.cr-featured .label { display: block; margin-bottom: 20px; }
-.cr-filter { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: clamp(56px, 7vw, 88px); }
+.cr-filter { display: flex; flex-wrap: wrap; gap: 8px 22px; }
 .cr-filter button { padding: 0 0 5px; background: none; border: 0; border-bottom: 3px solid transparent; color: var(--ash); cursor: pointer; font-family: var(--body); }
 .cr-filter button:hover { color: var(--white); }
 .cr-filter button[aria-pressed="true"] { color: var(--white); border-image: var(--rule) 0 0 100% 0 / 0 0 3px 0 stretch; }
