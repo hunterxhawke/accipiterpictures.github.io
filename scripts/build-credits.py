@@ -63,7 +63,7 @@ def full_list(cs):
         items = sorted(years[y], key=lambda c: c.get("date") or "", reverse=True)
         out.append(
             f'        <section class="kit-group cr-year">\n'
-            f'          <h2 class="caps"><span>{y}</span><span class="n">{len(items)}</span></h2>\n'
+            f'          <h2 class="caps">{y}</h2>\n'
             f'          <ul>\n' + "\n".join(row(c) for c in items) + "\n          </ul>\n        </section>"
         )
     return "\n".join(out)
