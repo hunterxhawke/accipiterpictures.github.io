@@ -392,3 +392,33 @@ footer p { font-size: 14px; color: var(--ash); }
   .brand { transition: none; transform: none; }
   .entry .face, .entry .lid img { transition: opacity .3s; transform: none !important; filter: none !important; }
 }
+
+/* ---------- Credits page (/credits/) ---------- */
+.cr-featured { margin-top: clamp(48px, 6vw, 72px); }
+.cr-featured .label { display: block; margin-bottom: 20px; }
+.cr-filter { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: clamp(56px, 7vw, 88px); }
+.cr-filter button { padding: 0 0 5px; background: none; border: 0; border-bottom: 3px solid transparent; color: var(--ash); cursor: pointer; font-family: var(--body); }
+.cr-filter button:hover { color: var(--white); }
+.cr-filter button[aria-pressed="true"] { color: var(--white); border-image: var(--rule) 0 0 100% 0 / 0 0 3px 0 stretch; }
+.cr-list { margin-top: 28px; }
+.cr-year h2 { display: flex; justify-content: space-between; align-items: baseline; }
+.cr-year h2 .n { color: var(--ash); }
+.cr-year li { display: grid; grid-template-columns: 3.2em minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.2fr); gap: 4px 24px; align-items: baseline; justify-content: stretch; }
+.cr-year li[hidden] { display: none; }
+.cr-mo { font-size: 11px; }
+.cr-t { font-weight: 600; }
+.cr-t a { text-decoration: none; }
+.cr-t a:hover { text-decoration: underline 2px; text-underline-offset: 5px; }
+.cr-t .ext { color: var(--ash); font-weight: 400; }
+.cr-year .cr-t small { margin-top: 3px; font-size: 10.5px; }
+.cr-role { color: var(--white); font-size: 15px; }
+.cr-who { color: var(--ash); font-size: 14px; line-height: 1.45; }
+.cr-who small { margin-top: 2px; font-size: 12.5px; }
+@media (max-width: 860px) {
+  .cr-year li { grid-template-columns: 3.2em minmax(0, 1fr) minmax(0, 1fr); }
+  .cr-who { grid-column: 2 / -1; }
+}
+@media (max-width: 600px) {
+  .cr-year li { grid-template-columns: 2.8em minmax(0, 1fr); row-gap: 2px; }
+  .cr-role, .cr-who { grid-column: 2; }
+}
