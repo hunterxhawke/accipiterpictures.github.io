@@ -199,8 +199,7 @@
   if (!bar) return;
   bar.hidden = false;
   var years = document.querySelectorAll('.cr-year');
-  bar.addEventListener('click', function (ev) {
-    var b = ev.target.closest('button'); if (!b) return;
+  function pick(b) {
     var f = b.dataset.f;
     bar.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
     years.forEach(function (y) {
@@ -211,7 +210,17 @@
       });
       y.hidden = !shown;
     });
+  }
+  bar.addEventListener('click', function (ev) {
+    var b = ev.target.closest('button'); if (b) pick(b);
   });
+  /* open on a tab from the address, e.g. /credits/#post (linked from the main page's Post-sound card) */
+  function fromHash() {
+    var b = location.hash && bar.querySelector('button[data-f="' + location.hash.slice(1) + '"]');
+    if (b) pick(b);
+  }
+  fromHash();
+  window.addEventListener('hashchange', fromHash);
 })();
 </script>
 
