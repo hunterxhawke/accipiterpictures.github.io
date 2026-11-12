@@ -17,7 +17,7 @@ DATA = ROOT / "credits" / "credits.json"
 PAGE = ROOT / "credits" / "index.html"
 MONTHS = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
 # filter group for each type (matches the chips on the page)
-GROUP = {"Feature": "feature", "Short": "short", "Pilot": "tv", "Series": "tv", "Commercial": "commercial"}
+GROUP = {"Feature": "feature", "Short": "short", "Documentary": "doc", "Pilot": "tv", "Series": "tv", "Commercial": "commercial"}
 
 
 def e(s):
@@ -30,6 +30,8 @@ def row(c):
     who = []
     if c.get("director"):
         who.append(f'Dir. {e(c["director"])}')
+    elif c.get("creator"):
+        who.append(f'Created by {e(c["creator"])}')
     if c.get("company"):
         who.append(e(c["company"]))
     sub = " · ".join(who)
