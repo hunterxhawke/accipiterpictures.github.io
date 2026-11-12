@@ -424,6 +424,10 @@
   .r-who input { width: 100%; padding: 12px 14px; border: 1px solid #2c2a28; background: var(--soot); color: var(--white); font: 400 16px/1.4 var(--body); border-radius: 0; }
   .r-who input:focus { outline: none; border-color: var(--neon); }
   .when-locked { display: none; } html.lfm-locked .when-locked { display: inline; } html.lfm-locked .when-open { display: none; }
+  /* Pitch deck: always ask where to send it, even with a link (email only; the name is already known) */
+  html:not(.lfm-locked) .respond.ask-email .r-who { display: grid; grid-template-columns: 1fr; }
+  html:not(.lfm-locked) .respond.ask-email #rw-name { display: none; }
+  .respond.ask-email .when-open { display: none; } .respond.ask-email .when-locked { display: inline; }
   @media (max-width: 560px) { .r-who { grid-template-columns: 1fr; } }
   /* Roles: compact check-all-that-apply grid in the page's checkbox style */
   .roles { margin: 4px 0 0; padding: 0; border: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 14px; }
@@ -1454,16 +1458,22 @@
         setTimeout(function () { document.getElementById('rw-name').focus({ preventScroll: true }); }, 50);
         return;
       }
-      markPicked(kind); rmsg.className = 'r-msg'; rmsg.textContent = 'Sending…';
-      sendResponse({ kind: kind }).then(function () {
-        rKind = kind; try { localStorage.setItem('lfm-resp', kind); } catch (err) {}
-        rmsg.textContent = ({
-          materials: 'I’ll share that soon! Any final thoughts for now?',
-          intro: 'I’d love to learn more! Will be in touch soon. Any final thoughts for now?',
-          pass: 'Thank you so much for listening! Anything you’d want me to know?'
-        })[kind] || 'Thank you! Any final thoughts for now?';
-        document.getElementById('r-text').focus({ preventScroll: true });
-      }).catch(function (err) { markPicked(rKind); if (!rKind) respond.classList.remove('picked'); rFail(err); });
+      if (kind === 'materials') {
+        // The deck: ask where to send it, then send the request with the address
+        pendingKind = kind; markPicked(kind); respond.classList.add('ask-email'); rmsg.className = 'r-msg';
+        rmsg.textContent = 'I’ll share that soon! What’s the best email to send it to?';
+        setTimeout(function () { document.getElementById('rw-email').focus({ preventScroll: true }); }, 50);
+        return;
+      }
+      pendingKind = ''; respond.classList.remove('ask-email');
+      markPicked(kind); rmsg.className = 'r-msg';
+      rmsg.textContent = ({
+        intro: 'I’d love to learn more! Will be in touch soon. Any final thoughts for now?',
+        pass: 'Thank you so much for listening! Anything you’d want me to know?'
+      })[kind] || 'Thank you! Any final thoughts for now?';
+      document.getElementById('r-text').focus({ preventScroll: true });
+      var was = rKind; rKind = kind; try { localStorage.setItem('lfm-resp', kind); } catch (err) {}
+      sendResponse({ kind: kind }).catch(function (err) { rKind = was; try { localStorage.setItem('lfm-resp', was); } catch (e2) {} markPicked(was); if (!was) respond.classList.remove('picked'); rFail(err); });
     });
   });
   document.getElementById('r-note').addEventListener('submit', function (e) {
@@ -1473,25 +1483,36 @@
     if (html.classList.contains('lfm-locked')) {
       var nm = document.getElementById('rw-name').value.trim(), em = document.getElementById('rw-email').value.trim();
       if (!nm || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { rmsg.className = 'r-msg err'; rmsg.textContent = 'Please add your name and a valid email.'; return; }
-      btn.disabled = true; rmsg.className = 'r-msg'; rmsg.textContent = 'Sending…';
+      btn.disabled = true; rmsg.className = 'r-msg';
       var anchor = respond.getBoundingClientRect().top;
       signUp(nm, em).then(function () {
         html.classList.remove('gate-open'); unlock();
         window.scrollBy(0, respond.getBoundingClientRect().top - anchor);   // the player appears above; keep this spot still
         var sends = [];
-        if (pendingKind) sends.push(sendResponse({ kind: pendingKind }));
+        if (pendingKind) sends.push(sendResponse(pendingKind === 'materials' ? { kind: pendingKind, message: 'Send the deck to: ' + em } : { kind: pendingKind }));
         if (t.value.trim() || roles.length) sends.push(sendResponse({ kind: 'note', message: t.value.trim(), roles: roles }));
         return Promise.all(sends);
       }).then(function () {
-        rKind = pendingKind; try { if (rKind) localStorage.setItem('lfm-resp', rKind); } catch (err) {}
+        rKind = pendingKind; pendingKind = ''; respond.classList.remove('ask-email'); try { if (rKind) localStorage.setItem('lfm-resp', rKind); } catch (err) {}
         t.value = ''; rmsg.className = 'r-msg'; rmsg.textContent = 'Got it, thank you! Will be thinking on this';
       }).catch(rFail).then(function () { btn.disabled = false; });
       return;
     }
+    if (pendingKind === 'materials') {
+      var de = document.getElementById('rw-email').value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(de)) { rmsg.className = 'r-msg err'; rmsg.textContent = 'Please add a valid email so I can send it.'; document.getElementById('rw-email').focus(); return; }
+      btn.disabled = true; rmsg.className = 'r-msg';
+      var deckSends = [sendResponse({ kind: 'materials', message: 'Send the deck to: ' + de })];
+      if (t.value.trim() || roles.length) deckSends.push(sendResponse({ kind: 'note', message: t.value.trim(), roles: roles }));
+      rmsg.textContent = 'Got it, thank you! The deck is on its way to ' + de + ' soon.'; t.value = '';
+      rKind = 'materials'; pendingKind = ''; respond.classList.remove('ask-email'); try { localStorage.setItem('lfm-resp', 'materials'); } catch (err) {}
+      Promise.all(deckSends).catch(rFail).then(function () { btn.disabled = false; });
+      return;
+    }
     if (!t.value.trim() && !roles.length) { t.focus(); return; }   // a note, roles, or both
-    btn.disabled = true; rmsg.className = 'r-msg'; rmsg.textContent = 'Sending…';
-    sendResponse({ kind: 'note', message: t.value.trim(), roles: roles }).then(function () { t.value = ''; rmsg.textContent = 'Got it, thank you! Will be thinking on this'; })
-      .catch(rFail).then(function () { btn.disabled = false; });
+    btn.disabled = true; rmsg.className = 'r-msg';
+    var noteText = t.value.trim(); rmsg.textContent = 'Got it, thank you! Will be thinking on this'; t.value = '';
+    sendResponse({ kind: 'note', message: noteText, roles: roles }).catch(function (err) { t.value = noteText; rFail(err); }).then(function () { btn.disabled = false; });
   });
   document.querySelectorAll('.roles input').forEach(function (c) {
     c.addEventListener('change', function () {
