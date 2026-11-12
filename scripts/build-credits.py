@@ -20,12 +20,17 @@ MONTHS = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
 GROUP = {"Feature": "feature", "Short": "short", "Documentary": "doc", "Pilot": "tv", "Series": "tv", "Commercial": "commercial"}
 
 
+# roles that count as post-production work (the "Post" chip)
+POST_ROLES = ("Re-Recording Mixer", "Dialogue Editor", "Foley Artist", "Sound Designer", "Sound Editor", "Post Mix")
+
+
 def e(s):
     return escape(s or "", quote=True)
 
 
 def row(c):
     m = (c.get("date") or "")[5:7]
+    post = ' data-post' if any(r in c["role"] for r in POST_ROLES) else ""
     month = MONTHS[int(m) - 1] if m else ""
     who = []
     if c.get("director"):
@@ -41,7 +46,7 @@ def row(c):
     if c.get("link"):
         title = f'<a href="{e(c["link"])}" target="_blank" rel="noopener">{title}<span class="ext" aria-hidden="true"> ↗</span></a>'
     return (
-        f'            <li data-type="{GROUP.get(c.get("type"), "other")}">'
+        f'            <li data-type="{GROUP.get(c.get("type"), "other")}"{post}>'
         f'<span class="cr-mo caps">{month}</span>'
         f'<span class="cr-t">{title}{typ}</span>'
         f'<span class="cr-role">{e(c["role"])}</span>'
